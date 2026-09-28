@@ -2,5 +2,6 @@
 
 int main()
 {
- std::cout << "repina.elena\n";
+  std::cout << "repina.elena\n";
+  return 0;
 }
