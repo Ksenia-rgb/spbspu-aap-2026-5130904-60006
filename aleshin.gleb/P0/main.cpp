@@ -2,5 +2,5 @@
 
 int main()
 {
-std::cout << "aleshin.gleb\n";
+  std::cout << "aleshin.gleb\n";
 }
