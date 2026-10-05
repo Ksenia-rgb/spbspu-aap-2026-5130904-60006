@@ -1,9 +1,10 @@
+#include <cstddef>
 #include <iostream>
 
 int main()
 {
-  const int ERROR_INVALID_INPUT = 1;
-  const int ERROR_LOGIC = 2;
+  const int error_invalid_input = 1;
+  const int error_logic = 2;
 
   int value = 0;
   int max_val = 0;
@@ -15,7 +16,7 @@ int main()
     if (!(std::cin >> value))
     {
       std::cerr << "Не является последовательностью\n";
-      return ERROR_INVALID_INPUT;
+      return error_invalid_input;
     }
 
     if (value == 0)
@@ -38,8 +39,8 @@ int main()
 
   if (total == 0)
   {
-    std::cerr << "Последовтельность слишком короткая\n";
-    return ERROR_LOGIC;
+    std::cerr << "Последовательность слишком коротка\n";
+    return error_logic;
   }
 
   std::cout << count << "\n";
