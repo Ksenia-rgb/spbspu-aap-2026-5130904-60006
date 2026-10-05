@@ -1,19 +1,21 @@
-//3 вариант
 #include <iostream>
 
 int main()
 {
+  const int ERROR_INVALID_INPUT = 1;
+  const int ERROR_LOGIC = 2;
+
   int value = 0;
   int max_val = 0;
-  int count = 0;
-  int total = 0;
+  size_t count = 0;
+  size_t total = 0;
 
   while (true)
   {
     if (!(std::cin >> value))
     {
       std::cerr << "Не является последовательностью\n";
-      return 1;
+      return ERROR_INVALID_INPUT;
     }
 
     if (value == 0)
@@ -36,8 +38,8 @@ int main()
 
   if (total == 0)
   {
-    std::cerr << "Последовательность слишком короткая\n";
-    return 2;
+    std::cerr << "Последовтельность слишком короткая\n";
+    return ERROR_LOGIC;
   }
 
   std::cout << count << "\n";
