@@ -2,28 +2,20 @@
 
 int main()
 {
+  const int divisor = 2;
+  const int err_short = 2;
+
   int value = 0;
   int total = 0;
 
   int max_val = 0;
   int max_count = 0;
 
-  int current_even_count = 0;
-  int max_even_count = 0;
+  int current_even = 0;
+  int max_even = 0;
 
-  while (true)
+  while (std::cin >> value && value != 0)
   {
-    if (!(std::cin >> value))
-    {
-      std::cerr << "Не является последовательностью\n";
-      return 1;
-    }
-
-    if (value == 0)
-    {
-      break;
-    }
-
     if (total == 0 || value > max_val)
     {
       max_val = value;
@@ -34,28 +26,34 @@ int main()
       max_count++;
     }
 
-    if (value % 2 == 0)
+    if (value % divisor == 0)
     {
-      current_even_count++;
-      if (current_even_count > max_even_count)
+      current_even++;
+      if (current_even > max_even)
       {
-        max_even_count = current_even_count;
+        max_even = current_even;
       }
     }
     else
     {
-      current_even_count = 0;
+      current_even = 0;
     }
 
     total++;
   }
 
-  std::cout << max_even_count << "\n";
+  if (!std::cin)
+  {
+    std::cerr << "Не является последовательностью\n";
+    return 1;
+  }
+
+  std::cout << max_even << "\n";
 
   if (total == 0)
   {
-    std::cerr << "Последовательность слишком короткая для варианта 3\n";
-    return 2;
+    std::cerr << "Последовательность слишком короткая\n";
+    return err_short;
   }
 
   std::cout << max_count << "\n";
