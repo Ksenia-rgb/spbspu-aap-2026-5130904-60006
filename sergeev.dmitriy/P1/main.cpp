@@ -1,6 +1,6 @@
 #include <iostream>
 
-int main ()
+int main()
 {
   int min = 0;
   int current = 0, previous = 0, next = 0;
@@ -44,7 +44,9 @@ int main ()
   if (current < previous)
   {
     min = current;
-  } else if (current == min) {
+  }
+  else if (current == min)
+  {
     count_16++;
   }
 
@@ -72,7 +74,6 @@ int main ()
 
     previous = current;
     current = next;
-
   }
 
   if (std::cin.fail())
@@ -90,8 +91,5 @@ int main ()
 
   std::cout << count_10 << "\n";
   std::cout << count_16 << "\n";
-
   return 0;
-
-
 }
