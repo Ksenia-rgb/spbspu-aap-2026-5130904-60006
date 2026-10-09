@@ -81,7 +81,7 @@ int main ()
     return 1;
   }
 
-  if (total_elements < 3) 
+  if (total_elements < 3)
   {
     std::cerr << "Error: Sequence too short for Variant 10\n";
     std::cout << count_16 << "\n";
@@ -90,7 +90,7 @@ int main ()
 
   std::cout << count_10 << "\n";
   std::cout << count_16 << "\n";
-  
+
   return 0;
 
 
