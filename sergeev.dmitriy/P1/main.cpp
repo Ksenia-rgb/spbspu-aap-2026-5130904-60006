@@ -67,7 +67,8 @@ int main()
     {
       min = next;
       count_16 = 1;
-    } else if (next == min)
+    }
+    else if (next == min)
     {
       count_16++;
     }
