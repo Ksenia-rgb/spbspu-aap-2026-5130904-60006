@@ -9,6 +9,11 @@ int main ()
   std::cin >> previous;
 
   min = previous;
+  if (std::cin.fail())
+  {
+    std::cerr << "error import\n";
+    return 1;
+  }
 
   if (previous == 0)
   {
@@ -20,6 +25,11 @@ int main ()
   }
 
   std::cin >> current;
+  if (std::cin.fail())
+  {
+    std::cerr << "error import\n";
+    return 1;
+  }
 
   if (current == 0)
   {
@@ -68,6 +78,11 @@ int main ()
 
   }
 
+  if (std::cin.fail())
+  {
+    std::cerr << "error import\n";
+    return 1;
+  }
 
 
 }
