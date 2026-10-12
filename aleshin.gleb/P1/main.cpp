@@ -3,7 +3,7 @@
 
 namespace aleshin {
 const unsigned long long limit = std::numeric_limits<unsigned long long>::max();
-int Run() {
+int run() {
   bool empty = true;
   bool got_zero = false;
   int max_num = 0;
@@ -68,4 +68,4 @@ int Run() {
   return code;
 }
 }
-int main() { return aleshin::Run(); }
+int main() { return aleshin::run(); }
