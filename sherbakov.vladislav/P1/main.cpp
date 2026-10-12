@@ -69,3 +69,4 @@ int main()
               << "LOG-MAX: " << countmax << '\n';
 
     return 0;
+}
