@@ -65,7 +65,7 @@ int main()
       if (n == cap)
       {
         cap *= 2;
-        int* tmp = new int[cap];
+        int* const tmp = new int[cap];
         for (std::size_t i = 0; i < n; ++i)
         {
           tmp[i] = arr[i];
@@ -90,8 +90,8 @@ int main()
       return 2;
     }
 
-    std::size_t mon = braterskaia::max_mon_inc(arr, n);
-    std::size_t inc = braterskaia::count_inc(arr, n);
+    const std::size_t mon = braterskaia::max_mon_inc(arr, n);
+    const std::size_t inc = braterskaia::count_inc(arr, n);
 
     std::cout << mon << '\n';
     std::cout << inc << '\n';
