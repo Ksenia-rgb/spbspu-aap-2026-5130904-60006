@@ -1,10 +1,10 @@
 #include <iostream>
 #include <cstddef>
-#include <stdexcept>
+#include <exception>
 
 namespace braterskaia
 {
-  std::size_t count_inc(const int* arr, const std::size_t n)
+  std::size_t countInc(const int* arr, const std::size_t n)
   {
     std::size_t cnt = 0;
     for (std::size_t i = 1; i < n; ++i)
@@ -16,8 +16,7 @@ namespace braterskaia
     }
     return cnt;
   }
-
-  std::size_t max_mon_inc(const int* arr, const std::size_t n)
+  std::size_t maxMonInc(const int* arr, const std::size_t n)
   {
     if (n == 0)
     {
@@ -53,7 +52,6 @@ int main()
     std::size_t cap = 10;
     std::size_t n = 0;
     int* arr = new int[cap];
-
     int x = 0;
     while (std::cin >> x)
     {
@@ -90,8 +88,8 @@ int main()
       return 2;
     }
 
-    const std::size_t mon = braterskaia::max_mon_inc(arr, n);
-    const std::size_t inc = braterskaia::count_inc(arr, n);
+    const std::size_t mon = braterskaia::maxMonInc(arr, n);
+    const std::size_t inc = braterskaia::countInc(arr, n);
 
     std::cout << mon << '\n';
     std::cout << inc << '\n';
@@ -103,6 +101,5 @@ int main()
     std::cerr << "Error: " << e.what() << '\n';
     return 2;
   }
-
   return 0;
 }
