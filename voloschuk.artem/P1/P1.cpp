@@ -2,7 +2,6 @@
 #include <stdexcept>
 #include <limits>
 
-
 int main(){
   unsigned max_u = std::numeric_limits<unsigned>::max();
   unsigned answer_1 = 0;
@@ -24,8 +23,7 @@ int main(){
   }
   int max = a;
   int pre_last = a;
-
-  while ( true ) {  
+  while ( true ) {
     std::cin >> a;
     if ( std::cin.fail() ) {
       std::cerr << "invalid input";
