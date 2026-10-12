@@ -4,7 +4,7 @@
 namespace aleshin
 {
   const unsigned long long limit = std::numeric_limits < unsigned long long > ::max();
-  int run()
+  int Run()
   {
     bool empty = true;
     bool got_zero = false;
