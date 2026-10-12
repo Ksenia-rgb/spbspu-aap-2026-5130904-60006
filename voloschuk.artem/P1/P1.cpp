@@ -1,9 +1,8 @@
 #include <iostream>
-#include <stdexcept>
 #include <limits>
 
 int main(){
-  unsigned max_u = std::numeric_limits<unsigned>::max();
+  const unsigned max_u = std::numeric_limits<unsigned>::max();
   unsigned answer_1 = 0;
   unsigned answer_2 = 0;
   bool answer_1_overflow = false;
