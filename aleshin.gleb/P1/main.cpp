@@ -1,12 +1,11 @@
+#include <climits>
 #include <iostream>
-#include <limits>
 
 namespace aleshin
 {
-  const unsigned long long limit =
-    std::numeric_limits<unsigned long long>::max();
+  const unsigned long long limit = ULLONG_MAX;
 
-  int Run()
+  int run()
   {
     bool empty = true;
     bool got_zero = false;
@@ -16,7 +15,7 @@ namespace aleshin
     bool count_overflow = false;
 
     int prev = 0;
-    unsigned long long run = 0;
+    unsigned long long cur_run = 0;
     unsigned long long best_run = 0;
     bool run_overflow = false;
 
@@ -49,23 +48,23 @@ namespace aleshin
 
       if (!empty && num == prev)
       {
-        if (run == limit)
+        if (cur_run == limit)
         {
           run_overflow = true;
         }
         else
         {
-          ++run;
+          ++cur_run;
         }
       }
       else
       {
         prev = num;
-        run = 1;
+        cur_run = 1;
       }
-      if (run > best_run)
+      if (cur_run > best_run)
       {
-        best_run = run;
+        best_run = cur_run;
       }
 
       empty = false;
@@ -73,9 +72,7 @@ namespace aleshin
 
     if (!got_zero)
     {
-      std::cerr << "Error: введенные данные "
-        << "не являются последовательностью "
-        << "целых чисел, завершающейся нулем\n";
+      std::cerr << "Error: это не последовательность\n";
       return 1;
     }
 
@@ -83,9 +80,7 @@ namespace aleshin
 
     if (empty || count_overflow)
     {
-      std::cerr << "Error: невозможно рассчитать CNT-MAX: "
-        << "последовательность слишком "
-        << "короткая или слишком длинная\n";
+      std::cerr << "Error: невозможно рассчитать CNT-MAX\n";
       code = 2;
     }
     else
@@ -95,9 +90,7 @@ namespace aleshin
 
     if (run_overflow)
     {
-      std::cerr << "Error: невозможно рассчитать EQL-SEQ: "
-        << "последовательность слишком "
-        << "длинная\n";
+      std::cerr << "Error: невозможно рассчитать EQL-SEQ\n";
       code = 2;
     }
     else
@@ -111,5 +104,5 @@ namespace aleshin
 
 int main()
 {
-  return aleshin::Run();
+  return aleshin::run();
 }
