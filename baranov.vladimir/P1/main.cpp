@@ -34,5 +34,9 @@ int countEqual() {
   std::cout << max_count << '\n';
   return 0;
 }
-} // namespace baranov
-int main() { return baranov::countEqual(); }
+} 
+
+ int main()
+ { 
+    return baranov::countEqual();
+ }
