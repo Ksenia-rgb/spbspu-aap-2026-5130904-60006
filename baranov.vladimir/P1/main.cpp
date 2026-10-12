@@ -35,5 +35,4 @@ int countEqual() {
   return 0;
 }
 } // namespace baranov
-
 int main() { return baranov::countEqual(); }
