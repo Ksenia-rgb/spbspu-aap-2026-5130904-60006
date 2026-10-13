@@ -11,8 +11,7 @@ int main()
   int last = 1;
   bool flag = true;
   int a = 0;
-  std::cin >> a;
-  if (std::cin.fail())
+  if (!(std::cin >> a))
   {
     std::cerr << "invalid input";
     return 1;
@@ -25,76 +24,72 @@ int main()
   }
   int max = a;
   int pre_last = a;
-  while (true)
+  while (std::cin >> a)
   {
-    std::cin >> a;
-    if (std::cin.fail())
-    {
-      std::cerr << "invalid input";
-      return 1;
-    }
-    else if (a == 0)
+    if (a == 0)
     {
       break;
     }
+    if (max < a)
+    {
+      answer_2 = 0;
+      max = a;
+    }
     else
     {
-      if (max < a)
+      if (answer_2 == max_u)
       {
-        answer_2 = 0;
-        max = a;
+        answer_2_overflow = true;
       }
       else
       {
-        if (answer_2 == max_u)
+        answer_2++;
+      }
+    }
+    if (flag)
+    {
+      flag = false;
+      last = a;
+    }
+    else
+    {
+      if (pre_last > last && last > a)
+      {
+        if (answer_1 == max_u)
         {
-          answer_2_overflow = true;
+          answer_1_overflow = true;
         }
         else
         {
-          answer_2++;
+          answer_1++;
         }
       }
-      if (flag)
-      {
-        flag = false;
-        last = a;
+      pre_last = last;
+      last = a;
       }
-      else
-      {
-        if (pre_last > last && last > a)
-        {
-          if (answer_1 == max_u)
-          {
-            answer_1_overflow = true;
-          }
-          else
-          {
-            answer_1++;
-          }
-        }
-        pre_last = last;
-        last = a;
-      }
-    }
   }
-  if (answer_1_overflow == true)
+  if (!(std::cin))
   {
-    std::cerr << "overflow";
+      std::cerr << "invalid input" << std::endl;
+      return 1;
+  }
+  if (answer_1_overflow)
+  {
+    std::cerr << "overflow\n";
   }
   else
   {
     std::cout << answer_1 << "\n";
   }
-  if (answer_2_overflow == true)
+  if (answer_2_overflow)
   {
-    std::cerr << "overflow";
+    std::cerr << "overflow" << std::endl;
   }
   else
   {
-    std::cout << answer_2 << "\n";
+    std::cout << answer_2 << std::endl;
   }
-  if (answer_1_overflow == true || answer_2_overflow == true)
+  if (answer_1_overflow || answer_2_overflow)
   {
     return 2;
   }
