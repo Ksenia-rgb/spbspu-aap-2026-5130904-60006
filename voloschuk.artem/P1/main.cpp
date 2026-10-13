@@ -66,12 +66,12 @@ int main()
       }
       pre_last = last;
       last = a;
-      }
+    }
   }
   if (!(std::cin))
   {
-      std::cerr << "invalid input" << std::endl;
-      return 1;
+    std::cerr << "invalid input" << std::endl;
+    return 1;
   }
   if (answer_1_overflow)
   {
