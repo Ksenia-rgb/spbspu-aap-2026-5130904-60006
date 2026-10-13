@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstddef>
 
-namespace snosnakee {
+namespace chizhova {
 
 int main() {
     size_t max_len = 0;
@@ -61,5 +61,5 @@ int main() {
 }
 
 int main() {
-    return snosnakee::main();
+    return chizhova::main();
 }
