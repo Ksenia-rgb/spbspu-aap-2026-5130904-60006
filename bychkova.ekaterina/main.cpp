@@ -6,6 +6,7 @@ int main() {
     int one = 0;
     int two = 0;
     int cout = 0;
+    int last_non_zero = 0;
 
     int dline_vos = 0;
     int max_len = 0;
@@ -41,12 +42,17 @@ int main() {
                 max_len = dline_vos;
             }
 
-            if ((two > 0 && one < 0) or (two < 0 && one > 0)) {
-                sign_changes++;
+            if (last_non_zero != 0) {
+                if ((last_non_zero > 0 && one < 0) or (last_non_zero < 0 && one > 0)) {
+                    sign_changes++;
+                }
             }
         }
 
         two = one;
+        if (one != 0) {
+            last_non_zero = one;
+        }
     }
 
     if (cout == 0) {
@@ -65,5 +71,3 @@ int main() {
     
     return 0;
 }
-
-
