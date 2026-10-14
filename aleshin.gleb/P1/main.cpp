@@ -1,9 +1,9 @@
-#include <climits>
+#include <limits>
 #include <iostream>
 
 namespace aleshin
 {
-  const unsigned long long limit = ULLONG_MAX;
+  const unsigned long limit = std::numeric_limits< unsigned long >::max();
 
   int run()
   {
