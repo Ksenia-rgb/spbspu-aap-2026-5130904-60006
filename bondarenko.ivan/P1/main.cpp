@@ -1,8 +1,9 @@
 #include <iostream>
 #include <limits>
 
-int main() {
-  int max = std::numeric_limits<int>::min();
+int main()
+{
+  int max = std::numeric_limits< int >::min();
   int count = 0;
   int a_count = 0;
   int b_count = 0;
