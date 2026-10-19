@@ -2,12 +2,13 @@
 
 namespace chizhova {
     int solve() {
-        int val;
+        int val = 0;
         int count_read = 0;
         int x = 0, y = 0, z = 0;
         int max_len = 0;
         int curr_len = 0;
         int count_grt_lss = 0;
+
         while (true) {
             if (!(std::cin >> val)) {
                 std::cerr << "Error: Invalid input or missing terminating 0\n";
@@ -17,7 +18,9 @@ namespace chizhova {
             if (val == 0) {
                 break;
             }
+
             count_read++;
+
             if (count_read == 1) {
                 x = val;
                 curr_len = 1;
@@ -43,18 +46,23 @@ namespace chizhova {
                 if (curr_len > max_len) {
                     max_len = curr_len;
                 }
+
                 if (x > y && y > z) {
                     count_grt_lss++;
                 }
+
                 x = y;
                 y = z;
             }
         }
+
         std::cout << max_len << "\n";
         std::cout << count_grt_lss << "\n";
+
         return 0;
     }
-}
+} 
+
 int main() {
     return chizhova::solve();
 }
