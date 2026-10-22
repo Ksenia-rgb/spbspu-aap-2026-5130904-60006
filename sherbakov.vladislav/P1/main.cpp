@@ -8,8 +8,6 @@ int main()
   const int ERR_PARTIAL = 2;
   const int ERR_OVERFLOW = 4;
 
-  const size_t SIZE_MAX_V = SIZE_MAX;
-
   int x = 0;
   bool term = false;
 
@@ -55,7 +53,7 @@ int main()
 
     if (n >= 2 && prev1 > prev2 && prev1 > x)
     {
-      if (count_loc_max == SIZE_MAX_V)
+      if (count_loc_max == std::numeric_limits<size_t>::max())
       {
         std::cerr << "error: count_loc_max overflow\n";
         return ERR_OVERFLOW;
@@ -66,7 +64,7 @@ int main()
     prev2 = prev1;
     prev1 = x;
 
-    if (n == SIZE_MAX_V)
+    if (n == std::numeric_limits<size_t>::max())
     {
       std::cerr << "error: element counter overflow\n";
       return ERR_OVERFLOW;
