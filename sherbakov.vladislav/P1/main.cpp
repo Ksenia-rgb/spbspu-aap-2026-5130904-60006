@@ -8,8 +8,7 @@ int main()
   const int ERR_PARTIAL = 2;
   const int ERR_OVERFLOW = 4;
 
-  const size_t SIZE_MAX_V =
-      std::numeric_limits<size_t>::max();
+  const size_t SIZE_MAX_V = SIZE_MAX;
 
   int x = 0;
   bool term = false;
