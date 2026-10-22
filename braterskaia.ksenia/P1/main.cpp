@@ -30,8 +30,12 @@ int main()
 
     if (curr > prev)
     {
-      if (inc_cnt == std::numeric_limits<std::size_t>::max() ||
-      cur_inc == std::numeric_limits<std::size_t>::max())
+      if (inc_cnt == std::numeric_limits<std::size_t>::max())
+      {
+        return·ERR_INPUT;
+      }
+
+      if (cur_inc == std::numeric_limits<std::size_t>::max())
       {
         return ERR_INPUT;
       }
