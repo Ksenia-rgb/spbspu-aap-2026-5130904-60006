@@ -1,13 +1,11 @@
 #include <iostream>
 #include <cstddef>
-#include <limits>
 
 const int ERR_INPUT = 1;
 
 int main()
 {
-  const std::size_t MAX_SZ =
-    std::numeric_limits<std::size_t>::max();
+  const std::size_t MAX_SZ = std::size_t(-1);
 
   std::size_t inc_cnt = 0;
   std::size_t max_inc = 1;
