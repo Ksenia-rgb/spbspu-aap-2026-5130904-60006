@@ -1,9 +1,8 @@
-#include <iostream>
 #include <clocale>
 #include <cstddef>
+#include <iostream>
 
-int main()
-{
+int main() {
   setlocale(LC_ALL, "ru");
   int x = 0;
   bool term = false;
@@ -14,60 +13,47 @@ int main()
   size_t count = 0;
   size_t countmax = 0;
 
-  while (std::cin >> x)
-  {
-    if (x == 0)
-    {
+  while (std::cin >> x) {
+    if (x == 0) {
       term = true;
       break;
     }
 
-    if (!hmax)
-    {
+    if (!hmax) {
       maxv = x;
       hmax = true;
       countmax = 1;
-    }
-    else if (x > maxv)
-    {
+    } else if (x > maxv) {
       secondmax = maxv;
       hsecondmax = true;
       maxv = x;
       countmax = 1;
-    }
-    else if (x == maxv)
-    {
+    } else if (x == maxv) {
       ++countmax;
       secondmax = maxv;
       hsecondmax = true;
-    }
-    else if (!hsecondmax || x > secondmax)
-    {
+    } else if (!hsecondmax || x > secondmax) {
       secondmax = x;
       hsecondmax = true;
     }
     count++;
   }
-  if (!term)
-  {
-    if (std::cin.eof())
-    {
+  if (!term) {
+    if (std::cin.eof()) {
       std::cerr << "error: The sequence is not terminated with a zero\n";
-    }
-    else
-    {
+    } else {
       std::cerr << "ошибка: The input data is not a sequence of integers\n ";
     }
     return 1;
   }
-  if (!hsecondmax)
-  {
+  if (!hsecondmax) {
     std::cout << "LOG-MAX: 0" << '\n';
     std::cerr << "error: the sequence is too short\n";
     return 2;
   }
 
-  std::cout << "SUB-MAX: " << secondmax << '\n' << "LOG-MAX: " << countmax << '\n';
+  std::cout << "SUB-MAX: " << secondmax << '\n'
+            << "LOG-MAX: " << countmax << '\n';
 
   return 0;
 }
