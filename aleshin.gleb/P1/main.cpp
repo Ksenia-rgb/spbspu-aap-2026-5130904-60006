@@ -3,6 +3,9 @@
 
 namespace aleshin
 {
+  const int ok = 0;
+  const int bad_input = 1;
+  const int no_result = 2;
   const unsigned long limit = std::numeric_limits< unsigned long >::max();
 
   int run()
@@ -73,15 +76,15 @@ namespace aleshin
     if (!got_zero)
     {
       std::cerr << "Error: это не последовательность\n";
-      return 1;
+      return bad_input;
     }
 
-    int code = 0;
+    int code = ok;
 
     if (empty || count_overflow)
     {
       std::cerr << "Error: невозможно рассчитать CNT-MAX\n";
-      code = 2;
+      code = no_result;
     }
     else
     {
@@ -91,7 +94,7 @@ namespace aleshin
     if (run_overflow)
     {
       std::cerr << "Error: невозможно рассчитать EQL-SEQ\n";
-      code = 2;
+      code = no_result;
     }
     else
     {
