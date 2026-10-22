@@ -1,18 +1,26 @@
 #include <iostream>
-#include <clocale>
+#include <limits>
 #include <cstddef>
 
 int main()
 {
-  setlocale(LC_ALL, "ru");
+  const int ERR_INPUT = 1;
+  const int ERR_PARTIAL = 2;
+  const int ERR_OVERFLOW = 3;
+
+  const size_t SIZE_MAX_V = std::numeric_limits<size_t>::max();
   int x = 0;
   bool term = false;
+  
   int maxv = 0;
   int secondmax = 0;
   bool hmax = false;
   bool hsecondmax = false;
-  size_t count = 0;
-  size_t countmax = 0;
+  
+  size_t count_loc_max = 0;
+  int prev2 = 0;
+  int prev1 = 0;
+  size_t n = 0;
 
   while (std::cin >> x)
   {
@@ -26,18 +34,15 @@ int main()
     {
       maxv = x;
       hmax = true;
-      countmax = 1;
     }
     else if (x > maxv)
     {
       secondmax = maxv;
       hsecondmax = true;
       maxv = x;
-      countmax = 1;
     }
     else if (x == maxv)
     {
-      ++countmax;
       secondmax = maxv;
       hsecondmax = true;
     }
@@ -46,28 +51,54 @@ int main()
       secondmax = x;
       hsecondmax = true;
     }
-    count++;
+    if (n >= 2 && prev1 > prev2 && prev1 > x)
+    {
+      if (count_loc_max == SIZE_MAX_V)
+      {
+        std::cerr << "error: count_loc_max overflow\n";
+        return ERR_OVERFLOW;
+      }
+      ++count_loc_max;
+    }
+
+    prev2 = prev1;
+    prev1 = x;
+
+    if (n == SIZE_MAX_V)
+    {
+      std::cerr << "error: element counter overflow\n";
+      return ERR_OVERFLOW;
+    }
+    ++n;
   }
   if (!term)
   {
     if (std::cin.eof())
-    {
       std::cerr << "error: The sequence is not terminated with a zero\n";
-    }
     else
-    {
-      std::cerr << "ошибка: The input data is not a sequence of integers\n ";
-    }
-    return 1;
+      std::cerr << "ошибка: The input data is not a sequence of integers\n";
+    return ERR_INPUT;
   }
-  if (!hsecondmax)
+
+  int retcode = 0;
+  if (hsecondmax)
   {
-    std::cout << "LOG-MAX: 0" << '\n';
-    std::cerr << "error: the sequence is too short\n";
-    return 2;
+    std::cout << "SUB-MAX: " << secondmax << '\n';
+  }
+  else
+  {
+    std::cerr << "error: cannot calculate SUB-MAX: sequence is too short\n";
+    retcode = ERR_PARTIAL;
+  }
+  if (n > 0)
+  {
+    std::cout << "LOG-MAX: " << count_loc_max << '\n';
+  }
+  else
+  {
+    std::cerr << "error: cannot calculate LOG-MAX: sequence is too short\n";
+    retcode = ERR_PARTIAL;
   }
 
-  std::cout << "SUB-MAX: " << secondmax << '\n' << "LOG-MAX: " << countmax << '\n';
-
-  return 0;
+  return retcode;
 }
