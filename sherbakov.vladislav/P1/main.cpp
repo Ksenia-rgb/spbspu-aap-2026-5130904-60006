@@ -8,8 +8,8 @@ int main()
   const int ERR_PARTIAL = 2;
   const int ERR_OVERFLOW = 4;
 
-  const size_t SIZE_MAX_V = 
-    std::numeric_limits<size_t>::max();
+  const size_t SIZE_MAX_V =
+      std::numeric_limits<size_t>::max();
 
   int x = 0;
   bool term = false;
@@ -81,10 +81,10 @@ int main()
     {
       std::cerr << "error: The sequence is not terminated with a zero\n";
     }
-    else 
+    else
     {
       std::cerr << "ошибка: The input data is not a sequence of integers\n";
-    return ERR_INPUT;
+      return ERR_INPUT;
     }
   }
 
