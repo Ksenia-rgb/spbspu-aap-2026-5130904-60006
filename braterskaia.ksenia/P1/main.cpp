@@ -6,6 +6,7 @@ const int ERR_INPUT = 1;
 
 int main()
 {
+  const std::size_t MAX_SZ = std::numeric_limits<std::size_t>::max();
   std::size_t inc_cnt = 0;
   std::size_t max_inc = 1;
   std::size_t cur_inc = 1;
@@ -30,14 +31,12 @@ int main()
 
     if (curr > prev)
     {
-      if (inc_cnt ==
-          std::numeric_limits<std::size_t>::max())
+      if (inc_cnt == MAX_SZ)
       {
         return ERR_INPUT;
       }
 
-      if (cur_inc ==
-          std::numeric_limits<std::size_t>::max())
+      if (cur_inc == MAX_SZ)
       {
         return ERR_INPUT;
       }
