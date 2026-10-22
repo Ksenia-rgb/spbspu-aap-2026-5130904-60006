@@ -1,105 +1,69 @@
 #include <iostream>
 #include <cstddef>
-#include <exception>
+#include <limits>
 
-namespace braterskaia
-{
-  std::size_t countInc(const int* arr, const std::size_t n)
-  {
-    std::size_t cnt = 0;
-    for (std::size_t i = 1; i < n; ++i)
-    {
-      if (arr[i] > arr[i - 1])
-      {
-        ++cnt;
-      }
-    }
-    return cnt;
-  }
-  std::size_t maxMonInc(const int* arr, const std::size_t n)
-  {
-    if (n == 0)
-    {
-      return 0;
-    }
-
-    std::size_t best = 1;
-    std::size_t cur = 1;
-
-    for (std::size_t i = 1; i < n; ++i)
-    {
-      if (arr[i] > arr[i - 1])
-      {
-        ++cur;
-        if (cur > best)
-        {
-          best = cur;
-        }
-      }
-      else
-      {
-        cur = 1;
-      }
-    }
-    return best;
-  }
-}
+const int ERR_INPUT = 1;
 
 int main()
 {
-  try
+  std::size_t inc_cnt = 0;
+  std::size_t max_inc = 1;
+  std::size_t cur_inc = 1;
+
+  int prev = 0;
+  int curr = 0;
+  bool is_first = true;
+
+  while (std::cin >> curr)
   {
-    std::size_t cap = 10;
-    std::size_t n = 0;
-    int* arr = new int[cap];
-    int x = 0;
-    while (std::cin >> x)
+    if (curr == 0)
     {
-      if (x == 0)
+      break;
+    }
+
+    if (is_first)
+    {
+      prev = curr;
+      is_first = false;
+      continue;
+    }
+
+    if (curr > prev)
+    {
+      if (inc_cnt == std::numeric_limits<std::size_t>::max() ||
+      cur_inc == std::numeric_limits<std::size_t>::max())
       {
-        break;
+	return ERR_INPUT;
       }
 
-      if (n == cap)
+      ++inc_cnt;
+      ++cur_inc;
+
+      if (cur_inc > max_inc)
       {
-        cap *= 2;
-        int* const tmp = new int[cap];
-        for (std::size_t i = 0; i < n; ++i)
-        {
-          tmp[i] = arr[i];
-        }
-        delete[] arr;
-        arr = tmp;
+	max_inc = cur_inc;
       }
-
-      arr[n] = x;
-      ++n;
     }
-
-    if (!std::cin && !std::cin.eof())
+    else
     {
-      delete[] arr;
-      return 1;
+      cur_inc = 1;
     }
 
-    if (n == 0)
-    {
-      delete[] arr;
-      return 2;
-    }
-
-    const std::size_t mon = braterskaia::maxMonInc(arr, n);
-    const std::size_t inc = braterskaia::countInc(arr, n);
-
-    std::cout << mon << '\n';
-    std::cout << inc << '\n';
-
-    delete[] arr;
+    prev = curr;
   }
-  catch (const std::exception& e)
+
+  if (!std::cin && !std::cin.eof())
   {
-    std::cerr << "Error: " << e.what() << '\n';
-    return 2;
+    return ERR_INPUT;
   }
+
+  if (is_first)
+  {
+    return ERR_INPUT;
+  }
+
+  std::cout << max_inc << '\n';
+  std::cout << inc_cnt << '\n';
+
   return 0;
 }
