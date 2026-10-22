@@ -1,12 +1,14 @@
 #include <iostream>
+#include <limits>
 
 int main()
 {
+  int const ERROR_INVALID_INPUT = 1;
+  int const ERROR_CALCULATION = 2;
+
   int min = 0;
   int current = 0, previous = 0, next = 0;
   int count_10 = 0, count_16 = 1;
-
-  int total_elements = 0;
 
   std::cin >> previous;
 
@@ -14,14 +16,13 @@ int main()
   if (std::cin.fail())
   {
     std::cerr << "error import\n";
-    return 1;
+    return ERROR_INVALID_INPUT;
   }
-  total_elements = 1;
 
   if (previous == 0)
   {
-    std::cerr << 0 << "\n";
-    std::cout << 0 << "\n";
+    std::cout << "0" << "\n";
+    std::cout << "0" << "\n";
     return 0;
   }
 
@@ -29,16 +30,14 @@ int main()
   if (std::cin.fail())
   {
     std::cerr << "error import\n";
-    return 1;
+    return ERROR_INVALID_INPUT;
   }
-
-  total_elements = 2;
 
   if (current == 0)
   {
-    std::cerr << "Error: Sequence too short for Variant 10\n";
+    std::cout << count_10 << "\n";
     std::cout << count_16 << "\n";
-    return 2;
+    return 0;
   }
 
   if (current < previous)
@@ -47,6 +46,9 @@ int main()
   }
   else if (current == min)
   {
+    if (count_16 > std::numeric_limits<int>::max() - 1) {
+      return ERROR_CALCULATION;
+    }
     count_16++;
   }
 
@@ -56,10 +58,12 @@ int main()
     {
       break;
     }
-    total_elements++;
 
     if (current < previous && current > next)
     {
+      if (count_10 > std::numeric_limits<int>::max() - 1) {
+        return ERROR_CALCULATION;
+      }
       count_10++;
     }
 
@@ -70,6 +74,9 @@ int main()
     }
     else if (next == min)
     {
+      if (count_16 > std::numeric_limits<int>::max() - 1) {
+        return ERROR_CALCULATION;
+      }
       count_16++;
     }
 
@@ -80,14 +87,7 @@ int main()
   if (std::cin.fail())
   {
     std::cerr << "error import\n";
-    return 1;
-  }
-
-  if (total_elements < 3)
-  {
-    std::cerr << "Error: Sequence too short for Variant 10\n";
-    std::cout << count_16 << "\n";
-    return 2;
+    return ERROR_INVALID_INPUT;
   }
 
   std::cout << count_10 << "\n";
