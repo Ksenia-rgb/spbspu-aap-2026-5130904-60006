@@ -46,7 +46,8 @@ int main()
   }
   else if (current == min)
   {
-    if (count_16 > std::numeric_limits<int>::max() - 1) {
+    if (count_16 > std::numeric_limits<int>::max() - 1)
+    {
       return ERROR_CALCULATION;
     }
     count_16++;
@@ -61,7 +62,8 @@ int main()
 
     if (current < previous && current > next)
     {
-      if (count_10 > std::numeric_limits<int>::max() - 1) {
+      if (count_10 > std::numeric_limits<int>::max() - 1)
+      {
         return ERROR_CALCULATION;
       }
       count_10++;
@@ -74,7 +76,8 @@ int main()
     }
     else if (next == min)
     {
-      if (count_16 > std::numeric_limits<int>::max() - 1) {
+      if (count_16 > std::numeric_limits<int>::max() - 1)
+      {
         return ERROR_CALCULATION;
       }
       count_16++;
