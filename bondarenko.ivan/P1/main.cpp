@@ -19,7 +19,7 @@ void problem_a(int &n, int &max, ul &a_count, bool &isOverFlowA) {
   }
 }
 
-void problem_b(ul &count, int &cur, int &n, ul &b_count, int &b_max, bool &isOverFlowB) {
+void problem_b(ul &count, int &cur, int &n, ul &b_count, ul &b_max, bool &isOverFlowB) {
   if (count == 0) {
     cur = n;
     b_count = b_max = 1;
@@ -42,8 +42,8 @@ int main()
 {
   int max = std::numeric_limits< int >::min();
 
-  ul count = 0, a_count = 0, b_count = 0;
-  int b_max = 0, n = 0, cur = 0;
+  ul count = 0, a_count = 0, b_count = 0, b_max = 0;
+  int n = 0, cur = 0;
   bool isOverFlowA = false, isOverFlowB = false, isOverFlow = false;
 
   while (std::cin >> n) {
@@ -70,7 +70,7 @@ int main()
     return INVALID_DATA;
   }
 
-  if (isOverFlow || isOverFlowA && isOverFlowB) {
+  if (isOverFlow || (isOverFlowA && isOverFlowB)) {
     std::cerr << "Expects error output (return code 2)";
     return INVALID_ARGUMENTS;
   }
