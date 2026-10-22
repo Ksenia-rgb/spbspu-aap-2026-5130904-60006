@@ -6,7 +6,8 @@ const int INVALID_ARGUMENTS = 2;
 
 const ul ull = std::numeric_limits< ul >::max();
 
-void problemA(int &n, int &max, ul &a_count, bool &is_over_flow_a) {
+void problemA(int &n, int &max, ul &a_count, bool &is_over_flow_a)
+{
   if (n > max) {
     max = n;
     a_count = 0;
@@ -19,7 +20,8 @@ void problemA(int &n, int &max, ul &a_count, bool &is_over_flow_a) {
   }
 }
 
-void problemB(ul &count, int &cur, int &n, ul &b_count, ul &b_max, bool &is_over_flow_b) {
+void problemB(ul &count, int &cur, int &n, ul &b_count, ul &b_max, bool &is_over_flow_b)
+{
   if (count == 0) {
     cur = n;
     b_count = b_max = 1;
