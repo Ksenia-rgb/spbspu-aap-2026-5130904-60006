@@ -32,7 +32,7 @@ int main()
     {
       if (inc_cnt == std::numeric_limits<std::size_t>::max())
       {
-        return·ERR_INPUT;
+        return ERR_INPUT;
       }
 
       if (cur_inc == std::numeric_limits<std::size_t>::max())
