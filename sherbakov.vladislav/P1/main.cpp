@@ -1,22 +1,23 @@
 #include <iostream>
-#include <limits>
 #include <cstddef>
+#include <limits>
 
 int main()
 {
   const int ERR_INPUT = 1;
   const int ERR_PARTIAL = 2;
-  const int ERR_OVERFLOW = 3;
+  const int ERR_OVERFLOW = 4;
 
   const size_t SIZE_MAX_V = std::numeric_limits<size_t>::max();
+
   int x = 0;
   bool term = false;
-  
+
   int maxv = 0;
   int secondmax = 0;
   bool hmax = false;
   bool hsecondmax = false;
-  
+
   size_t count_loc_max = 0;
   int prev2 = 0;
   int prev1 = 0;
@@ -51,6 +52,7 @@ int main()
       secondmax = x;
       hsecondmax = true;
     }
+
     if (n >= 2 && prev1 > prev2 && prev1 > x)
     {
       if (count_loc_max == SIZE_MAX_V)
@@ -71,6 +73,7 @@ int main()
     }
     ++n;
   }
+
   if (!term)
   {
     if (std::cin.eof())
@@ -81,6 +84,7 @@ int main()
   }
 
   int retcode = 0;
+
   if (hsecondmax)
   {
     std::cout << "SUB-MAX: " << secondmax << '\n';
@@ -90,6 +94,7 @@ int main()
     std::cerr << "error: cannot calculate SUB-MAX: sequence is too short\n";
     retcode = ERR_PARTIAL;
   }
+
   if (n > 0)
   {
     std::cout << "LOG-MAX: " << count_loc_max << '\n';
