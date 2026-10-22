@@ -1,12 +1,12 @@
 #include <iostream>
 #include <limits>
-
+using ul = unsigned long long;
 const int INVALID_DATA = 1;
 const int INVALID_ARGUMENTS = 2;
 
-const unsigned long long ull = std::numeric_limits< unsigned long long >::max();
+const ul ull = std::numeric_limits< ul >::max();
 
-void problem_a(int &n, int &max, unsigned long long &a_count, bool &isOverFlowA) {
+void problem_a(int &n, int &max, ul &a_count, bool &isOverFlowA) {
   if (n > max) {
     max = n;
     a_count = 0;
@@ -19,8 +19,7 @@ void problem_a(int &n, int &max, unsigned long long &a_count, bool &isOverFlowA)
   }
 }
 
-void problem_b(unsigned long long &count, int &cur, int &n, unsigned long long &b_count, int &b_max,
-               bool &isOverFlowB) {
+void problem_b(ul &count, int &cur, int &n, ul &b_count, int &b_max, bool &isOverFlowB) {
   if (count == 0) {
     cur = n;
     b_count = b_max = 1;
@@ -43,7 +42,7 @@ int main()
 {
   int max = std::numeric_limits< int >::min();
 
-  unsigned long long count = 0, a_count = 0, b_count = 0;
+  ul count = 0, a_count = 0, b_count = 0;
   int b_max = 0, n = 0, cur = 0;
   bool isOverFlowA = false, isOverFlowB = false, isOverFlow = false;
 
@@ -60,7 +59,7 @@ int main()
     problem_b(count, cur, n, b_count, b_max, isOverFlowB);
 
     problem_a(n, max, a_count, isOverFlowA);
-    
+
     if (isOverFlowA == true || isOverFlowB == true) {
       break;
     }
