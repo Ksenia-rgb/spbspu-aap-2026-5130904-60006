@@ -16,10 +16,10 @@ int main()
   bool hmax = false;
   bool hsecondmax = false;
 
-  size_t count_loc_max = 0;
+  std::size_t count_loc_max = 0;
   int prev2 = 0;
   int prev1 = 0;
-  size_t n = 0;
+  std::size_t n = 0;
 
   while (std::cin >> x)
   {
@@ -53,7 +53,7 @@ int main()
 
     if (n >= 2 && prev1 > prev2 && prev1 > x)
     {
-      if (count_loc_max == std::numeric_limits<size_t>::max())
+      if (count_loc_max == std::numeric_limits<std::size_t>::max())
       {
         std::cerr << "error: count_loc_max overflow\n";
         return ERR_OVERFLOW;
@@ -64,7 +64,7 @@ int main()
     prev2 = prev1;
     prev1 = x;
 
-    if (n == std::numeric_limits<size_t>::max())
+    if (n == std::numeric_limits<std::size_t>::max())
     {
       std::cerr << "error: element counter overflow\n";
       return ERR_OVERFLOW;
@@ -81,8 +81,8 @@ int main()
     else
     {
       std::cerr << "ошибка: The input data is not a sequence of integers\n";
-      return ERR_INPUT;
     }
+    return ERR_INPUT;
   }
 
   int retcode = 0;
