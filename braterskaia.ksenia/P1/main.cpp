@@ -33,7 +33,7 @@ int main()
       if (inc_cnt == std::numeric_limits<std::size_t>::max() ||
       cur_inc == std::numeric_limits<std::size_t>::max())
       {
-	return ERR_INPUT;
+        return ERR_INPUT;
       }
 
       ++inc_cnt;
@@ -41,7 +41,7 @@ int main()
 
       if (cur_inc > max_inc)
       {
-	max_inc = cur_inc;
+        max_inc = cur_inc;
       }
     }
     else
