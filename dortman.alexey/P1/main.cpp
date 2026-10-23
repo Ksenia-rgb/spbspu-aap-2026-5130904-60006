@@ -1,33 +1,49 @@
 #include <iostream>
+#include <limits>
+
+namespace dortman
+{
+  const int not_a_sequence = 1;
+  const int invalid_data = 2;
+}
 
 int main()
 {
-  const int divisor = 2;
-  const int err_short = 2;
-
   int value = 0;
-  int total = 0;
+  bool has_elements = false;
 
   int max_val = 0;
-  int max_count = 0;
+  size_t max_count = 0;
 
-  int current_even = 0;
-  int max_even = 0;
+  size_t current_even = 0;
+  size_t max_even = 0;
+
+  const size_t max_limit = std::numeric_limits< size_t >::max();
 
   while (std::cin >> value && value != 0)
   {
-    if (total == 0 || value > max_val)
+    if (!has_elements || value > max_val)
     {
       max_val = value;
       max_count = 1;
     }
     else if (value == max_val)
     {
+      if (max_count == max_limit)
+      {
+        std::cerr << "Переполнение счетчика максимальных элементов\n";
+        return dortman::invalid_data;
+      }
       max_count++;
     }
 
-    if (value % divisor == 0)
+    if ((value & 1) == 0)
     {
+      if (current_even == max_limit)
+      {
+        std::cerr << "Переполнение счетчика четных элементов\n";
+        return dortman::invalid_data;
+      }
       current_even++;
       if (current_even > max_even)
       {
@@ -39,21 +55,21 @@ int main()
       current_even = 0;
     }
 
-    total++;
+    has_elements = true;
   }
 
   if (!std::cin)
   {
     std::cerr << "Не является последовательностью\n";
-    return 1;
+    return dortman::not_a_sequence;
   }
 
   std::cout << max_even << "\n";
 
-  if (total == 0)
+  if (!has_elements)
   {
     std::cerr << "Последовательность слишком короткая\n";
-    return err_short;
+    return dortman::invalid_data;
   }
 
   std::cout << max_count << "\n";
