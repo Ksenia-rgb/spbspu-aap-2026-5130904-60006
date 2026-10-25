@@ -1,42 +1,56 @@
 #include <iostream>
+#include <limits>
 
-int sequence()
-{
-  int element = 0;
-  int len_m_d = 0;
-  int len_max = 0;
-  int last_el = 0;
-  int max = 0;
-  while (true) {
-    if (!(std::cin >> element)) {
-      std::cerr << "wrong element in sequence" << std::endl;
-      return 1;
-    }
-    if (element == 0) {
-      std::cout << "Length of largest monotone-decreasing fragment: " << len_m_d << "\n";
-      if (last_el == 0) {
-        std::cerr << "Amount of elements after maximal uncounted" << std::endl;
-        return 2;
+const int correct_result = 0;
+const int invalid_input = 1;
+const int calculation_error = 2;
+
+namespace haidov {
+  int sequence()
+  {
+    int element = 0;
+    size_t len_m_d = 0;
+    size_t len_max = 0;
+    int last_el = 0;
+    int max = 0;
+    while (std::cin >> element) {
+      if (std::cin.bad() || std::cin.eof() || std::cin.fail()) {
+        std::cerr << "wrong element in sequence" << std::endl;
+        return invalid_input;
       }
-      std::cout << "Amount of elements after maximal: " << len_max << std::endl;
-      return 0;
+      if (element == 0) {
+        std::cout << len_m_d << "\n";
+        if (last_el == 0) {
+          std::cerr << "Amount of elements after maximal uncounted" << std::endl;
+          return calculation_error;
+        }
+        std::cout << len_max << std::endl;
+        return correct_result;
+      }
+      if (last_el < element) {
+        len_m_d = 0;
+      }
+      if (max < element) {
+        len_max = 0;
+        max = element;
+      } else {
+        len_max += 1;
+      }
+      last_el = element;
+      if (len_m_d > std::numeric_limits< size_t >::max() - 1) {
+        return calculation_error;
+      }
+      if (len_max > std::numeric_limits< size_t >::max() - 1) {
+        return calculation_error;
+      }
+      len_m_d += 1;
     }
-    if (last_el < element) {
-      len_m_d = 0;
-    }
-    if (max < element) {
-      len_max = -1;
-      max = element;
-    }
-    last_el = element;
-    len_m_d += 1;
-    len_max += 1;
+    return correct_result;
   }
-  return 0;
 }
 
 int main()
 {
-  sequence();
+  haidov::sequence();
   return 0;
 }
