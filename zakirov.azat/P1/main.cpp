@@ -1,92 +1,112 @@
-#include <cctype>
-#include <climits>
 #include <iostream>
+#include <limits>
+#include <cstddef>
 
-namespace zakirov {
+namespace zakirov
+{
+  const int input_error = 1;
   const int calculation_error = 2;
-  int run()
-  {
-    int number = 0;
-    int prev = 0;
-    int min = 0;
-    long long min_count = 0;
-    long long div_count = 0;
-
-    bool has_previous = false;
-    bool has_pair = false;
-    bool min_overflow = false;
-    bool div_overflow = false;
-
-    std::cout << "Введите целые числа через пробел (0 — конец ввода):\n";
-
-    while (true) {
-      if (!(std::cin >> number)) {
-        std::cerr << "Ошибка: нужны целые числа в диапазоне int и 0 в конце ввода.\n";
-        return 1;
-      }
-
-      const int next = std::cin.peek();
-      if (!std::cin.eof() && !std::isspace(next)) {
-        std::cerr << "Ошибка: ввод содержит нецелое число или посторонние символы.\n";
-        return 1;
-      }
-
-      if (number == 0) {
-        break;
-      }
-
-      if (!has_previous || number < min) {
-        min = number;
-        min_count = 1;
-        min_overflow = false;
-      } else if (number == min) {
-        if (min_count == LLONG_MAX) {
-          min_overflow = true;
-        } else {
-          min_count++;
-        }
-      }
-      if (has_previous) {
-        has_pair = true;
-        if (prev == -1 || number % prev == 0) {
-          if (div_count == LLONG_MAX) {
-            div_overflow = true;
-          } else {
-            div_count++;
-          }
-        }
-      }
-
-      prev = number;
-      has_previous = true;
-    }
-
-    int result = 0;
-
-    if (min_overflow) {
-      std::cerr << "Ошибка в пункте 16: количество превышает диапазон long long.\n";
-      result = calculation_error;
-    } else {
-      std::cout << "Пункт 16. Количество минимальных элементов: " << min_count << '\n';
-    }
-
-    if (!has_pair) {
-      std::cerr << "Ошибка в пункте 11: нужно хотя бы два числа до нуля.\n";
-      result = calculation_error;
-    } else if (div_overflow) {
-      std::cerr << "Ошибка в пункте 11: количество превышает диапазон long long.\n";
-      result = calculation_error;
-    } else {
-      std::cout << "Пункт 11. Количество элементов, делящихся на предыдущий без "
-                   "остатка: "
-                << div_count << '\n';
-    }
-
-    return result;
-  }
 }
 
 int main()
 {
-  return zakirov::run();
+  int number;
+  int last = 0;
+  int smallest = 0;
+
+  std::size_t minimums = 0;
+  std::size_t divs = 0;
+
+  bool first = true;
+  bool enough_numbers = false;
+  bool minimum_error = false;
+  bool div_error = false;
+
+  const std::size_t limit = std::numeric_limits<std::size_t>::max();
+
+  while (true)
+  {
+    if (!(std::cin >> number))
+    {
+      std::cerr << "Ошибка ввода\n";
+      return zakirov::input_error;
+    }
+
+    if (number == 0)
+    {
+      break;
+    }
+
+    if (first)
+    {
+      smallest = number;
+      minimums = 1;
+      last = number;
+      first = false;
+      continue;
+    }
+
+    enough_numbers = true;
+
+    if (number < smallest)
+    {
+      smallest = number;
+      minimums = 1;
+      minimum_error = false;
+    }
+    else if (number == smallest)
+    {
+      if (minimums < limit)
+      {
+        minimums++;
+      }
+      else
+      {
+        minimum_error = true;
+      }
+    }
+
+    if (last == -1 || number % last == 0)
+    {
+      if (divs < limit)
+      {
+        divs++;
+      }
+      else
+      {
+        div_error = true;
+      }
+    }
+
+    last = number;
+  }
+
+  if (!minimum_error)
+  {
+    std::cout << minimums << '\n';
+  }
+  else
+  {
+    std::cerr << "16: переполнение\n";
+  }
+
+  if (!enough_numbers)
+  {
+    std::cerr << "11: мало чисел\n";
+  }
+  else if (div_error)
+  {
+    std::cerr << "11: переполнение\n";
+  }
+  else
+  {
+    std::cout << divs << '\n';
+  }
+
+  if (minimum_error || div_error || !enough_numbers)
+  {
+    return zakirov::calculation_error;
+  }
+
+  return 0;
 }
