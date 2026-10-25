@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <cstddef>
 
 const int correct_result = 0;
 const int invalid_input = 1;
