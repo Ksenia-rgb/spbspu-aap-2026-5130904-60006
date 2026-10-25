@@ -4,13 +4,14 @@
 #include <cstddef>
 
 const int ERR_INPUT = 1;
+const int ERR_MATRIX = 2;
 const std::size_t MAX_DIM = 100;
 
 bool check_args(const int argc, char* argv[])
 {
   if (argc != 4)
   {
-    std::cerr << "Error: expected 3 arguments (mode, input, output)\n";
+    std::cerr << "Error: wrong number of arguments\n";
     return false;
   }
 
@@ -24,131 +25,85 @@ bool check_args(const int argc, char* argv[])
   return true;
 }
 
-bool run(std::istream& input, std::ostream& output, const int mode)
+void transform_spiral(int matrix[][MAX_DIM], const std::size_t rows, const std::size_t cols)
 {
-  std::size_t rows = 0;
-  std::size_t cols = 0;
+  int top = 0;
+  int bottom = (int)rows - 1;
+  int left = 0;
+  int right = (int)cols - 1;
+  int counter = 1;
 
-  if (!(input >> rows >> cols))
+  while (top <= bottom && left <= right)
   {
-    return false;
-  }
-
-  if (rows == 0 || cols == 0)
-  {
-    output << 0 << '\n';
-    return true;
-  }
-
-  if (rows > MAX_DIM || cols > MAX_DIM)
-  {
-    return false;
-  }
-
-  std::size_t count = 0;
-  const long long start_offset = -(long long)rows + 1;
-  const long long end_offset = (long long)cols;
-
-  if (mode == 2)
-  {
-    int** matrix = new int*[rows];
-    for (std::size_t i = 0; i < rows; ++i)
+    for (int i = top; i <= bottom; ++i)
     {
-      matrix[i] = new int[cols];
+      matrix[i][left] += counter++;
+    }
+    left++;
+
+    for (int i = left; i <= right; ++i)
+    {
+      matrix[bottom][i] += counter++;
+    }
+    bottom--;
+
+    if (left <= right)
+    {
+      for (int i = bottom; i >= top; --i)
+      {
+        matrix[i][right] += counter++;
+      }
+      right--;
     }
 
+    if (top <= bottom)
+    {
+      for (int i = right; i >= left; --i)
+      {
+        matrix[top][i] += counter++;
+      }
+      top++;
+    }
+  }
+}
+
+int count_diagonals(int matrix[][MAX_DIM], const std::size_t rows, const std::size_t cols)
+{
+  int count = 0;
+  long long start_offset = -(long long)rows + 1;
+  long long end_offset = (long long)cols;
+
+  for (long long offset = start_offset; offset < end_offset; ++offset)
+  {
+    if (offset == 0)
+    {
+      continue;
+    }
+    bool has_zero = false;
+    bool has_elements = false;
+
     for (std::size_t i = 0; i < rows; ++i)
     {
-      for (std::size_t j = 0; j < cols; ++j)
+      long long j = (long long)i + offset;
+      if (j >= 0 && j < (long long)cols)
       {
-        input >> matrix[i][j];
-      }
-    }
-
-    for (long long offset = start_offset; offset < end_offset; ++offset)
-    {
-      if (offset == 0)
-      {
-        continue;
-      }
-
-      bool has_zero = false;
-      bool has_elements = false;
-
-      for (std::size_t i = 0; i < rows; ++i)
-      {
-        long long j = (long long)i + offset;
-        if (j >= 0 && j < (long long)cols)
+        has_elements = true;
+        if (matrix[i][j] == 0)
         {
-          has_elements = true;
-          if (matrix[i][j] == 0)
-          {
-            has_zero = true;
-            break;
-          }
+          has_zero = true;
+          break;
+
         }
       }
-
-      if (has_elements && !has_zero)
-      {
-        ++count;
-      }
     }
 
-    output << count << '\n';
 
-    for (std::size_t i = 0; i < rows; ++i)
+    if (has_elements && !has_zero)
     {
-      delete[] matrix[i];
+      ++count;
     }
-    delete[] matrix;
   }
-  else if (mode == 1)
-  {
-    int matrix[MAX_DIM][MAX_DIM];
-
-    for (std::size_t i = 0; i < rows; ++i)
-    {
-      for (std::size_t j = 0; j < cols; ++j)
-      {
-        input >> matrix[i][j];
-      }
-    }
-
-    for (long long offset = start_offset; offset < end_offset; ++offset)
-    {
-      if (offset == 0)
-      {
-        continue;
-      }
-
-      bool has_zero = false;
-      bool has_elements = false;
-
-      for (std::size_t i = 0; i < rows; ++i)
-      {
-        long long j = (long long)i + offset;
-        if (j >= 0 && j < (long long)cols)
-        {
-          has_elements = true;
-          if (matrix[i][j] == 0)
-          {
-            has_zero = true;
-            break;
-          }
-        }
-      }
-
-      if (has_elements && !has_zero)
-      {
-        ++count;
-      }
-    }
-
-    output << count << '\n';
-  }
-
-  return true;
+  return count;
 }
 
 int main(int argc, char* argv[])
@@ -172,13 +127,46 @@ int main(int argc, char* argv[])
     return ERR_INPUT;
   }
 
-  const int mode = std::stoi(argv[1]);
+  std::size_t rows = 0;
+  std::size_t cols = 0;
 
-  if (!run(in_file, out_file, mode))
+  if (!(in_file >> rows >> cols))
   {
-    std::cerr << "Error: invalid matrix data\n";
-    return ERR_INPUT;
+    std::cerr << "Error: cannot read matrix dimensions\n";
+    return ERR_MATRIX;
   }
+
+  if (rows == 0 || cols == 0)
+  {
+    out_file << 0 << '\n';
+    return 0;
+  }
+
+  if (rows > MAX_DIM || cols > MAX_DIM)
+  {
+    std::cerr << "Error: matrix is too large\n";
+    return ERR_MATRIX;
+  }
+
+  int matrix[MAX_DIM][MAX_DIM];
+
+  for (std::size_t i = 0; i < rows; ++i)
+  {
+    for (std::size_t j = 0; j < cols; ++j)
+    {
+      if (!(in_file >> matrix[i][j]))
+      {
+        std::cerr << "Error: invalid matrix data\n";
+        return ERR_MATRIX;
+      }
+    }
+  }
+
+  transform_spiral(matrix, rows, cols);
+
+  int result = count_diagonals(matrix, rows, cols);
+
+  out_file << result << '\n';
 
   return 0;
 }
