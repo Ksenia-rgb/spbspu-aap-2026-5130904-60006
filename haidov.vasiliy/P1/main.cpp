@@ -34,13 +34,13 @@ namespace haidov {
         len_max = 0;
         max = element;
       } else {
+        if (len_max > std::numeric_limits< size_t >::max() - 1) {
+          return calculation_error;
+        }
         len_max += 1;
       }
       last_el = element;
       if (len_m_d > std::numeric_limits< size_t >::max() - 1) {
-        return calculation_error;
-      }
-      if (len_max > std::numeric_limits< size_t >::max() - 1) {
         return calculation_error;
       }
       len_m_d += 1;
