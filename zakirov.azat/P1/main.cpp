@@ -10,7 +10,7 @@ namespace zakirov
 
 int main()
 {
-  int number;
+  int number = 0;
   int last = 0;
   int smallest = 0;
 
@@ -22,7 +22,7 @@ int main()
   bool minimum_error = false;
   bool div_error = false;
 
-  const std::size_t limit = std::numeric_limits<std::size_t>::max();
+  const std::size_t limit = std::numeric_limits< std::size_t >::max();
 
   while (true)
   {
