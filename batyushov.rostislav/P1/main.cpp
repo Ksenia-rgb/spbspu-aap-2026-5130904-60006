@@ -1,41 +1,35 @@
-#include <cctype>
-#include <iostream>
 
+#include <iostream>
+#include <limits>
+ 
 namespace batyushov
 {
+  const int inputError = 1;
+  const int shortError = 2;
+  const int overflowError = 3;
+ 
   int run()
   {
     int number = 0;
     int prev = 0;
     int prev_prev = 0;
-    long long count = 0;
-
+    int count = 0;
+ 
     long long cur_dec = 0;
     long long max_dec = 0;
     long long loc_max = 0;
-
-    while (true)
+ 
+    const long long max_ll = std::numeric_limits< long long >::max();
+ 
+    while (std::cin >> number && number != 0)
     {
-      if (!(std::cin >> number))
-      {
-        std::cerr << "Ошибка: ввод не является последовательностью целых чисел\n";
-        return 1;
-      }
-
-      const int next = std::cin.peek();
-      if (!std::cin.eof() && !std::isspace(next))
-      {
-        std::cerr << "Ошибка: ввод содержит нецелое число или другие символы\n";
-        return 1;
-      }
-
-      if (number == 0)
-      {
-        break;
-      }
-
       if (count > 0 && number <= prev)
       {
+        if (cur_dec == max_ll)
+        {
+          std::cerr << "Ошибка: переполнение счётчика убывающей подпоследовательности\n";
+          return batyushov::overflowError;
+        }
         cur_dec++;
       }
       else
@@ -46,36 +40,46 @@ namespace batyushov
       {
         max_dec = cur_dec;
       }
-
+ 
       if (count >= 2 && prev > prev_prev && prev > number)
       {
+        if (loc_max == max_ll)
+        {
+          std::cerr << "Ошибка: переполнение счётчика локальных максимумов\n";
+          return batyushov::overflowError;
+        }
         loc_max++;
       }
-
+ 
       prev_prev = prev;
       prev = number;
-      count++;
+      if (count < 2)
+      {
+        count++;
+      }
     }
-
-    int result = 0;
-
+ 
+    if (!std::cin)
+    {
+      std::cerr << "Ошибка: ввод не является последовательностью целых чисел\n";
+      return batyushov::inputError;
+    }
+ 
     std::cout << max_dec << '\n';
-
+ 
     if (count == 0)
     {
       std::cerr << "Ошибка: последовательность слишком короткая\n";
-      result = 2;
+      return batyushov::shortError;
     }
-    else
-    {
-      std::cout << loc_max << '\n';
-    }
-
-    return result;
+ 
+    std::cout << loc_max << '\n';
+    return 0;
   }
 }
-
+ 
 int main()
 {
   return batyushov::run();
 }
+ 
