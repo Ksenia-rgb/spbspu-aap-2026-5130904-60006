@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <cstddef>
 
 namespace pershinov {
-  size_t find_column(const int * matrix, size_t rows, size_t cols)
+  size_t findColumn(const int * matrix, size_t rows, size_t cols)
   {
     size_t current_length = 0;
     size_t best_length = 0;
@@ -22,7 +23,7 @@ namespace pershinov {
     }
     return best_column;
   }
-  void spiral_decrease(int * matrix, size_t rows, size_t cols)
+  void spiralDecrease(int * matrix, size_t rows, size_t cols)
   {
     size_t top = 0;
     size_t bottom = rows;
@@ -65,9 +66,9 @@ int main(int argc, char ** argv)
     std::cerr << "Error: wrong arguments\n";
     return input_error;
   }
-  const char * mode = argv[1];
-  const char * input_file = argv[2];
-  const char * output_file = argv[3];
+  const char * const mode = argv[1];
+  const char * const input_file = argv[2];
+  const char * const output_file = argv[3];
   if (!((mode[0] == '1' || mode[0] == '2') && mode[1] == '\0')) {
     std::cerr << "Error: wrong mode\n";
     return input_error;
@@ -106,8 +107,8 @@ int main(int argc, char ** argv)
     }
     return exit_matrix_error;
   }
-  output << pershinov::find_column(matrix, rows, cols) << '\n';
-  pershinov::spiral_decrease(matrix, rows, cols);
+  output << pershinov::findColumn(matrix, rows, cols) << '\n';
+  pershinov::spiralDecrease(matrix, rows, cols);
   output << rows << " " << cols;
   for (size_t i = 0; i < rows * cols; ++i) {
     output << " " << matrix[i];
