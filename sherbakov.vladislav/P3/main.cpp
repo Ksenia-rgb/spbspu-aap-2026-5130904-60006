@@ -86,98 +86,99 @@ namespace sherbakov {
     return 0;
   }
 
-  int main(int argc, char** argv)
-  {
-    using namespace sherbakov;
+}
+int main(int argc, char** argv)
+{
+  using namespace sherbakov;
 
-    if (argc != 4) {
-      std::cerr << "Error: expected 3 arguments (mode input output)\n";
-      return ERR_ARGS;
-    }
+  if (argc != 4) {
+    std::cerr << "Error: expected 3 arguments (mode input output)\n";
+    return ERR_ARGS;
+  }
 
-    int mode = 0;
-    if (!parseMode(argv[1], mode)) {
-      std::cerr << "Error: first argument must be 1 or 2\n";
-      return ERR_ARGS;
-    }
+  int mode = 0;
+  if (!parseMode(argv[1], mode)) {
+    std::cerr << "Error: first argument must be 1 or 2\n";
+    return ERR_ARGS;
+  }
 
-    std::ifstream in(argv[2]);
-    if (!in.is_open()) {
-      std::cerr << "Error: cannot open input file\n";
+  std::ifstream in(argv[2]);
+  if (!in.is_open()) {
+    std::cerr << "Error: cannot open input file\n";
+    return ERR_FILE;
+  }
+
+  long long rowsLL = 0;
+  long long colsLL = 0;
+  if (!(in >> rowsLL >> colsLL)) {
+    std::cerr << "Error: cannot read matrix dimensions\n";
+    return ERR_FILE;
+  }
+  if (rowsLL < 0 || colsLL < 0) {
+    std::cerr << "Error: negative dimensions\n";
+    return ERR_FILE;
+  }
+
+  long long totalLL = rowsLL * colsLL;
+  if (totalLL > 10000000LL) {
+    std::cerr << "Error: matrix is too large\n";
+    return ERR_FILE;
+  }
+
+  int rows = static_cast< int >(rowsLL);
+  int cols = static_cast< int >(colsLL);
+  int total = static_cast< int >(totalLL);
+
+  int staticBuf[MAX_STATIC];
+  int* a = nullptr;
+  bool dynamic = false;
+
+  if (mode == 1) {
+    if (total > MAX_STATIC) {
+      std::cerr << "Error: too many elements for static storage\n";
       return ERR_FILE;
     }
-
-    long long rowsLL = 0;
-    long long colsLL = 0;
-    if (!(in >> rowsLL >> colsLL)) {
-      std::cerr << "Error: cannot read matrix dimensions\n";
+    a = staticBuf;
+  } else {
+    try {
+      a = new int[total];
+      dynamic = true;
+    } catch (const std::bad_alloc&) {
+      std::cerr << "Error: cannot allocate memory\n";
       return ERR_FILE;
     }
-    if (rowsLL < 0 || colsLL < 0) {
-      std::cerr << "Error: negative dimensions\n";
-      return ERR_FILE;
+  }
+
+  bool readOk = true;
+  for (int k = 0; k < total; ++k) {
+    if (!(in >> a[k])) {
+      readOk = false;
+      break;
     }
-
-    long long totalLL = rowsLL * colsLL;
-    if (totalLL > 10000000LL) {
-      std::cerr << "Error: matrix is too large\n";
-      return ERR_FILE;
-    }
-
-    int rows = static_cast< int >(rowsLL);
-    int cols = static_cast< int >(colsLL);
-    int total = static_cast< int >(totalLL);
-
-    int staticBuf[MAX_STATIC];
-    int* a = nullptr;
-    bool dynamic = false;
-
-    if (mode == 1) {
-      if (total > MAX_STATIC) {
-        std::cerr << "Error: too many elements for static storage\n";
-        return ERR_FILE;
-      }
-      a = staticBuf;
-    } else {
-      try {
-        a = new int[total];
-        dynamic = true;
-      } catch (const std::bad_alloc&) {
-        std::cerr << "Error: cannot allocate memory\n";
-        return ERR_FILE;
-      }
-    }
-
-    bool readOk = true;
-    for (int k = 0; k < total; ++k) {
-      if (!(in >> a[k])) {
-        readOk = false;
-        break;
-      }
-    }
-    if (!readOk) {
-      std::cerr << "Error: not enough matrix elements\n";
-      if (dynamic) {
-        delete[] a;
-      }
-      return ERR_FILE;
-    }
-
-    int task9Result = countColumnsNoEqualNeighbors(a, rows, cols);
-    long long task13Result = maxSumParallelSecondary(a, rows, cols);
-
+  }
+  if (!readOk) {
+    std::cerr << "Error: not enough matrix elements\n";
     if (dynamic) {
       delete[] a;
     }
-
-    std::ofstream out(argv[3]);
-    if (!out.is_open()) {
-      std::cerr << "Error: cannot open output file\n";
-      return ERR_FILE;
-    }
-
-    out << task9Result << '\n';
-    out << task13Result << '\n';
-
-    return 0;
+    return ERR_FILE;
   }
+
+  int task9Result = countColumnsNoEqualNeighbors(a, rows, cols);
+  long long task13Result = maxSumParallelSecondary(a, rows, cols);
+
+  if (dynamic) {
+    delete[] a;
+  }
+
+  std::ofstream out(argv[3]);
+  if (!out.is_open()) {
+    std::cerr << "Error: cannot open output file\n";
+    return ERR_FILE;
+  }
+
+  out << task9Result << '\n';
+  out << task13Result << '\n';
+
+  return 0;
+}
