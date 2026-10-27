@@ -1,12 +1,56 @@
 #include <iostream>
 #include <cstddef>
+#include <limits>
 
-const int ERR_INPUT = 1;
+namespace braterskaia
+{
+  const int ERR_INPUT = 1;
+  const std::size_t MAX_SZ = std::size_t(-1);
+
+  std::size_t countInc(const int* arr, const std::size_t n)
+  {
+    std::size_t cnt = 0;
+    for (std::size_t i = 1; i < n; ++i)
+    {
+      if (arr[i] > arr[i - 1])
+      {
+        ++cnt;
+      }
+    }
+    return cnt;
+  }
+
+  std::size_t maxMonInc(const int* arr, const std::size_t n)
+  {
+    if (n == 0)
+    {
+      return 0;
+    }
+
+    std::size_t best = 1;
+    std::size_t cur = 1;
+
+    for (std::size_t i = 1; i < n; ++i)
+    {
+      if (arr[i] > arr[i - 1])
+      {
+        ++cur;
+        if (cur > best)
+        {
+          best = cur;
+        }
+      }
+      else
+      {
+        cur = 1;
+      }
+    }
+    return best;
+  }
+}
 
 int main()
 {
-  const std::size_t MAX_SZ = std::size_t(-1);
-
   std::size_t inc_cnt = 0;
   std::size_t max_inc = 1;
   std::size_t cur_inc = 1;
@@ -14,6 +58,7 @@ int main()
   int prev = 0;
   int curr = 0;
   bool is_first = true;
+  bool has_error = false;
 
   while (std::cin >> curr)
   {
@@ -31,22 +76,20 @@ int main()
 
     if (curr > prev)
     {
-      if (inc_cnt == MAX_SZ)
+      if (inc_cnt == braterskaia::MAX_SZ || cur_inc == braterskaia::MAX_SZ)
       {
-        return ERR_INPUT;
+        std::cerr << "Error: overflow detected\n";
+        has_error = true;
       }
-
-      if (cur_inc == MAX_SZ)
+      else
       {
-        return ERR_INPUT;
-      }
+        ++inc_cnt;
+        ++cur_inc;
 
-      ++inc_cnt;
-      ++cur_inc;
-
-      if (cur_inc > max_inc)
-      {
-        max_inc = cur_inc;
+        if (cur_inc > max_inc)
+        {
+          max_inc = cur_inc;
+        }
       }
     }
     else
@@ -57,18 +100,25 @@ int main()
     prev = curr;
   }
 
-  if (!std::cin && !std::cin.eof())
+  if (!std::cin)
   {
-    return ERR_INPUT;
+    std::cerr << "Error: invalid input\n";
+    return braterskaia::ERR_INPUT;
   }
 
   if (is_first)
   {
-    return ERR_INPUT;
+    std::cerr << "Error: empty sequence\n";
+    return braterskaia::ERR_INPUT;
   }
 
   std::cout << max_inc << '\n';
   std::cout << inc_cnt << '\n';
+
+  if (has_error)
+  {
+    return braterskaia::ERR_INPUT;
+  }
 
   return 0;
 }
