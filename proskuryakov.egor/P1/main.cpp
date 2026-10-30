@@ -2,8 +2,11 @@
 #include <limits>
 #include <cstddef>
 
-const int err_invalid_data = 1;
-const int err_sequence_small = 2;
+namespace proskuryakov
+{
+  const int err_invalid_data = 1;
+  const int err_sequence_small = 2;
+}
 
 int main()
 {
@@ -11,6 +14,8 @@ int main()
   size_t total_count = 0;
   size_t count_max = 0;
   size_t count_min = 0;
+  bool overflow_max = false;
+  bool overflow_min = false;
   int max = 0;
   int min = 0;
   while (std::cin >> value)
@@ -28,13 +33,13 @@ int main()
     {
       max = value;
       count_max = 1;
+      overflow_max = false;
     }
     else if (value == max)
     {
       if (count_max == std::numeric_limits< size_t >::max())
       {
-        std::cerr << "Overflow error!\n";
-        return err_invalid_data;
+        overflow_max = true;
       }
       count_max += 1;
     }
@@ -43,13 +48,13 @@ int main()
     {
       min = value;
       count_min = 1;
+      overflow_min = false;
     }
     else if (value == min)
     {
       if (count_min == std::numeric_limits< size_t >::max())
       {
-        std::cerr << "Overflow error!\n";
-        return err_invalid_data;
+        overflow_min = true;
       }
       count_min += 1;
     }
@@ -58,16 +63,36 @@ int main()
   if (!std::cin)
   {
     std::cerr << "Invalid input!\n";
-    return err_invalid_data;
+    return proskuryakov::err_invalid_data;
   }
 
   if (total_count == 0)
   {
     std::cerr << "Sequence is small!\n";
-    return err_sequence_small;
+    return proskuryakov::err_sequence_small;
   }
 
-  std::cout << count_max << '\n';
-  std::cout << count_min << '\n';
-  return 0;
+  int result = 0;
+
+  if (overflow_max)
+  {
+    std::cerr << "Overflow error!\n";
+    result = proskuryakov::err_invalid_data;
+  }
+  else
+  {
+    std::cout << count_max << '\n';
+  }
+
+  if (overflow_min)
+  {
+    std::cerr << "Overflow error!\n";
+    result = proskuryakov::err_invalid_data;
+  }
+  else
+  {
+    std::cout << count_min << '\n';
+  }
+
+  return result;
 }
