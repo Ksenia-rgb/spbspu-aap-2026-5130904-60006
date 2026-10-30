@@ -1,171 +1,107 @@
 #include <iostream>
 #include <limits>
+#include <cstddef>
 
 namespace dortman
 {
-  const int err_args = 1;
-  const int err_calc = 2;
-  const int even_divisor = 2;
-
-  struct CntMax
-  {
-    CntMax():
-      count(0),
-      max_value(0),
-      is_empty(true),
-      has_overflow(false)
-    {}
-
-    void operator()(int value)
-    {
-      if (is_empty)
-      {
-        max_value = value;
-        count = 1;
-        is_empty = false;
-      }
-      else if (value > max_value)
-      {
-        max_value = value;
-        count = 1;
-        has_overflow = false;
-      }
-      else if (value == max_value)
-      {
-        if (count == std::numeric_limits< size_t >::max())
-        {
-          has_overflow = true;
-        }
-        else
-        {
-          ++count;
-        }
-      }
-    }
-
-    bool hasError() const
-    {
-      return is_empty || has_overflow;
-    }
-
-    bool isOverflow() const
-    {
-      return has_overflow;
-    }
-
-    size_t getResult() const
-    {
-      return count;
-    }
-
-  private:
-    size_t count;
-    int max_value;
-    bool is_empty;
-    bool has_overflow;
-  };
-
-  struct EvnCnt
-  {
-    EvnCnt():
-      max_count(0),
-      current_count(0),
-      has_overflow(false)
-    {}
-
-    void operator()(int value)
-    {
-      if (has_overflow)
-      {
-        return;
-      }
-
-      if (value % even_divisor == 0)
-      {
-        if (current_count == std::numeric_limits< size_t >::max())
-        {
-          has_overflow = true;
-          return;
-        }
-        ++current_count;
-        if (current_count > max_count)
-        {
-          max_count = current_count;
-        }
-      }
-      else
-      {
-        current_count = 0;
-      }
-    }
-
-    bool hasError() const
-    {
-      return has_overflow;
-    }
-
-    size_t getResult() const
-    {
-      return max_count;
-    }
-
-  private:
-    size_t max_count;
-    size_t current_count;
-    bool has_overflow;
-  };
+  const int not_a_sequence = 1;
+  const int invalid_data = 2;
 }
 
 int main()
 {
-  dortman::CntMax cnt_max;
-  dortman::EvnCnt evn_cnt;
-
   int value = 0;
+  bool has_elements = false;
+
+  int max_val = 0;
+  size_t max_count = 0;
+  bool overflow_max_count = false;
+
+  size_t current_even = 0;
+  size_t max_even = 0;
+  bool overflow_even = false;
+
+  const size_t max_limit = std::numeric_limits< size_t >::max();
+
   while (std::cin >> value && value != 0)
   {
-    cnt_max(value);
-    evn_cnt(value);
+    if (!has_elements || value > max_val)
+    {
+      max_val = value;
+      max_count = 1;
+      overflow_max_count = false;
+    }
+    else if (value == max_val)
+    {
+      if (max_count == max_limit)
+      {
+        overflow_max_count = true;
+      }
+      else
+      {
+        ++max_count;
+      }
+    }
+
+    if ((value & 1) == 0)
+    {
+      if (current_even == max_limit)
+      {
+        overflow_even = true;
+      }
+      else
+      {
+        ++current_even;
+        if (current_even > max_even)
+        {
+          max_even = current_even;
+        }
+      }
+    }
+    else
+    {
+      current_even = 0;
+    }
+
+    has_elements = true;
   }
 
   if (!std::cin)
   {
-    std::cerr << "Входные данные не являются последовательностью целых чисел\n";
-    return dortman::err_args;
+    std::cerr << "Не является последовательностью\n";
+    return dortman::not_a_sequence;
   }
 
-  bool has_calc_error = false;
+  bool has_error = false;
 
-  if (cnt_max.hasError())
+  if (overflow_even)
   {
-    has_calc_error = true;
-    if (cnt_max.isOverflow())
-    {
-      std::cerr << "Переполнение счетчика максимальных элементов\n";
-    }
-    else
-    {
-      std::cerr << "Последовательность слишком короткая\n";
-    }
-  }
-  else
-  {
-    std::cout << cnt_max.getResult() << "\n";
-  }
-
-  if (evn_cnt.hasError())
-  {
-    has_calc_error = true;
+    has_error = true;
     std::cerr << "Переполнение счетчика четных элементов\n";
   }
   else
   {
-    std::cout << evn_cnt.getResult() << "\n";
+    std::cout << max_even << "\n";
   }
 
-  if (has_calc_error)
+  if (!has_elements)
   {
-    return dortman::err_calc;
+    has_error = true;
+    std::cerr << "Последовательность слишком короткая\n";
+  }
+  else if (overflow_max_count)
+  {
+    has_error = true;
+    std::cerr << "Переполнение счетчика максимальных элементов\n";
+  }
+  else
+  {
+    std::cout << max_count << "\n";
+  }
+
+  if (has_error)
+  {
+    return dortman::invalid_data;
   }
 
   return 0;
