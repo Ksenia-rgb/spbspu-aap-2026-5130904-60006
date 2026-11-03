@@ -5,11 +5,11 @@ namespace chizhova
 {
   int run()
   {
-    std::size_t maxLen = 0;
-    std::size_t currLen = 0;
-    bool isFirst = true;
+    std::size_t max_len = 0;
+    std::size_t curr_len = 0;
+    bool is_first = true;
     int prev = 0;
-    std::size_t countGrtLss = 0;
+    std::size_t count_grt_lss = 0;
     int p1 = 0;
     int p2 = 0;
     int p3 = 0;
@@ -23,26 +23,26 @@ namespace chizhova
         break;
       }
 
-      if (isFirst)
+      if (is_first)
       {
         prev = x;
-        currLen = 1;
-        maxLen = 1;
-        isFirst = false;
+        curr_len = 1;
+        max_len = 1;
+        is_first = false;
       }
       else
       {
         if (x >= prev)
         {
-          ++currLen;
+          ++curr_len;
         }
         else
         {
-          currLen = 1;
+          curr_len = 1;
         }
-        if (currLen > maxLen)
+        if (curr_len > max_len)
         {
-          maxLen = currLen;
+          max_len = curr_len;
         }
         prev = x;
       }
@@ -62,7 +62,7 @@ namespace chizhova
         p3 = x;
         if (p1 > p2 && p2 > p3)
         {
-          ++countGrtLss;
+          ++count_grt_lss;
         }
         p1 = p2;
         p2 = p3;
@@ -75,8 +75,8 @@ namespace chizhova
       return 1;
     }
 
-    std::cout << maxLen << "\n";
-    std::cout << countGrtLss << "\n";
+    std::cout << max_len << "\n";
+    std::cout << count_grt_lss << "\n";
     return 0;
   }
 }
