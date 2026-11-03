@@ -1,63 +1,87 @@
 #include <iostream>
+#include <cstddef>
 
-namespace chizhova {
-
-int solve() {
-    int val = 0;
-    int count_read = 0;
+namespace chizhova
+{
+  int run()
+  {
+    std::size_t maxLen = 0;
+    std::size_t currLen = 0;
+    bool isFirst = true;
+    int prev = 0;
+    std::size_t countGrtLss = 0;
+    int p1 = 0;
+    int p2 = 0;
+    int p3 = 0;
+    int state = 0;
     int x = 0;
-    int y = 0;
-    int z = 0;
-    int max_len = 0;
-    int curr_len = 0;
-    int count_grt_lss = 0;
-    while (true) {
-        if (!(std::cin >> val)) {
-            std::cerr << "Error: Invalid input or missing terminating 0\n";
-            return 1;
+
+    while (std::cin >> x)
+    {
+      if (x == 0)
+      {
+        break;
+      }
+
+      if (isFirst)
+      {
+        prev = x;
+        currLen = 1;
+        maxLen = 1;
+        isFirst = false;
+      }
+      else
+      {
+        if (x >= prev)
+        {
+          ++currLen;
         }
-        if (val == 0) {
-            break;
+        else
+        {
+          currLen = 1;
         }
-        count_read++;
-        if (count_read == 1) {
-            x = val;
-            curr_len = 1;
-            max_len = 1;
-        } else if (count_read == 2) {
-            y = val;
-            if (y >= x) {
-                curr_len++;
-            } else {
-                curr_len = 1;
-            }
-            if (curr_len > max_len) {
-                max_len = curr_len;
-            }
-        } else {
-            z = val;
-            if (z >= y) {
-                curr_len++;
-            } else {
-                curr_len = 1;
-            }
-            if (curr_len > max_len) {
-                max_len = curr_len;
-            }
-            if (x > y && y > z) {
-                count_grt_lss++;
-            }
-            x = y;
-            y = z;
+        if (currLen > maxLen)
+        {
+          maxLen = currLen;
         }
+        prev = x;
+      }
+
+      if (state == 0)
+      {
+        p1 = x;
+        state = 1;
+      }
+      else if (state == 1)
+      {
+        p2 = x;
+        state = 2;
+      }
+      else
+      {
+        p3 = x;
+        if (p1 > p2 && p2 > p3)
+        {
+          ++countGrtLss;
+        }
+        p1 = p2;
+        p2 = p3;
+      }
     }
-    std::cout << max_len << "\n";
-    std::cout << count_grt_lss << "\n";
+
+    if (std::cin.bad() || (std::cin.fail() && !std::cin.eof()))
+    {
+      std::cerr << "Unexpected input\n";
+      return 1;
+    }
+
+    std::cout << maxLen << "\n";
+    std::cout << countGrtLss << "\n";
     return 0;
+  }
 }
 
-}
-
-int main() {
-    return chizhova::solve();
+int main()
+{
+  return chizhova::run();
 }
