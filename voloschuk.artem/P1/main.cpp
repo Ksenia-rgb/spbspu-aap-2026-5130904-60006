@@ -1,6 +1,10 @@
 #include <iostream>
 #include <limits>
 
+const int INVALID_INPUT_ERROR = 1;
+const int OVERFLOW_ERROR = 2;
+const int UNSUITABLE_DATA_ERROR = 2;
+
 int main()
 {
   const unsigned max_u = std::numeric_limits< unsigned >::max();
@@ -13,14 +17,14 @@ int main()
   int a = 0;
   if (!(std::cin >> a))
   {
-    std::cerr << "invalid input";
-    return 1;
+    std::cerr << "invalid input" << std::endl;
+    return INVALID_INPUT_ERROR;
   }
   else if (a == 0)
   {
     std::cout << 0 << std::endl;
-    std::cerr << "too short";
-    return 2;
+    std::cerr << "too short" << std::endl;
+    return UNSUITABLE_DATA_ERROR;
   }
   int max = a;
   int pre_last = a;
@@ -71,15 +75,15 @@ int main()
   if (!(std::cin))
   {
     std::cerr << "invalid input" << std::endl;
-    return 1;
+    return INVALID_INPUT_ERROR;
   }
   if (answer_1_overflow)
   {
-    std::cerr << "overflow\n";
+    std::cerr << "overflow" << std::endl;
   }
   else
   {
-    std::cout << answer_1 << "\n";
+    std::cout << answer_1 << std::endl;
   }
   if (answer_2_overflow)
   {
@@ -91,7 +95,7 @@ int main()
   }
   if (answer_1_overflow || answer_2_overflow)
   {
-    return 2;
+    return OVERFLOW_ERROR;
   }
   else
   {
