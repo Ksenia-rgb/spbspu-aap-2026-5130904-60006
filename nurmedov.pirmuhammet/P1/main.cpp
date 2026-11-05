@@ -2,7 +2,7 @@
 #include <string>
 #include <cctype>
 
-namespace piri { 
+namespace nurmedov { 
 }
 
 int main() {
