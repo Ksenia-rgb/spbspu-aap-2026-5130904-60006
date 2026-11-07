@@ -5,12 +5,12 @@
 #include <stdexcept>
 
 namespace dortman {
-  char * readLine(std::istream & in, std::size_t & outLength);
+  char * readLine(std::istream & in, std::size_t & out_length);
   char * excludeSecond(char * dest, const char * src1, const char * src2);
   char * convertUpperToLower(char * dest, const char * src);
 }
 
-char * dortman::readLine(std::istream & in, std::size_t & outLength)
+char * dortman::readLine(std::istream & in, std::size_t & out_length)
 {
   const std::size_t initialCapacity = 32;
   const std::size_t growthFactor = 2;
@@ -23,24 +23,24 @@ char * dortman::readLine(std::istream & in, std::size_t & outLength)
   const std::ios_base::fmtflags origFlags = in.flags();
   in >> std::noskipws;
 
-  char currentChar = '\0';
-  while ((in >> currentChar) && (currentChar != '\n')) {
+  char current_char = '\0';
+  while ((in >> current_char) && (current_char != '\n')) {
     if (length + 1 >= capacity) {
       if (capacity == maxCapacity) {
         in.flags(origFlags);
         delete[] buffer;
         throw std::length_error("Превышен максимальный размер строки");
       }
-      std::size_t newCapacity = 0;
+      std::size_t new_capacity = 0;
       if (capacity > (maxCapacity / growthFactor)) {
-        newCapacity = maxCapacity;
+        new_capacity = maxCapacity;
       } else {
-        newCapacity = capacity * growthFactor;
+        new_capacity = capacity * growthFactor;
       }
 
-      char * newBuffer = nullptr;
+      char * new_buffer = nullptr;
       try {
-        newBuffer = new char[newCapacity];
+        new_buffer = new char[new_capacity];
       } catch (...) {
         in.flags(origFlags);
         delete[] buffer;
@@ -48,13 +48,13 @@ char * dortman::readLine(std::istream & in, std::size_t & outLength)
       }
 
       for (std::size_t i = 0; i < length; ++i) {
-        newBuffer[i] = buffer[i];
+        new_buffer[i] = buffer[i];
       }
       delete[] buffer;
-      buffer = newBuffer;
-      capacity = newCapacity;
+      buffer = new_buffer;
+      capacity = new_capacity;
     }
-    buffer[length] = currentChar;
+    buffer[length] = current_char;
     ++length;
   }
 
@@ -66,7 +66,7 @@ char * dortman::readLine(std::istream & in, std::size_t & outLength)
   }
 
   buffer[length] = '\0';
-  outLength = length;
+  out_length = length;
   return buffer;
 }
 
@@ -76,21 +76,21 @@ char * dortman::excludeSecond(char * dest, const char * src1, const char * src2)
     return dest;
   }
 
-  std::size_t destIndex = 0;
+  std::size_t dest_index = 0;
   for (std::size_t i = 0; src1[i] != '\0'; ++i) {
-    int isFound = 0;
+    int is_found = 0;
     for (std::size_t j = 0; src2[j] != '\0'; ++j) {
       if (src1[i] == src2[j]) {
-        isFound = 1;
+        is_found = 1;
         break;
       }
     }
-    if (isFound == 0) {
-      dest[destIndex] = src1[i];
-      ++destIndex;
+    if (is_found == 0) {
+      dest[dest_index] = src1[i];
+      ++dest_index;
     }
   }
-  dest[destIndex] = '\0';
+  dest[dest_index] = '\0';
   return dest;
 }
 
@@ -120,48 +120,48 @@ int main()
   const char * const secondLiteral = "abc";
 
   std::size_t length = 0;
-  char * inputStr = nullptr;
+  char * input_str = nullptr;
 
   try {
-    inputStr = dortman::readLine(std::cin, length);
+    input_str = dortman::readLine(std::cin, length);
   } catch (const std::exception & e) {
     std::cerr << "Ошибка выделения памяти при чтении строки: " << e.what() << "\n";
     return errorReturnCode;
   }
 
-  if (inputStr == nullptr) {
+  if (input_str == nullptr) {
     std::cerr << "Ошибка чтения потока или конец файла\n";
     return errorReturnCode;
   }
 
   if (length == 0) {
-    delete[] inputStr;
+    delete[] input_str;
     std::cerr << "Ошибка: введена пустая строка\n";
     return errorReturnCode;
   }
 
-  char * resExcSnd = nullptr;
-  char * resUppLow = nullptr;
+  char * res_exc_snd = nullptr;
+  char * res_upp_low = nullptr;
 
   try {
-    resExcSnd = new char[length + 1];
-    resUppLow = new char[length + 1];
+    res_exc_snd = new char[length + 1];
+    res_upp_low = new char[length + 1];
   } catch (const std::exception & e) {
-    delete[] resExcSnd;
-    delete[] inputStr;
+    delete[] res_exc_snd;
+    delete[] input_str;
     std::cerr << "Ошибка выделения памяти под результат: " << e.what() << "\n";
     return errorReturnCode;
   }
 
-  dortman::excludeSecond(resExcSnd, inputStr, secondLiteral);
-  dortman::convertUpperToLower(resUppLow, inputStr);
+  dortman::excludeSecond(res_exc_snd, input_str, secondLiteral);
+  dortman::convertUpperToLower(res_upp_low, input_str);
 
-  std::cout << resExcSnd << "\n";
-  std::cout << resUppLow << "\n";
+  std::cout << res_exc_snd << "\n";
+  std::cout << res_upp_low << "\n";
 
-  delete[] resUppLow;
-  delete[] resExcSnd;
-  delete[] inputStr;
+  delete[] res_upp_low;
+  delete[] res_exc_snd;
+  delete[] input_str;
 
   return 0;
 }
