@@ -129,4 +129,3 @@ int main()
   delete[] letters;
 }
 
-
