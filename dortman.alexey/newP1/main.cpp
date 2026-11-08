@@ -2,13 +2,11 @@
 #include <limits>
 #include <cstddef>
 
-namespace dortman
-{
+namespace dortman {
   const int not_a_sequence = 1;
   const int invalid_data = 2;
 
-  class SequenceCounter
-  {
+  class SequenceCounter {
   public:
     SequenceCounter():
       has_elements_(false),
@@ -20,45 +18,32 @@ namespace dortman
       overflow_even_(false)
     {}
 
-    void next_n(const int value)
+    void nextN(const int value)
     {
       const size_t max_limit = std::numeric_limits< size_t >::max();
 
-      if (!has_elements_ || value > max_val_)
-      {
+      if (!has_elements_ || value > max_val_) {
         max_val_ = value;
         max_count_ = 1;
         overflow_max_count_ = false;
-      }
-      else if (value == max_val_)
-      {
-        if (max_count_ == max_limit)
-        {
+      } else if (value == max_val_) {
+        if (max_count_ == max_limit) {
           overflow_max_count_ = true;
-        }
-        else
-        {
+        } else {
           ++max_count_;
         }
       }
 
-      if ((value & 1) == 0)
-      {
-        if (current_even_ == max_limit)
-        {
+      if ((value & 1) == 0) {
+        if (current_even_ == max_limit) {
           overflow_even_ = true;
-        }
-        else
-        {
+        } else {
           ++current_even_;
-          if (current_even_ > max_even_)
-          {
+          if (current_even_ > max_even_) {
             max_even_ = current_even_;
           }
         }
-      }
-      else
-      {
+      } else {
         current_even_ = 0;
       }
 
@@ -69,33 +54,24 @@ namespace dortman
     {
       bool has_error = false;
 
-      if (overflow_even_)
-      {
+      if (overflow_even_) {
         has_error = true;
         err << "Переполнение счетчика четных элементов\n";
-      }
-      else
-      {
+      } else {
         out << max_even_ << "\n";
       }
 
-      if (!has_elements_)
-      {
+      if (!has_elements_) {
         has_error = true;
         err << "Последовательность слишком короткая\n";
-      }
-      else if (overflow_max_count_)
-      {
+      } else if (overflow_max_count_) {
         has_error = true;
         err << "Переполнение счетчика максимальных элементов\n";
-      }
-      else
-      {
+      } else {
         out << max_count_ << "\n";
       }
 
-      if (has_error)
-      {
+      if (has_error) {
         return invalid_data;
       }
 
@@ -117,13 +93,11 @@ namespace dortman
     SequenceCounter counter;
     int value = 0;
 
-    while (in >> value && value != 0)
-    {
-      counter.next_n(value);
+    while (in >> value && value != 0) {
+      counter.nextN(value);
     }
 
-    if (!in)
-    {
+    if (!in) {
       err << "Не является последовательностью\n";
       return not_a_sequence;
     }
