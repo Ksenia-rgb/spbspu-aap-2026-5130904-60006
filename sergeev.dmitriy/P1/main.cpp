@@ -10,14 +10,16 @@ int main()
   int current = 0, previous = 0, next = 0;
   int count_10 = 0, count_16 = 1;
 
-  std::cin >> previous;
+  bool is_overflow_10 = false;
+  bool is_overflow_16 = false;
 
-  min = previous;
-  if (std::cin.fail())
+  if (!(std::cin >> previous))
   {
     std::cerr << "error import\n";
     return ERROR_INVALID_INPUT;
   }
+
+  min = previous;
 
   if (previous == 0)
   {
@@ -26,8 +28,7 @@ int main()
     return 0;
   }
 
-  std::cin >> current;
-  if (std::cin.fail())
+  if (!(std::cin >> current))
   {
     std::cerr << "error import\n";
     return ERROR_INVALID_INPUT;
@@ -48,7 +49,7 @@ int main()
   {
     if (count_16 > std::numeric_limits< int >::max() - 1)
     {
-      return ERROR_CALCULATION;
+      is_overflow_16 = false;
     }
     count_16++;
   }
@@ -64,7 +65,7 @@ int main()
     {
       if (count_10 > std::numeric_limits< int >::max() - 1)
       {
-        return ERROR_CALCULATION;
+        is_overflow_10 = false;
       }
       count_10++;
     }
@@ -78,7 +79,7 @@ int main()
     {
       if (count_16 > std::numeric_limits< int >::max() - 1)
       {
-        return ERROR_CALCULATION;
+        is_overflow_16 = false;
       }
       count_16++;
     }
@@ -93,7 +94,27 @@ int main()
     return ERROR_INVALID_INPUT;
   }
 
-  std::cout << count_10 << "\n";
-  std::cout << count_16 << "\n";
+  if (is_overflow_10)
+  {
+    std::cerr << "error calculation 10\n";
+  }
+  else
+  {
+    std::cout << count_10 << "\n";
+  }
+
+  if (is_overflow_16)
+  {
+    std::cerr << "error calculation 16\n";
+  }
+  else
+  {
+    std::cout << count_16 << "\n";
+  }
+
+  if (is_overflow_10 || is_overflow_16)
+  {
+    return ERROR_CALCULATION;
+  }
   return 0;
 }
