@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstddef>
-#include <exception>
 #include <cctype>
 
 namespace pershinov {
@@ -18,8 +17,8 @@ namespace pershinov {
     try {
       while (std::cin.get(c) && c != '\n') {
         if (size + 1 == capacity) {
-          size_t bigger = capacity * 2;
-          char * new_buffer = new char[bigger];
+          const size_t bigger = capacity * 2;
+          char * const new_buffer = new char[bigger];
           for (size_t i = 0; i < size; ++i) {
             new_buffer[i] = buffer[i];
           }
@@ -30,7 +29,11 @@ namespace pershinov {
         buffer[size] = c;
         ++size;
       }
-    } catch (const std::exception &) {
+    } catch (...) {
+      delete[] buffer;
+      return nullptr;
+    }
+    if (size == 0 && std::cin.eof()) {
       delete[] buffer;
       return nullptr;
     }
@@ -63,13 +66,13 @@ namespace pershinov {
     int marks[alphabet_size] = {};
     size_t count = 0;
     for (size_t i = 0; str1[i] != '\0'; ++i) {
-      int low = std::tolower(static_cast< unsigned char >(str1[i]));
+      const int low = std::tolower(static_cast< unsigned char >(str1[i]));
       if (low >= 'a' && low <= 'z') {
         marks[low - 'a'] = 1;
       }
     }
     for (size_t i = 0; str2[i] != '\0'; ++i) {
-      int low = std::tolower(static_cast< unsigned char >(str2[i]));
+      const int low = std::tolower(static_cast< unsigned char >(str2[i]));
       if (low >= 'a' && low <= 'z') {
         marks[low - 'a'] = 1;
       }
@@ -88,12 +91,17 @@ namespace pershinov {
 int main()
 {
   const int memory_error = 1;
-  char * line = pershinov::readLine();
+  const int input_error = 2;
+  char * const line = pershinov::readLine();
   if (line == nullptr) {
+    if (std::cin.eof()) {
+      std::cerr << "Error: empty input\n";
+      return input_error;
+    }
     std::cerr << "Error: not enough memory\n";
     return memory_error;
   }
-  size_t length = pershinov::stringLength(line);
+  const size_t length = pershinov::stringLength(line);
   char * result = nullptr;
   try {
     result = new char[length + 1];
@@ -120,4 +128,5 @@ int main()
   delete[] line;
   delete[] letters;
 }
+
 
