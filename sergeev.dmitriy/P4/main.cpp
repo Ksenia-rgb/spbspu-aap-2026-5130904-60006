@@ -198,6 +198,7 @@ int sergeev::process()
     if (replaced != nullptr) {
       replace_status = sergeev::replaceSymbol(first, replaced, replaced_capacity);
     }
+
   }
 
   if (interleave_status == successCode) {
