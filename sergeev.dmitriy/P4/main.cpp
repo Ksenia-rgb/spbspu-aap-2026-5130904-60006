@@ -120,6 +120,29 @@ int sergeev::interleave(const char* first, const char* second, char* result, siz
   return 0;
 }
 
+int sergeev::replaceSymbol(const char* source, char* result, size_t resultCapacity)
+{
+  size_t length = 0;
+
+  while (source[length] != '\0') {
+    ++length;
+  }
+
+  if (length == std::numeric_limits<size_t>::max() || length + 1 > resultCapacity) {
+    return 1;
+  }
+
+  for (size_t index = 0; index < length; ++index) {
+    if (source[index] == oldSymbol) {
+      result[index] = newSymbol;
+    } else {
+      result[index] = source[index];
+    }
+  }
+
+  result[length] = '\0';
+  return 0;
+}
 
 
 int main()
