@@ -60,14 +60,64 @@ int sergeev::readLine(char*& line)
     line[length] = symbol;
     ++length;
   }
-
-  if (std::cin.bad() || std::cin.eof()) {
-    std::free(line);
-    return 1;
-  }
   std::free(line);
   line = nullptr;
   return 1;
+}
+
+int sergeev::interleave(const char* first, const char* second, char* result, size_t resultCapacity)
+{
+  size_t firstLength = 0;
+  size_t secondLength = 0;
+
+  while (first[firstLength] != '\0') {
+    ++firstLength;
+  }
+
+  while (second[secondLength] != '\0') {
+    ++secondLength;
+  }
+
+  const size_t maximumSize = std::numeric_limits<size_t>::max();
+
+  if (secondLength == maximumSize || firstLength > maximumSize - secondLength - 1) {
+    return 1;
+  }
+
+  const size_t requiredCapacity = firstLength + secondLength + 1;
+
+  if (requiredCapacity > resultCapacity) {
+    return 1;
+  }
+
+  size_t firstIndex = 0;
+  size_t secondIndex = 0;
+  size_t resultIndex = 0;
+
+  while (firstIndex < firstLength && secondIndex < secondLength) {
+    result[resultIndex] = first[firstIndex];
+    ++resultIndex;
+    ++firstIndex;
+
+    result[resultIndex] = second[secondIndex];
+    ++resultIndex;
+    ++secondIndex;
+  }
+
+  while (firstIndex < firstLength) {
+    result[resultIndex] = first[firstIndex];
+    ++resultIndex;
+    ++firstIndex;
+  }
+
+  while (secondIndex < secondLength) {
+    result[resultIndex] = second[secondIndex];
+    ++resultIndex;
+    ++secondIndex;
+  }
+
+  result[resultIndex] = '\0';
+  return 0;
 }
 
 
