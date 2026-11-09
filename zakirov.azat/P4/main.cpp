@@ -11,7 +11,7 @@ namespace zakirov {
   const char NEW_CHAR = 'b';
 
   int countLetters(const char *str);
-  char *replaceChars(char *result, const char *str, char oldChar, char newChar);
+  char *replaceChars(char *result, const char *str, char old_char, char new_char);
   char *readLine();
 }
 
@@ -31,13 +31,13 @@ int zakirov::countLetters(const char *str)
   return count;
 }
 
-char *zakirov::replaceChars(char *result, const char *str, const char oldChar, const char newChar)
+char *zakirov::replaceChars(char *result, const char *str, const char old_char, const char new_char)
 {
   std::size_t i = 0;
   while (str[i] != '\0') {
     result[i] = str[i];
-    if (str[i] == oldChar) {
-      result[i] = newChar;
+    if (str[i] == old_char) {
+      result[i] = new_char;
     }
     ++i;
   }
@@ -60,17 +60,17 @@ char *zakirov::readLine()
           delete[] str;
           return nullptr;
         }
-        std::size_t newCapacity = maxSize;
+        std::size_t new_capacity = maxSize;
         if (capacity <= maxSize / 2) {
-          newCapacity = capacity * 2;
+          new_capacity = capacity * 2;
         }
-        char * const newStr = new char[newCapacity];
+        char *const newStr = new char[new_capacity];
         for (std::size_t i = 0; i < size; ++i) {
           newStr[i] = str[i];
         }
         delete[] str;
         str = newStr;
-        capacity = newCapacity;
+        capacity = new_capacity;
       }
       str[size] = symbol;
       ++size;
@@ -85,12 +85,12 @@ char *zakirov::readLine()
 
 int main()
 {
-  char * const str = zakirov::readLine();
+  char *const str = zakirov::readLine();
   if (str == nullptr) {
     std::cerr << "Not enough memory\n";
     return zakirov::ERROR_MEMORY;
   }
-  if (std::cin.bad()) {
+  if (std::cin.bad() || (!std::cin && str[0] == '\0')) {
     delete[] str;
     std::cerr << "Input error\n";
     return zakirov::ERROR_IO;
