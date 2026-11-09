@@ -101,12 +101,12 @@ namespace zakirov
 
   int process(std::istream &in, std::ostream &out, std::ostream &err)
   {
-    CountMin minimums;
+    CountMin minimum;
     CountDiv divs;
     int number = 0;
     while (in >> number && number != 0)
     {
-      minimums(number);
+      minimum(number);
       divs(number);
     }
     if (!in)
@@ -118,7 +118,7 @@ namespace zakirov
     int result = 0;
     try
     {
-      out << minimums() << '\n';
+      out << minimum() << '\n';
     }
     catch (const std::exception &error)
     {
