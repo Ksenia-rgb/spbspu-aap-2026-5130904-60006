@@ -2,49 +2,40 @@
 #include <iostream>
 #include <limits>
 
-namespace podvalnyj
-{
+namespace podvalnyj {
   const int ERROR_SEQUENCE = 1;
   const int ERROR_CHARACTERISTIC = 2;
 
   void increment(std::size_t & counter, bool & overflow)
   {
-    if (counter == std::numeric_limits< std::size_t >::max())
-    {
+    if (counter == std::numeric_limits< std::size_t >::max()) {
       overflow = true;
-    }
-    else
-    {
+    } else {
       ++counter;
     }
   }
 
-  class LocMax
-  {
+  class LocMax {
   public:
     void next(int number)
     {
-      if (count_ == 2 && current_ > previous_ && current_ > number)
-      {
+      if (count_ == 2 && current_ > previous_ && current_ > number) {
         increment(result_, overflow_);
       }
       previous_ = current_;
       current_ = number;
-      if (count_ < 2)
-      {
+      if (count_ < 2) {
         ++count_;
       }
     }
 
     int print(std::ostream & output, std::ostream & error) const
     {
-      if (count_ == 0)
-      {
+      if (count_ == 0) {
         error << "LOC-MAX error: empty sequence\n";
         return ERROR_CHARACTERISTIC;
       }
-      if (overflow_)
-      {
+      if (overflow_) {
         error << "LOC-MAX error: too many elements\n";
         return ERROR_CHARACTERISTIC;
       }
@@ -60,33 +51,27 @@ namespace podvalnyj
     bool overflow_ = false;
   };
 
-  class AftMax
-  {
+  class AftMax {
   public:
     void next(int number)
     {
-      if (empty_ || number > maximum_)
-      {
+      if (empty_ || number > maximum_) {
         empty_ = false;
         maximum_ = number;
         result_ = 0;
         overflow_ = false;
-      }
-      else
-      {
+      } else {
         increment(result_, overflow_);
       }
     }
 
     int print(std::ostream & output, std::ostream & error) const
     {
-      if (empty_)
-      {
+      if (empty_) {
         error << "AFT-MAX error: empty sequence\n";
         return ERROR_CHARACTERISTIC;
       }
-      if (overflow_)
-      {
+      if (overflow_) {
         error << "AFT-MAX error: too many elements\n";
         return ERROR_CHARACTERISTIC;
       }
@@ -107,28 +92,24 @@ namespace podvalnyj
     AftMax aft_max;
     int number = 0;
     input >> number;
-    while (!input.fail() && number != 0)
-    {
+    while (!input.fail() && number != 0) {
       loc_max.next(number);
       aft_max.next(number);
       input >> number;
     }
-    if (input.fail())
-    {
+    if (input.fail()) {
       error << "Error: invalid sequence\n";
       return ERROR_SEQUENCE;
     }
     char symbol = 0;
     input >> symbol;
-    if (!input.eof())
-    {
+    if (!input.eof()) {
       error << "Error: invalid sequence\n";
       return ERROR_SEQUENCE;
     }
     const int loc_result = loc_max.print(output, error);
     const int aft_result = aft_max.print(output, error);
-    if (loc_result != 0 || aft_result != 0)
-    {
+    if (loc_result != 0 || aft_result != 0) {
       return ERROR_CHARACTERISTIC;
     }
     return 0;
