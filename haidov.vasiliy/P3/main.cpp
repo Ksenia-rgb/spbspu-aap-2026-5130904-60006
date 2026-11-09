@@ -128,6 +128,5 @@ namespace haidov {
 
 int main(int argc, char** argv)
 {
-  haidov::lab(argc, argv);
-  return 0;
+  return haidov::lab(argc, argv);
 }
