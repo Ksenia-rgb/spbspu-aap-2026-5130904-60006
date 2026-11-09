@@ -2,12 +2,12 @@
 #include <fstream>
 #include <limits>
 
-const int correct_result = 0;
-const int calculation_error = 2;
-const int invalid_input = 1;
-const size_t MAX_LEN = 10000;
-
 namespace haidov {
+  const int correct_result = 0;
+  const int calculation_error = 2;
+  const int invalid_input = 1;
+  const size_t MAX_LEN = 10000;
+
   int sedlo(int* data, size_t n, size_t m)
   {
     int result = 0;
