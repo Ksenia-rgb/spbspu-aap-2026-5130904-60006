@@ -8,7 +8,7 @@ namespace haidov {
   const int invalid_input = 1;
   const size_t MAX_LEN = 10000;
 
-  int sedlo(int* data, size_t n, size_t m)
+  int sedlo(const int* data, size_t n, size_t m)
   {
     int result = 0;
     for (size_t i = 0; i < n; ++i) {
@@ -31,7 +31,7 @@ namespace haidov {
     return result;
   }
 
-  int local_min(int* data, size_t n, size_t m)
+  int localMin(const int* data, size_t n, size_t m)
   {
     int result = 0;
     for (size_t i = 1; i < n - 1; ++i) {
@@ -77,11 +77,11 @@ namespace haidov {
     long long m_long = 0;
     if (!(input >> n_long >> m_long)) {
       std::cerr << "Invalid data in input file" << std::endl;
-      throw calculation_error;
+      return calculation_error;
     }
     if (n_long < 0 || m_long < 0) {
       std::cerr << "Invalid matrix size, negative" << std::endl;
-      throw calculation_error;
+      return calculation_error;
     }
     const size_t n = static_cast< size_t >(n_long);
     const size_t m = static_cast< size_t >(m_long);
@@ -117,7 +117,7 @@ namespace haidov {
         return calculation_error;
       }
     }
-    output << local_min(data, n, m) << "\n";
+    output << localMin(data, n, m) << "\n";
     output << sedlo(data, n, m) << "\n";
     if (type == 2) {
       delete[] data;
