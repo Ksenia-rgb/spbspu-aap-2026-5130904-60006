@@ -8,21 +8,14 @@ namespace sergeev
   const int invalid_input_code = 1;
   const int calculation_error_code = 2;
 
-  void processNumber(int value, int& previous, int& current,
-      int& count_10, int& count_16, int& minimum,
-      bool& has_previous, bool& has_current, bool& has_minimum,
-      bool& overflow_10, bool& overflow_16);
+  void processNumber(int value, int& previous, int& current, int& count_10, int& count_16, int& minimum, bool& has_previous, bool& has_current, bool& has_minimum, bool& overflow_10, bool& overflow_16);
 
-  int printResults(int count_10, int count_16,
-      bool overflow_10, bool overflow_16);
+  int printResults(int count_10, int count_16, bool overflow_10, bool overflow_16);
 
   int process();
 }
 
-void sergeev::processNumber(int value, int& previous, int& current,
-    int& count_10, int& count_16, int& minimum,
-    bool& has_previous, bool& has_current, bool& has_minimum,
-    bool& overflow_10, bool& overflow_16)
+void sergeev::processNumber(int value, int& previous, int& current, int& count_10, int& count_16, int& minimum, bool& has_previous, bool& has_current, bool& has_minimum, bool& overflow_10, bool& overflow_16)
 {
   if (!has_previous) {
     previous = value;
@@ -64,8 +57,7 @@ void sergeev::processNumber(int value, int& previous, int& current,
   }
 }
 
-int sergeev::printResults(int count_10, int count_16,
-    bool overflow_10, bool overflow_16)
+int sergeev::printResults(int count_10, int count_16, bool overflow_10, bool overflow_16)
 {
   int result_code = success_code;
 
@@ -104,10 +96,7 @@ int sergeev::process()
   bool overflow_16 = false;
 
   while (std::cin >> value && value != 0) {
-    sergeev::processNumber(value, previous, current,
-        count_10, count_16, minimum,
-        has_previous, has_current, has_minimum,
-        overflow_10, overflow_16);
+    sergeev::processNumber(value, previous, current, count_10, count_16, minimum, has_previous, has_current, has_minimum, overflow_10, overflow_16);
   }
 
   if (!std::cin) {
