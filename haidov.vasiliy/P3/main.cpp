@@ -85,6 +85,10 @@ namespace haidov {
     }
     const size_t n = static_cast< size_t >(n_long);
     const size_t m = static_cast< size_t >(m_long);
+    if (n == 0 || m == 0) {
+      output << "0 0\n0\n";
+      return correct_result;
+    }
     int* data = nullptr;
     int fixed_sized[MAX_LEN]{};
     if (type == 1) {
