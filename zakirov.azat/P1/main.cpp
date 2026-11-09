@@ -24,14 +24,8 @@ int main()
 
   const std::size_t limit = std::numeric_limits< std::size_t >::max();
 
-  while (true)
+  while (std::cin >> number)
   {
-    if (!(std::cin >> number))
-    {
-      std::cerr << "Ошибка ввода\n";
-      return zakirov::input_error;
-    }
-
     if (number == 0)
     {
       break;
@@ -79,6 +73,12 @@ int main()
     }
 
     last = number;
+  }
+
+  if (!std::cin)
+  {
+    std::cerr << "Ошибка ввода\n";
+    return zakirov::input_error;
   }
 
   if (!minimum_error)
