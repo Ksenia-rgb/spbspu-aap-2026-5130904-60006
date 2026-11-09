@@ -5,47 +5,6 @@ namespace braterskaia
 {
   const int ERR_INPUT = 1;
   const std::size_t MAX_SZ = std::size_t(-1);
-
-  std::size_t countInc(const int* arr, const std::size_t n)
-  {
-    std::size_t cnt = 0;
-    for (std::size_t i = 1; i < n; ++i)
-    {
-      if (arr[i] > arr[i - 1])
-      {
-        ++cnt;
-      }
-    }
-    return cnt;
-  }
-
-  std::size_t maxMonInc(const int* arr, const std::size_t n)
-  {
-    if (n == 0)
-    {
-      return 0;
-    }
-
-    std::size_t best = 1;
-    std::size_t cur = 1;
-
-    for (std::size_t i = 1; i < n; ++i)
-    {
-      if (arr[i] > arr[i - 1])
-      {
-        ++cur;
-        if (cur > best)
-        {
-          best = cur;
-        }
-      }
-      else
-      {
-        cur = 1;
-      }
-    }
-    return best;
-  }
 }
 
 int main()
@@ -80,15 +39,13 @@ int main()
         std::cerr << "Error: overflow detected\n";
         has_error = true;
       }
-      else
-      {
-        ++inc_cnt;
-        ++cur_inc;
 
-        if (cur_inc > max_inc)
-        {
-          max_inc = cur_inc;
-        }
+      ++inc_cnt;
+      ++cur_inc;
+
+      if (cur_inc > max_inc)
+      {
+        max_inc = cur_inc;
       }
     }
     else
@@ -99,24 +56,29 @@ int main()
     prev = curr;
   }
 
-  if (!std::cin)
+  if (!std::cin && !std::cin.eof())
   {
     std::cerr << "Error: invalid input\n";
-    return braterskaia::ERR_INPUT;
+    has_error = true;
   }
 
   if (is_first)
   {
     std::cerr << "Error: empty sequence\n";
-    return braterskaia::ERR_INPUT;
+    has_error = true;
   }
-
-  std::cout << max_inc << '\n';
-  std::cout << inc_cnt << '\n';
 
   if (has_error)
   {
+    std::cout << "Error" << '\n';
+    std::cout << "Error" << '\n';
+
     return braterskaia::ERR_INPUT;
+  }
+  else
+  {
+    std::cout << max_inc << '\n';
+    std::cout << inc_cnt << '\n';
   }
 
   return 0;
