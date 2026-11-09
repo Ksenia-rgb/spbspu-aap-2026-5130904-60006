@@ -5,6 +5,7 @@
 
 namespace podvalnyj {
   const int ERROR_MEMORY = 1;
+  const int ERROR_EMPTY = 1;
   const std::size_t START_SIZE = 16;
   const char * const SECOND_UNI_TWO = "def ";
   const char * const SECOND_UNC_SYM = "abc ef";
@@ -57,6 +58,10 @@ namespace podvalnyj {
       }
       str[size] = symbol;
       ++size;
+    }
+    if (size == 0 && input.eof()) {
+      std::free(str);
+      return nullptr;
     }
     str[size] = '\0';
     return str;
@@ -121,6 +126,10 @@ int main()
 {
   char * const str = podvalnyj::readLine(std::cin);
   if (str == nullptr) {
+    if (std::cin.eof()) {
+      std::cerr << "Error: empty input\n";
+      return podvalnyj::ERROR_EMPTY;
+    }
     std::cerr << "Error: not enough memory\n";
     return podvalnyj::ERROR_MEMORY;
   }
