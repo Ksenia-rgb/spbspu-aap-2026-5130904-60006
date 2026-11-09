@@ -102,13 +102,13 @@ int main()
   if (!std::cin)
   {
     std::cerr << "Error: invalid input\n";
-    return braterskaia::ERR_INPUT;
+    has_error = true;
   }
 
   if (is_first)
   {
     std::cerr << "Error: empty sequence\n";
-    return braterskaia::ERR_INPUT;
+    has_error = true;
   }
 
   std::cout << max_inc << '\n';
