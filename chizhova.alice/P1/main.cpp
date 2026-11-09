@@ -1,91 +1,65 @@
 #include <iostream>
+#include <cstddef>
 
-namespace chizhova {
+namespace snosnakee {
 
-int combined() {
-    long long x;
+int main() {
+    size_t max_len = 0;
+    size_t curr_len = 0;
+    bool is_first = true;
+    int prev = 0;
 
-    if (!(std::cin >> x)) {
-        std::cerr << "Error: input is not a sequence\n";
-        return 1;
-    }
+    size_t count_grt_lss = 0;
+    int p1 = 0, p2 = 0, p3 = 0;
+    int state = 0;
 
-    if (x == 0) {
-        std::cin >> std::ws;
-        if (std::cin.peek() != EOF) {
-            std::cerr << "Error: extra tokens after 0\n";
-            return 1;
-        }
-        std::cout << 0 << '\n' << 0 << '\n';
-        return 0;
-    }
+    int x = 0;
+    while (std::cin >> x) {
+        if (x == 0) break;
 
-    long long prev = x;
-    long long cur_len = 1;
-    long long max_len = 1;
-    long long count = 0;
-
-    if (!(std::cin >> x)) {
-        std::cerr << "Error: input is not a sequence\n";
-        return 1;
-    }
-
-    if (x == 0) {
-        std::cin >> std::ws;
-        if (std::cin.peek() != EOF) {
-            std::cerr << "Error: extra tokens after 0\n";
-            return 1;
-        }
-        std::cout << count << '\n' << max_len << '\n';
-        return 0;
-    }
-
-    long long curr = x;
-
-    if (curr >= prev) {
-        ++cur_len;
-    } else {
-        cur_len = 1;
-    }
-    if (cur_len > max_len) max_len = cur_len;
-
-    while (true) {
-        if (!(std::cin >> x)) {
-            std::cerr << "Error: input is not a sequence\n";
-            return 1;
-        }
-        if (x == 0) {
-            break;
-        }
-
-        if (prev > curr && curr > x) {
-            ++count;
-        }
-
-        if (x >= curr) {
-            ++cur_len;
+        if (is_first) {
+            prev = x;
+            curr_len = 1;
+            max_len = 1;
+            is_first = false;
         } else {
-            cur_len = 1;
+            if (x >= prev) {
+                ++curr_len;
+            } else {
+                curr_len = 1;
+            }
+            if (curr_len > max_len) max_len = curr_len;
+            prev = x;
         }
-        if (cur_len > max_len) max_len = cur_len;
 
-        prev = curr;
-        curr = x;
+        if (state == 0) {
+            p1 = x;
+            state = 1;
+        } else if (state == 1) {
+            p2 = x;
+            state = 2;
+        } else {
+            p3 = x;
+            if (p1 > p2 && p2 > p3) {
+                ++count_grt_lss;
+            }
+            p1 = p2;
+            p2 = p3;
+        }
     }
 
-    std::cin >> std::ws;
-    if (std::cin.peek() != EOF) {
-        std::cerr << "Error: extra tokens after 0\n";
+    if (std::cin.bad() || std::cin.fail() || std::cin.eof()) {
+        std::cerr << "Unexpected input\n";
         return 1;
     }
 
-    std::cout << count << '\n' << max_len << '\n';
+    std::cout << max_len << "\n";
+    std::cout << count_grt_lss << "\n";
     return 0;
 }
 
 }
 
 int main() {
-    return chizhova::combined();
-} 
-      
+    return snosnakee::main();
+}
