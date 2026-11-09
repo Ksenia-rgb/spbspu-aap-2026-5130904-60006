@@ -78,7 +78,7 @@ std::size_t sherbakov::difLat(const char * str)
     throw std::invalid_argument("Null pointer passed to difLat");
   }
 
-  bool seen[26] = { false };
+  bool seen[26] = {false};
   std::size_t count = 0;
 
   for (std::size_t i = 0; str[i] != '\0'; ++i) {
@@ -106,7 +106,7 @@ int sherbakov::repDgt(const char * str)
     throw std::invalid_argument("Null pointer passed to repDgt");
   }
 
-  bool seen[10] = { false };
+  bool seen[10] = {false};
   int repeats = 0;
 
   for (std::size_t i = 0; str[i] != '\0'; ++i) {
@@ -164,5 +164,4 @@ int main()
   delete[] line;
   return 0;
 }
-
 
