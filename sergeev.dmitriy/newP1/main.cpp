@@ -2,8 +2,7 @@
 #include <iostream>
 #include <limits>
 
-namespace sergeev
-{
+namespace sergeev{
   const int success_code = 0;
   const int invalid_input_code = 1;
   const int calculation_error_code = 2;
@@ -19,18 +18,15 @@ namespace sergeev
 void sergeev::processNumber(int value, int & previous, int & current, int & count_10, int & count_16, int & minimum,
     bool & has_previous, bool & has_current, bool & has_minimum, bool & overflow_10, bool & overflow_16)
 {
-  if (!has_previous)
-  {
+  if (!has_previous) {
     previous = value;
     has_previous = true;
   }
-  else if (!has_current)
-  {
+  else if (!has_current) {
     current = value;
     has_current = true;
   }
-  else
-  {
+  else {
     if (current < previous && current > value)
     {
       if (!overflow_10)
@@ -50,28 +46,22 @@ void sergeev::processNumber(int value, int & previous, int & current, int & coun
     current = value;
   }
 
-  if (!has_minimum)
-  {
+  if (!has_minimum) {
     minimum = value;
     count_16 = 1;
     has_minimum = true;
   }
-  else if (value < minimum)
-  {
+  else if (value < minimum) {
     minimum = value;
     count_16 = 1;
     overflow_16 = false;
   }
-  else if (value == minimum)
-  {
-    if (!overflow_16)
-    {
-      if (count_16 == std::numeric_limits< int >::max())
-      {
+  else if (value == minimum) {
+    if (!overflow_16) {
+      if (count_16 == std::numeric_limits< int >::max()) {
         overflow_16 = true;
       }
-      else
-      {
+      else {
         ++count_16;
       }
     }
@@ -82,23 +72,19 @@ int sergeev::printResults(int count_10, int count_16, bool overflow_10, bool ove
 {
   int result_code = success_code;
 
-  if (overflow_10)
-  {
+  if (overflow_10) {
     std::cerr << "error calculation 10\n";
     result_code = calculation_error_code;
   }
-  else
-  {
+  else {
     std::cout << count_10 << '\n';
   }
 
-  if (overflow_16)
-  {
+  if (overflow_16) {
     std::cerr << "error calculation 16\n";
     result_code = calculation_error_code;
   }
-  else
-  {
+  else {
     std::cout << count_16 << '\n';
   }
 
@@ -122,14 +108,12 @@ int sergeev::process()
   bool overflow_10 = false;
   bool overflow_16 = false;
 
-  while (std::cin >> value && value != 0)
-  {
+  while (std::cin >> value && value != 0) {
     sergeev::processNumber(value, previous, current, count_10, count_16, minimum, has_previous, has_current,
         has_minimum, overflow_10, overflow_16);
   }
 
-  if (!std::cin)
-  {
+  if (!std::cin) {
     std::cerr << "error import\n";
     return invalid_input_code;
   }
