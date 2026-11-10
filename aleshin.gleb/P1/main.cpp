@@ -101,7 +101,6 @@ namespace aleshin
       err << "Error: это не последовательность\n";
       return bad_input;
     }
-
     const bool r1 = cnt_max.print(out, err);
     const bool r2 = eql_seq.print(out, err);
     return (r1 && r2) ? ok : no_result;
