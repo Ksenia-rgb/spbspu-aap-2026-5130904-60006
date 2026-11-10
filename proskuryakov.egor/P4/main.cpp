@@ -4,8 +4,8 @@
 #include <stdexcept>
 
 namespace proskuryakov {
-  const int errorReturnCode = 1;
-  const std::size_t tableSize = std::numeric_limits< unsigned char >::max() + 1;
+  const int error = 1;
+  const std::size_t table_size = std::numeric_limits< unsigned char >::max() + 1;
 
   char * readLine(std::istream & in, std::size_t & out_length);
   char * commonSymbols(char * dest, const char * src1, const char * src2) noexcept;
@@ -14,41 +14,41 @@ namespace proskuryakov {
 
 char * proskuryakov::readLine(std::istream & in, std::size_t & out_length)
 {
-  const std::size_t initialCapacity = 32;
-  const std::size_t growthFactor = 2;
-  const std::size_t maxCapacity = std::numeric_limits< std::size_t >::max();
+  const std::size_t initial_capacity = 32;
+  const std::size_t growth_factor = 2;
+  const std::size_t max_capacity = std::numeric_limits< std::size_t >::max();
 
-  std::size_t capacity = initialCapacity;
+  std::size_t capacity = initial_capacity;
   char * buffer = new char[capacity];
   std::size_t length = 0;
 
   char current = '\0';
   while (in.get(current) && (current != '\n')) {
     if (length + 1 >= capacity) {
-      if (capacity == maxCapacity) {
+      if (capacity == max_capacity) {
         delete[] buffer;
         throw std::length_error("Превышен максимальный размер строки");
       }
 
-      std::size_t newCapacity = maxCapacity;
-      if (capacity <= (maxCapacity / growthFactor)) {
-        newCapacity = capacity * growthFactor;
+      std::size_t new_capacity = max_capacity;
+      if (capacity <= (max_capacity / growth_factor)) {
+        new_capacity = capacity * growth_factor;
       }
 
-      char * newBuffer = nullptr;
+      char * new_buffer = nullptr;
       try {
-        newBuffer = new char[newCapacity];
+        new_buffer = new char[new_capacity];
       } catch (...) {
         delete[] buffer;
         throw;
       }
 
       for (std::size_t i = 0; i < length; ++i) {
-        newBuffer[i] = buffer[i];
+        new_buffer[i] = buffer[i];
       }
       delete[] buffer;
-      buffer = newBuffer;
-      capacity = newCapacity;
+      buffer = new_buffer;
+      capacity = new_capacity;
     }
     buffer[length] = current;
     ++length;
@@ -70,23 +70,23 @@ char * proskuryakov::commonSymbols(char * dest, const char * src1, const char * 
     return dest;
   }
 
-  int inSecond[tableSize] = {};
-  int alreadyAdded[tableSize] = {};
+  int in_second[table_size] = {};
+  int already_added[table_size] = {};
 
   for (std::size_t i = 0; src2[i] != '\0'; ++i) {
-    inSecond[static_cast< unsigned char >(src2[i])] = 1;
+    in_second[static_cast< unsigned char >(src2[i])] = 1;
   }
 
-  std::size_t destIndex = 0;
+  std::size_t dest_index = 0;
   for (std::size_t i = 0; src1[i] != '\0'; ++i) {
     const unsigned char ch = static_cast< unsigned char >(src1[i]);
-    if ((inSecond[ch] == 1) && (alreadyAdded[ch] == 0)) {
-      alreadyAdded[ch] = 1;
-      dest[destIndex] = src1[i];
-      ++destIndex;
+    if ((in_second[ch] == 1) && (already_added[ch] == 0)) {
+      already_added[ch] = 1;
+      dest[dest_index] = src1[i];
+      ++dest_index;
     }
   }
-  dest[destIndex] = '\0';
+  dest[dest_index] = '\0';
   return dest;
 }
 
@@ -96,7 +96,7 @@ int proskuryakov::hasRepeats(const char * src) noexcept
     return 0;
   }
 
-  int seen[tableSize] = {};
+  int seen[table_size] = {};
 
   for (std::size_t i = 0; src[i] != '\0'; ++i) {
     const unsigned char ch = static_cast< unsigned char >(src[i]);
@@ -110,46 +110,46 @@ int proskuryakov::hasRepeats(const char * src) noexcept
 
 int main()
 {
-  const char * const secondLiteral = "abc_ef";
+  const char * const second_literal = "abc_ef";
 
   std::size_t length = 0;
-  char * inputStr = nullptr;
+  char * input_str = nullptr;
 
   try {
-    inputStr = proskuryakov::readLine(std::cin, length);
+    input_str = proskuryakov::readLine(std::cin, length);
   } catch (const std::exception & e) {
     std::cerr << "Ошибка выделения памяти при чтении строки: " << e.what() << "\n";
-    return proskuryakov::errorReturnCode;
+    return proskuryakov::error;
   }
 
-  if (inputStr == nullptr) {
+  if (input_str == nullptr) {
     std::cerr << "Ошибка чтения потока или конец файла\n";
-    return proskuryakov::errorReturnCode;
+    return proskuryakov::error;
   }
 
   if (length == 0) {
-    delete[] inputStr;
+    delete[] input_str;
     std::cerr << "Ошибка: введена пустая строка\n";
-    return proskuryakov::errorReturnCode;
+    return proskuryakov::error;
   }
 
-  char * commonResult = nullptr;
+  char * common_result = nullptr;
   try {
-    commonResult = new char[length + 1];
+    common_result = new char[length + 1];
   } catch (const std::exception & e) {
-    delete[] inputStr;
+    delete[] input_str;
     std::cerr << "Ошибка выделения памяти под результат: " << e.what() << "\n";
-    return proskuryakov::errorReturnCode;
+    return proskuryakov::error;
   }
 
-  proskuryakov::commonSymbols(commonResult, inputStr, secondLiteral);
-  const int repeatsResult = proskuryakov::hasRepeats(inputStr);
+  proskuryakov::commonSymbols(common_result, input_str, second_literal);
+  const int repeats_result = proskuryakov::hasRepeats(input_str);
 
-  std::cout << commonResult << "\n";
-  std::cout << repeatsResult << "\n";
+  std::cout << common_result << "\n";
+  std::cout << repeats_result << "\n";
 
-  delete[] commonResult;
-  delete[] inputStr;
+  delete[] common_result;
+  delete[] input_str;
 
   return 0;
 }
