@@ -1,15 +1,13 @@
 #include <iostream>
 #include <limits>
 
-namespace aleshin
-{
+namespace aleshin {
   const int ok = 0;
   const int bad_input = 1;
   const int no_result = 2;
   const unsigned long long limit = std::numeric_limits< unsigned long long >::max();
 
-  class CounterMax
-  {
+  class CounterMax {
   public:
     void nextN(const int n) noexcept
     {
@@ -44,8 +42,7 @@ namespace aleshin
     unsigned long long count_ = 0;
   };
 
-  class CounterEqlSeq
-  {
+  class CounterEqlSeq {
   public:
     void nextN(const int n) noexcept
     {
