@@ -11,7 +11,7 @@ namespace aleshin
   class CounterMax
   {
   public:
-    void next_n(const int n) noexcept
+    void nextN(const int n) noexcept
     {
       if (empty_ || n > max_num_) {
         max_num_ = n;
@@ -26,6 +26,7 @@ namespace aleshin
         }
       }
     }
+
     bool print(std::ostream &out, std::ostream &err) const
     {
       if (empty_ || overflow_) {
@@ -46,7 +47,7 @@ namespace aleshin
   class CounterEqlSeq
   {
   public:
-    void next_n(const int n) noexcept
+    void nextN(const int n) noexcept
     {
       if (!empty_ && n == prev_) {
         if (cur_run_ == limit) {
@@ -94,13 +95,14 @@ namespace aleshin
         got_zero = true;
         break;
       }
-      cnt_max.next_n(n);
-      eql_seq.next_n(n);
+      cnt_max.nextN(n);
+      eql_seq.nextN(n);
     }
     if (!got_zero) {
       err << "Error: это не последовательность\n";
       return bad_input;
     }
+
     const bool r1 = cnt_max.print(out, err);
     const bool r2 = eql_seq.print(out, err);
     return (r1 && r2) ? ok : no_result;
