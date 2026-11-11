@@ -4,8 +4,7 @@
 #include <iostream>
 #include <limits>
 
-namespace aleshin
-{
+namespace aleshin {
   const int ok = 0;
   const int no_memory = 1;
   const int no_input = 2;
