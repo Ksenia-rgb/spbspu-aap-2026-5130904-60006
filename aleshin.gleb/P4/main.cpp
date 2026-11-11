@@ -4,12 +4,17 @@
 #include <iostream>
 #include <limits>
 
-namespace aleshin {
-
+namespace aleshin
+{
   const int ok = 0;
   const int no_memory = 1;
+  const int no_input = 2;
+  const std::size_t latin_count = 26;
+  const std::size_t letters_total = 52;
+  const unsigned char ascii_limit = 128;
+  const std::size_t start_capacity = 16;
 
-  std::size_t str_len(const char *s) noexcept
+  std::size_t strLen(const char *s) noexcept
   {
     std::size_t n = 0;
     while (s[n] != '\0') {
@@ -18,16 +23,17 @@ namespace aleshin {
     return n;
   }
 
-  std::size_t count_diff_lat(const char *s) noexcept
+  std::size_t countDiffLat(const char *s) noexcept
   {
-    unsigned char seen[52] = {};
+    unsigned char seen[letters_total] = {};
     std::size_t count = 0;
     for (; *s != '\0'; ++s) {
       const unsigned char c = static_cast< unsigned char >(*s);
-      if (c >= 128 || !std::isalpha(c)) {
+      if (c >= ascii_limit || !std::isalpha(c)) {
         continue;
       }
-      const std::size_t idx = (c >= 'a' && c <= 'z') ? (c - 'a') : (c - 'A' + 26);
+      const std::size_t idx = (c >= 'a' && c <= 'z') ? static_cast< std::size_t >(c - 'a')
+                                                     : static_cast< std::size_t >(c - 'A') + latin_count;
       if (!seen[idx]) {
         seen[idx] = 1;
         ++count;
@@ -36,7 +42,7 @@ namespace aleshin {
     return count;
   }
 
-  char *unite_two(const char *a, const char *b, char *out) noexcept
+  char *uniteTwo(const char *a, const char *b, char *out) noexcept
   {
     std::size_t i = 0;
     std::size_t k = 0;
@@ -55,9 +61,9 @@ namespace aleshin {
     return out;
   }
 
-  char *read_line(std::istream &in)
+  char *readLine(std::istream &in)
   {
-    std::size_t cap = 16;
+    std::size_t cap = start_capacity;
     std::size_t len = 0;
     char *buf = static_cast< char * >(std::malloc(cap));
     if (!buf) {
@@ -71,7 +77,7 @@ namespace aleshin {
           return nullptr;
         }
         const std::size_t new_cap = cap * 2;
-        char *bigger = static_cast< char * >(std::malloc(new_cap));
+        char *const bigger = static_cast< char * >(std::malloc(new_cap));
         if (!bigger) {
           std::free(buf);
           return nullptr;
@@ -88,35 +94,39 @@ namespace aleshin {
     buf[len] = '\0';
     return buf;
   }
-
 }
 
 int main()
 {
   const char second[] = "def_";
 
-  char *input = aleshin::read_line(std::cin);
+  char *const input = aleshin::readLine(std::cin);
   if (!input) {
     std::cerr << "error: cannot allocate memory for input\n";
     return aleshin::no_memory;
   }
+  if (std::cin.eof() && input[0] == '\0') {
+    std::cerr << "error: empty input\n";
+    std::free(input);
+    return aleshin::no_input;
+  }
 
-  std::cout << aleshin::count_diff_lat(input) << "\n";
+  std::cout << aleshin::countDiffLat(input) << "\n";
 
-  const std::size_t la = aleshin::str_len(input);
-  const std::size_t lb = aleshin::str_len(second);
+  const std::size_t la = aleshin::strLen(input);
+  const std::size_t lb = aleshin::strLen(second);
   if (la > std::numeric_limits< std::size_t >::max() - lb - 1) {
     std::cerr << "error: result is too long\n";
     std::free(input);
     return aleshin::no_memory;
   }
-  char *result = static_cast< char * >(std::malloc(la + lb + 1));
+  char *const result = static_cast< char * >(std::malloc(la + lb + 1));
   if (!result) {
     std::cerr << "error: cannot allocate memory for result\n";
     std::free(input);
     return aleshin::no_memory;
   }
-  std::cout << aleshin::unite_two(input, second, result) << "\n";
+  std::cout << aleshin::uniteTwo(input, second, result) << "\n";
 
   std::free(result);
   std::free(input);
