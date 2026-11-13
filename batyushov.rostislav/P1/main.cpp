@@ -19,8 +19,8 @@ namespace batyushov
     long long max_dec = 0;
     long long loc_max = 0;
 
-    bool decOverflow = false;
-    bool locMaxOverflow = false;
+    bool dec_overflow = false;
+    bool loc_max_overflow = false;
 
     const long long max_ll = std::numeric_limits< long long >::max();
 
@@ -30,7 +30,7 @@ namespace batyushov
       {
         if (cur_dec == max_ll)
         {
-          decOverflow = true;
+          dec_overflow = true;
         }
         else
         {
@@ -50,7 +50,7 @@ namespace batyushov
       {
         if (loc_max == max_ll)
         {
-          locMaxOverflow = true;
+          loc_max_overflow = true;
         }
         else
         {
@@ -72,7 +72,7 @@ namespace batyushov
       return batyushov::inputError;
     }
 
-    if (decOverflow)
+    if (dec_overflow)
     {
       std::cerr << "Ошибка: переполнение счётчика убывающей подпоследовательности\n";
     }
@@ -87,7 +87,7 @@ namespace batyushov
       return batyushov::shortError;
     }
 
-    if (locMaxOverflow)
+    if (loc_max_overflow)
     {
       std::cerr << "Ошибка: переполнение счётчика локальных максимумов\n";
     }
@@ -96,7 +96,7 @@ namespace batyushov
       std::cout << loc_max << '\n';
     }
 
-    if (decOverflow || locMaxOverflow)
+    if (dec_overflow || loc_max_overflow)
     {
       return batyushov::overflowError;
     }
