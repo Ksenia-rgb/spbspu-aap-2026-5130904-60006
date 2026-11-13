@@ -1,6 +1,6 @@
 #include <iostream>
 namespace belova {
-bool is_pythagorean(int a, int b, int c) {
+bool isPythagorean(int a, int b, int c) {
   const unsigned long long x = a < 0 ? -static_cast<long long>(a) : a;
   const unsigned long long y = b < 0 ? -static_cast<long long>(b) : b;
   const unsigned long long z = c < 0 ? -static_cast<long long>(c) : c;
@@ -30,7 +30,7 @@ int main() {
     } else if (count == 1) {
       b = current;
     } else {
-      if (belova::is_pythagorean(a, b, current)) {
+      if (belova::isPythagorean(a, b, current)) {
         ++triples;
       }
       a = b;
