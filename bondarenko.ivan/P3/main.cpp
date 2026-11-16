@@ -18,16 +18,13 @@ namespace bondarenko {
     output << "\n";
   }
 
-  void problem_a(std::ofstream &output, int rows, int cols, int **matrix)
+  void problemA(std::ofstream &output, int rows, int cols, int **matrix)
   {
-    for (int layer = 0;
-         layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
+    for (int layer = 0; layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-          if ((i >= layer && i <= rows - layer - 1 && j >= layer &&
-               j <= cols - layer - 1) &&
-              (i == layer || i == rows - layer - 1 || j == layer ||
-               j == cols - layer - 1)) {
+          if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1)
+            && (i == layer || i == rows - layer - 1 || j == layer || j == cols - layer - 1)) {
             matrix[i][j] += (layer + 1);
           }
         }
@@ -36,14 +33,14 @@ namespace bondarenko {
     writeToFile(output, rows, cols, matrix);
   }
 
-  void problem_b(std::ofstream &output, int rows, int cols, int **matrix)
+  void problemB(std::ofstream &output, int rows, int cols, int **matrix)
   {
-    int minDiagonal = -(rows - 2);
-    int maxDiagonal = cols - 2;
+    const int min_diagonal = -(rows - 2);
+    const int max_diagonal = cols - 2;
 
     int count = 0;
 
-    for (int diagonal = minDiagonal; diagonal <= maxDiagonal; diagonal++) {
+    for (int diagonal = min_diagonal; diagonal <= max_diagonal; diagonal++) {
       bool flag = true;
       for (int i = 0; i < rows; i++) {
         if (!flag) {
@@ -100,10 +97,10 @@ namespace bondarenko {
     fillMatrix(input, rows, cols, pointers);
 
     copy_matrix(pointers, copyPointers, rows, cols);
-    problem_a(output, rows, cols, copyPointers);
+    problemA(output, rows, cols, copyPointers);
 
     copy_matrix(pointers, copyPointers, rows, cols);
-    problem_b(output, rows, cols, copyPointers);
+    problemB(output, rows, cols, copyPointers);
   }
 
   void process_dynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
@@ -119,10 +116,10 @@ namespace bondarenko {
     fillMatrix(input, rows, cols, matrix);
 
     copy_matrix(matrix, copyMatrix, rows, cols);
-    problem_a(output, rows, cols, copyMatrix);
+    problemA(output, rows, cols, copyMatrix);
 
     copy_matrix(matrix, copyMatrix, rows, cols);
-    problem_b(output, rows, cols, copyMatrix);
+    problemB(output, rows, cols, copyMatrix);
 
     for (int i = 0; i < rows; i++) {
       delete[] matrix[i];
