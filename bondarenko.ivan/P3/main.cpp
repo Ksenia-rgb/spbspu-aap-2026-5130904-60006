@@ -20,7 +20,8 @@ namespace bondarenko {
 
   void problemA(std::ofstream &output, int rows, int cols, int **matrix)
   {
-    for (int layer = 0; layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
+    for (int layer = 0;
+         layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
           if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1)
@@ -64,7 +65,7 @@ namespace bondarenko {
   {
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {
-        if(!(input >> matrix[i][j])) {
+        if (!(input >> matrix[i][j])) {
           return false;
         }
       }
@@ -122,8 +123,8 @@ namespace bondarenko {
       copy_matrix[i] = new int[cols];
     }
     bool flag = fillMatrix(input, rows, cols, matrix);
-      
-    if(flag) {
+
+    if (flag) {
       copyMatrix(matrix, copy_matrix, rows, cols);
       problemA(output, rows, cols, copy_matrix);
 
@@ -178,7 +179,7 @@ int main(int argc, char *argv[])
 
   if (num == "1") {
     try {
-      if(!bondarenko::processStatic(input, output, rows, cols)) {
+      if (!bondarenko::processStatic(input, output, rows, cols)) {
         std::cerr << "Wrong array arguments\n";
         return bondarenko::WRONG_ARRAY;
       }
@@ -188,7 +189,7 @@ int main(int argc, char *argv[])
     }
   } else if (num == "2") {
     try {
-      if(!bondarenko::processDynamic(input, output, rows, cols)) {
+      if (!bondarenko::processDynamic(input, output, rows, cols)) {
         std::cerr << "Wrong array arguments\n";
         return bondarenko::WRONG_ARRAY;
       }
