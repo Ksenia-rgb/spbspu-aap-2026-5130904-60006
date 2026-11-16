@@ -97,7 +97,7 @@ namespace bondarenko {
       copy_pointers[i] = copy_matrix[i];
     }
 
-    if(!fillMatrix(input, rows, cols, pointers)) {
+    if (!fillMatrix(input, rows, cols, pointers)) {
       return false;
     }
 
@@ -111,37 +111,34 @@ namespace bondarenko {
 
   bool processDynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
-    try {
-      int **const matrix = new int *[rows];
-      int **const copy_matrix = new int *[rows];
-
-      for (int i = 0; i < rows; i++) {
-        matrix[i] = new int[cols];
-        copy_matrix[i] = new int[cols];
-      }
-      bool flag;
-      if(!fillMatrix(input, rows, cols, matrix)) {
-
-        copyMatrix(matrix, copy_matrix, rows, cols);
-        problemA(output, rows, cols, copy_matrix);
-
-        copyMatrix(matrix, copy_matrix, rows, cols);
-        problemB(output, rows, cols, copy_matrix);
-        flag = true;
-      } else {
-        flag = false;
-      }
-      for (int i = 0; i < rows; i++) {
-        delete[] matrix[i];
-        delete[] copy_matrix[i];
-      }
-
-      delete[] matrix;
-      delete[] copy_matrix;
-      return flag;
-    } catch (...) {
-      throw;
+    if (rows == 0 || cols == 0) {
+      return true;
     }
+    int **const matrix = new int *[rows];
+    int **const copy_matrix = new int *[rows];
+
+    for (int i = 0; i < rows; i++) {
+      matrix[i] = new int[cols];
+      copy_matrix[i] = new int[cols];
+    }
+    bool flag = fillMatrix(input, rows, cols, matrix);
+      
+    if(flag) {
+      copyMatrix(matrix, copy_matrix, rows, cols);
+      problemA(output, rows, cols, copy_matrix);
+
+      copyMatrix(matrix, copy_matrix, rows, cols);
+      problemB(output, rows, cols, copy_matrix);
+    }
+
+    for (int i = 0; i < rows; i++) {
+      delete[] matrix[i];
+      delete[] copy_matrix[i];
+    }
+
+    delete[] matrix;
+    delete[] copy_matrix;
+    return flag;
   }
 }
 int main(int argc, char *argv[])
