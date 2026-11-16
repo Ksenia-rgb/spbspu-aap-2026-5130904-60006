@@ -82,7 +82,7 @@ namespace bondarenko {
   {
     constexpr int MAX_ROWS = 100;
     constexpr int MAX_COLS = 100;
-    
+
     try {
       int matrix[MAX_ROWS][MAX_COLS];
       int *pointers[MAX_ROWS];
@@ -110,8 +110,8 @@ namespace bondarenko {
   void processDynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
     try {
-      int **const matrix = new int*[rows];
-      int **const copy_matrix = new int*[rows];
+      int **const matrix = new int *[rows];
+      int **const copy_matrix = new int *[rows];
 
       for (int i = 0; i < rows; i++) {
         matrix[i] = new int[cols];
