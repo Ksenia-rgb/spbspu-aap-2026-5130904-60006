@@ -20,8 +20,7 @@ namespace bondarenko {
 
   void problemA(std::ofstream &output, int rows, int cols, int **matrix)
   {
-    for (int layer = 0;
-         layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
+    for (int layer = 0; layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
           if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1)
@@ -122,7 +121,7 @@ namespace bondarenko {
       matrix[i] = new int[cols];
       copy_matrix[i] = new int[cols];
     }
-    bool flag = fillMatrix(input, rows, cols, matrix);
+    const bool flag = fillMatrix(input, rows, cols, matrix);
 
     if (flag) {
       copyMatrix(matrix, copy_matrix, rows, cols);
