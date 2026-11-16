@@ -3,7 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-namespace bondarenko {
+namespace bondarenko
+{
   const int INVALID_ARGUMENTS = 1;
   const int WRONG_ARRAY = 2;
 
@@ -20,7 +21,8 @@ namespace bondarenko {
 
   void problemA(std::ofstream &output, int rows, int cols, int **matrix)
   {
-    for (int layer = 0; layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
+    for (int layer = 0;
+         layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
           if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1)
@@ -130,7 +132,7 @@ namespace bondarenko {
     delete[] copy_matrix;
   }
 }
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
   if (argc != 4) {
     std::cerr << "Invalid count of arguments\n";
