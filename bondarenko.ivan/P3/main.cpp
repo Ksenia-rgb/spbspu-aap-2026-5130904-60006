@@ -23,8 +23,7 @@ namespace bondarenko {
     for (int layer = 0; layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-          if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1)
-            && (i == layer || i == rows - layer - 1 || j == layer || j == cols - layer - 1)) {
+          if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1) && (i == layer || i == rows - layer - 1 || j == layer || j == cols - layer - 1)) {
             matrix[i][j] += (layer + 1);
           }
         }
@@ -106,7 +105,7 @@ namespace bondarenko {
   void processDynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
     int **matrix = new int *[rows];
-    const int **copy_matrix = new int *[rows];
+    int **copy_matrix = new int *[rows];
 
     for (int i = 0; i < rows; i++) {
       matrix[i] = new int[cols];
