@@ -69,7 +69,7 @@ namespace bondarenko {
     }
   }
 
-  void copy_matrix(int **original, int **copy, int rows, int cols)
+  void copyMatrix(int **original, int **copy, int rows, int cols)
   {
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {
@@ -78,7 +78,7 @@ namespace bondarenko {
     }
   }
 
-  void process_static(std::ifstream &input, std::ofstream &output, int rows, int cols)
+  void processStatic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
     constexpr int MAX_ROWS = 100;
     constexpr int MAX_COLS = 100;
@@ -86,56 +86,57 @@ namespace bondarenko {
     int matrix[MAX_ROWS][MAX_COLS];
     int *pointers[MAX_ROWS];
 
-    int copyMatrix[MAX_ROWS][MAX_COLS];
-    int *copyPointers[MAX_ROWS];
+    int copy_matrix[MAX_ROWS][MAX_COLS];
+    int *copy_pointers[MAX_ROWS];
 
     for (int i = 0; i < rows; i++) {
       pointers[i] = matrix[i];
-      copyPointers[i] = copyMatrix[i];
+      copy_pointers[i] = copy_matrix[i];
     }
 
     fillMatrix(input, rows, cols, pointers);
 
-    copy_matrix(pointers, copyPointers, rows, cols);
-    problemA(output, rows, cols, copyPointers);
+    copyMatrix(pointers, copy_pointers, rows, cols);
+    problemA(output, rows, cols, copy_pointers);
 
-    copy_matrix(pointers, copyPointers, rows, cols);
-    problemB(output, rows, cols, copyPointers);
+    copyMatrix(pointers, copy_pointers, rows, cols);
+    problemB(output, rows, cols, copy_pointers);
   }
 
-  void process_dynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
+  void processDynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
     int **matrix = new int *[rows];
-    int **copyMatrix = new int *[rows];
+    const int **copy_matrix = new int *[rows];
 
     for (int i = 0; i < rows; i++) {
       matrix[i] = new int[cols];
-      copyMatrix[i] = new int[cols];
+      copy_matrix[i] = new int[cols];
     }
 
     fillMatrix(input, rows, cols, matrix);
 
-    copy_matrix(matrix, copyMatrix, rows, cols);
-    problemA(output, rows, cols, copyMatrix);
+    copyMatrix(matrix, copy_matrix, rows, cols);
+    problemA(output, rows, cols, copy_matrix);
 
-    copy_matrix(matrix, copyMatrix, rows, cols);
-    problemB(output, rows, cols, copyMatrix);
+    copyMatrix(matrix, copy_matrix, rows, cols);
+    problemB(output, rows, cols, copy_matrix);
 
     for (int i = 0; i < rows; i++) {
       delete[] matrix[i];
-      delete[] copyMatrix[i];
+      delete[] copy_matrix[i];
     }
 
     delete[] matrix;
-    delete[] copyMatrix;
+    delete[] copy_matrix;
   }
 }
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
   if (argc != 4) {
     std::cerr << "Invalid count of arguments\n";
     return bondarenko::INVALID_ARGUMENTS;
   }
-  std::string num = argv[1];
+  const std::string num = argv[1];
   if (num != "1" && num != "2") {
     std::cerr << "Invalid argument\n";
     return bondarenko::INVALID_ARGUMENTS;
@@ -165,9 +166,9 @@ int main(int argc, char *argv[]) {
   }
 
   if (num == "1") {
-    bondarenko::process_static(input, output, rows, cols);
+    bondarenko::processStatic(input, output, rows, cols);
   } else if (num == "2") {
-    bondarenko::process_dynamic(input, output, rows, cols);
+    bondarenko::processDynamic(input, output, rows, cols);
   } else {
     return bondarenko::INVALID_ARGUMENTS;
   }
