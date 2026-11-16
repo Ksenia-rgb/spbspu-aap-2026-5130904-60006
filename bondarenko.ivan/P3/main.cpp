@@ -60,13 +60,16 @@ namespace bondarenko {
     output << count;
   }
 
-  void fillMatrix(std::ifstream &input, int rows, int cols, int **matrix)
+  bool fillMatrix(std::ifstream &input, int rows, int cols, int **matrix)
   {
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {
-        input >> matrix[i][j];
+        if(!(input >> matrix[i][j])) {
+          return false;
+        }
       }
     }
+    return true;
   }
 
   void copyMatrix(int **original, int **copy, int rows, int cols)
@@ -78,36 +81,35 @@ namespace bondarenko {
     }
   }
 
-  void processStatic(std::ifstream &input, std::ofstream &output, int rows, int cols)
+  bool processStatic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
     constexpr int MAX_ROWS = 100;
     constexpr int MAX_COLS = 100;
 
-    try {
-      int matrix[MAX_ROWS][MAX_COLS];
-      int *pointers[MAX_ROWS];
+    int matrix[MAX_ROWS][MAX_COLS];
+    int *pointers[MAX_ROWS];
 
-      int copy_matrix[MAX_ROWS][MAX_COLS];
-      int *copy_pointers[MAX_ROWS];
+    int copy_matrix[MAX_ROWS][MAX_COLS];
+    int *copy_pointers[MAX_ROWS];
 
-      for (int i = 0; i < rows; i++) {
-        pointers[i] = matrix[i];
-        copy_pointers[i] = copy_matrix[i];
-      }
-
-      fillMatrix(input, rows, cols, pointers);
-
-      copyMatrix(pointers, copy_pointers, rows, cols);
-      problemA(output, rows, cols, copy_pointers);
-
-      copyMatrix(pointers, copy_pointers, rows, cols);
-      problemB(output, rows, cols, copy_pointers);
-    } catch (...) {
-      throw;
+    for (int i = 0; i < rows; i++) {
+      pointers[i] = matrix[i];
+      copy_pointers[i] = copy_matrix[i];
     }
+
+    if(!fillMatrix(input, rows, cols, pointers)) {
+      return false;
+    }
+
+    copyMatrix(pointers, copy_pointers, rows, cols);
+    problemA(output, rows, cols, copy_pointers);
+
+    copyMatrix(pointers, copy_pointers, rows, cols);
+    problemB(output, rows, cols, copy_pointers);
+    return true;
   }
 
-  void processDynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
+  bool processDynamic(std::ifstream &input, std::ofstream &output, int rows, int cols)
   {
     try {
       int **const matrix = new int *[rows];
@@ -117,15 +119,18 @@ namespace bondarenko {
         matrix[i] = new int[cols];
         copy_matrix[i] = new int[cols];
       }
+      bool flag;
+      if(!fillMatrix(input, rows, cols, matrix)) {
 
-      fillMatrix(input, rows, cols, matrix);
+        copyMatrix(matrix, copy_matrix, rows, cols);
+        problemA(output, rows, cols, copy_matrix);
 
-      copyMatrix(matrix, copy_matrix, rows, cols);
-      problemA(output, rows, cols, copy_matrix);
-
-      copyMatrix(matrix, copy_matrix, rows, cols);
-      problemB(output, rows, cols, copy_matrix);
-
+        copyMatrix(matrix, copy_matrix, rows, cols);
+        problemB(output, rows, cols, copy_matrix);
+        flag = true;
+      } else {
+        flag = false;
+      }
       for (int i = 0; i < rows; i++) {
         delete[] matrix[i];
         delete[] copy_matrix[i];
@@ -133,6 +138,7 @@ namespace bondarenko {
 
       delete[] matrix;
       delete[] copy_matrix;
+      return flag;
     } catch (...) {
       throw;
     }
@@ -175,14 +181,20 @@ int main(int argc, char *argv[])
 
   if (num == "1") {
     try {
-      bondarenko::processStatic(input, output, rows, cols);
+      if(!bondarenko::processStatic(input, output, rows, cols)) {
+        std::cerr << "Wrong array arguments\n";
+        return bondarenko::WRONG_ARRAY;
+      }
     } catch (...) {
       std::cerr << "Cannot alloc static matrix\n";
       return bondarenko::WRONG_ARRAY;
     }
   } else if (num == "2") {
     try {
-      bondarenko::processDynamic(input, output, rows, cols);
+      if(!bondarenko::processDynamic(input, output, rows, cols)) {
+        std::cerr << "Wrong array arguments\n";
+        return bondarenko::WRONG_ARRAY;
+      }
     } catch (...) {
       std::cerr << "Cannot alloc dynamic matrix\n";
       return bondarenko::WRONG_ARRAY;
