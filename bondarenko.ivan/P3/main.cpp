@@ -23,7 +23,8 @@ namespace bondarenko {
     for (int layer = 0; layer < std::min(rows, cols) / 2 + std::min(rows, cols) % 2; layer++) {
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-          if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1) && (i == layer || i == rows - layer - 1 || j == layer || j == cols - layer - 1)) {
+          if ((i >= layer && i <= rows - layer - 1 && j >= layer && j <= cols - layer - 1)
+              && (i == layer || i == rows - layer - 1 || j == layer || j == cols - layer - 1)) {
             matrix[i][j] += (layer + 1);
           }
         }
