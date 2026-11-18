@@ -7,6 +7,10 @@ namespace haidov {
   const int calculation_error = 2;
   const int invalid_input = 1;
   const size_t MAX_LEN = 10000;
+  const int UNDEFINED = 0;
+  const int TYPE_STATIC = 1;
+  const int TYPE_DYNAMIC = 2;
+  const int CORRECT_ARGUMENT_AMOUNT = 4;
 
   int sedlo(const int* data, size_t n, size_t m)
   {
@@ -47,18 +51,18 @@ namespace haidov {
 
   int lab(int argc, char** argv)
   {
-    if (argc != 4) {
+    if (argc != CORRECT_ARGUMENT_AMOUNT) {
       std::cerr << "Invalid arguments" << std::endl;
       return invalid_input;
     }
-    int type = 0;
+    int type = UNDEFINED;
     if (argv[1] == nullptr) {
       std::cerr << "Invalid type" << std::endl;
       return invalid_input;
     } else if (argv[1][0] == '1' && argv[1][1] == '\0') {
-      type = 1;
+      type = TYPE_STATIC;
     } else if (argv[1][0] == '2' && argv[1][1] == '\0') {
-      type = 2;
+      type = TYPE_DYNAMIC;
     } else {
       std::cerr << "Invalid type" << std::endl;
       return invalid_input;
@@ -90,14 +94,14 @@ namespace haidov {
       return correct_result;
     }
     int* data = nullptr;
-    int fixed_sized[MAX_LEN]{};
-    if (type == 1) {
+    if (type == TYPE_STATIC) {
       if (n > MAX_LEN / m) {
         std::cerr << "Invalid matrix size, too big" << std::endl;
         return calculation_error;
       }
+      int fixed_sized[MAX_LEN]{};
       data = fixed_sized;
-    } else if (type == 2) {
+    } else if (type == TYPE_DYNAMIC) {
       if (n > std::numeric_limits< size_t >::max() / m) {
         std::cerr << "Invalid matrix size, too big" << std::endl;
         return calculation_error;
@@ -115,7 +119,7 @@ namespace haidov {
     for (size_t i = 0; i < n * m; ++i) {
       if (!(input >> data[i])) {
         std::cerr << "Input is invalid" << std::endl;
-        if (type == 2) {
+        if (type == TYPE_DYNAMIC) {
           delete[] data;
         }
         return calculation_error;
@@ -123,7 +127,7 @@ namespace haidov {
     }
     output << localMin(data, n, m) << "\n";
     output << sedlo(data, n, m) << "\n";
-    if (type == 2) {
+    if (type == TYPE_DYNAMIC) {
       delete[] data;
     }
     return correct_result;
