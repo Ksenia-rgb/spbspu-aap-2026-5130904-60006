@@ -9,10 +9,10 @@ namespace batyushov
 {
   const int allocError = 1;
   const std::size_t startCapacity = 16;
-  const char * const allocErrorMessage = "Ошибка: не удалось разместить строку в динамической памяти\n";
-  const char * const inputErrorMessage = "Ошибка: не удалось прочитать строку\n";
+  const char *const allocErrorMessage = "Ошибка: не удалось разместить строку в динамической памяти\n";
+  const char *const inputErrorMessage = "Ошибка: не удалось прочитать строку\n";
 
-  std::size_t str_len(const char * src) noexcept
+  std::size_t str_len(const char *src) noexcept
   {
     std::size_t len = 0;
     while (src[len] != '\0')
@@ -22,7 +22,7 @@ namespace batyushov
     return len;
   }
 
-  char * remove_dec(char * dest, const char * src) noexcept
+  char *remove_dec(char *dest, const char *src) noexcept
   {
     std::size_t j = 0;
     for (std::size_t i = 0; src[i] != '\0'; ++i)
@@ -36,7 +36,7 @@ namespace batyushov
     return dest;
   }
 
-  char * upp_low(char * dest, const char * src) noexcept
+  char *upp_low(char *dest, const char *src) noexcept
   {
     std::size_t i = 0;
     for (; src[i] != '\0'; ++i)
@@ -48,11 +48,11 @@ namespace batyushov
     return dest;
   }
 
-  char * read_line()
+  char *read_line()
   {
     std::size_t capacity = startCapacity;
     std::size_t size = 0;
-    char * buf = new char[capacity];
+    char *buf = new char[capacity];
 
     char symbol = 0;
     while (std::cin.get(symbol) && symbol != '\n')
@@ -65,7 +65,7 @@ namespace batyushov
           throw std::length_error("string is too long");
         }
         const std::size_t new_capacity = capacity * 2;
-        char * new_buf = nullptr;
+        char *new_buf = nullptr;
         try
         {
           new_buf = new char[new_capacity];
@@ -91,8 +91,8 @@ namespace batyushov
 
   int run()
   {
-    char * line = nullptr;
-    char * result = nullptr;
+    char *line = nullptr;
+    char *result = nullptr;
 
     try
     {
