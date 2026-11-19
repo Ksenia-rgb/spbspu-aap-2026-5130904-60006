@@ -9,7 +9,7 @@ namespace zorin
 
   bool isDivisible(int a, int b)
   {
-    return a % b == 0;
+    return b == -1 || a % b == 0;
   }
 }
 
@@ -43,7 +43,10 @@ int main()
 
     prev_prev = prev;
     prev = value;
-    ++count;
+    if (count < 2)
+    {
+      ++count;
+    }
   }
 
   if (!finished)
