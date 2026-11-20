@@ -2,7 +2,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <new>
 #include "matrix.hpp"
 
 int main(int argc, char** argv)
@@ -34,9 +33,9 @@ int main(int argc, char** argv)
       return processing_error;
     }
   }
-  catch (const std::bad_alloc&)
+  catch (...)
   {
-    std::cerr << "Memory allocation failed\n";
+    std::cerr << "Matrix processing failed\n";
     return processing_error;
   }
   input.close();
