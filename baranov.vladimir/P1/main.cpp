@@ -1,4 +1,3 @@
-#include <cctype>
 #include <cstddef>
 #include <iostream>
 #include <limits>
@@ -20,10 +19,13 @@ namespace baranov {
     bool even_overflow = false;
 
     while (std::cin >> number) {
-      const auto next = std::cin.eof() ? std::char_traits< char >::eof() : std::cin.peek();
-      if (next != std::char_traits< char >::eof() && !std::isspace(static_cast< unsigned char >(next))) {
-        std::cerr << "Input error: expected whole integer tokens\n";
-        return input_error;
+      if (!std::cin.eof()) {
+        char separator = '\0';
+        if (std::cin.get(separator) && separator != ' ' && separator != '\n' && separator != '\t'
+            && separator != '\r' && separator != '\v' && separator != '\f') {
+          std::cerr << "Input error: expected whole integer tokens\n";
+          return input_error;
+        }
       }
       if (number == 0) {
         break;
