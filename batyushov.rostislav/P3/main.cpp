@@ -75,8 +75,8 @@ namespace batyushov
 
   size_t longestRow(const int * m, size_t rows, size_t cols)
   {
-    size_t maxLen = 0;
-    size_t maxRow = 0;
+    size_t max_len = 0;
+    size_t max_row = 0;
     for (size_t i = 0; i < rows; ++i)
     {
       size_t run = 0;
@@ -90,17 +90,17 @@ namespace batyushov
         {
           run = 1;
         }
-        if (run > maxLen)
+        if (run > max_len)
         {
-          maxLen = run;
-          maxRow = i + 1;
+          max_len = run;
+          max_row = i + 1;
         }
       }
     }
-    return maxRow;
+    return max_row;
   }
 
-  int run(int * data, size_t rows, size_t cols, size_t size, std::istream & in, const char * outFile)
+  int run(int * data, size_t rows, size_t cols, size_t size, std::istream & in, const char * out_file)
   {
     for (size_t i = 0; i < size; ++i)
     {
@@ -111,14 +111,14 @@ namespace batyushov
       }
     }
 
-    size_t row = longestRow(data, rows, cols);
+    const size_t row = longestRow(data, rows, cols);
     if (!spiral(data, rows, cols))
     {
       std::cerr << "Число получилось слишком маленьким\n";
       return data_err;
     }
 
-    std::ofstream out(outFile);
+    std::ofstream out(out_file);
     out << rows << " " << cols;
     for (size_t i = 0; i < size; ++i)
     {
@@ -143,7 +143,7 @@ int main(int argc, char ** argv)
   }
 
   char * end = nullptr;
-  long num = std::strtol(argv[1], &end, 10);
+  const long num = std::strtol(argv[1], &end, 10);
   if (end == argv[1] || *end != '\0' || (num != 1 && num != 2))
   {
     std::cerr << "Первый аргумент должен быть 1 или 2\n";
@@ -185,13 +185,13 @@ int main(int argc, char ** argv)
     return batyushov::run(stack, r, c, size, input, argv[3]);
   }
 
-  int * heap = new (std::nothrow) int[size];
+  int * const heap = new (std::nothrow) int[size];
   if (heap == nullptr)
   {
     std::cerr << "Не хватило памяти\n";
     return batyushov::data_err;
   }
-  int result = batyushov::run(heap, r, c, size, input, argv[3]);
+  const int result = batyushov::run(heap, r, c, size, input, argv[3]);
   delete[] heap;
   return result;
 }
