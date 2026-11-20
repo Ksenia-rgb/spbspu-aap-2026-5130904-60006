@@ -7,7 +7,8 @@
 namespace baranov
 {
   std::size_t countLocalMax(const int* matrix, std::size_t rows, std::size_t cols);
-  bool readAndCount(std::istream& input, bool dynamic, std::size_t& result, bool& empty);
+  long long maxSumParallelMain(const int* matrix, std::size_t rows, std::size_t cols);
+  bool readAndProcess(std::istream& input, bool dynamic, std::size_t& result, long long& diagonal_sum, bool& empty);
 }
 
 #endif

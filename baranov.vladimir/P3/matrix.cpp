@@ -48,7 +48,36 @@ std::size_t baranov::countLocalMax(const int* matrix, std::size_t rows, std::siz
   return count;
 }
 
-bool baranov::readAndCount(std::istream& input, bool dynamic, std::size_t& result, bool& empty)
+long long baranov::maxSumParallelMain(const int* matrix, std::size_t rows, std::size_t cols)
+{
+  const std::size_t size = rows < cols ? rows : cols;
+  if (size < 2)
+  {
+    return 0;
+  }
+  long long maximum = std::numeric_limits< long long >::lowest();
+  for (std::size_t offset = 1; offset < size; ++offset)
+  {
+    long long upper_sum = 0;
+    long long lower_sum = 0;
+    for (std::size_t index = 0; index < size - offset; ++index)
+    {
+      upper_sum += matrix[index * cols + index + offset];
+      lower_sum += matrix[(index + offset) * cols + index];
+    }
+    if (upper_sum > maximum)
+    {
+      maximum = upper_sum;
+    }
+    if (lower_sum > maximum)
+    {
+      maximum = lower_sum;
+    }
+  }
+  return maximum;
+}
+
+bool baranov::readAndProcess(std::istream& input, bool dynamic, std::size_t& result, long long& diagonal_sum, bool& empty)
 {
   long long rows_input = 0;
   long long cols_input = 0;
@@ -82,6 +111,7 @@ bool baranov::readAndCount(std::istream& input, bool dynamic, std::size_t& resul
       return false;
     }
     result = countLocalMax(matrix, rows, cols);
+    diagonal_sum = maxSumParallelMain(matrix, rows, cols);
     return true;
   }
   int* const matrix = new int[count];
@@ -98,6 +128,7 @@ bool baranov::readAndCount(std::istream& input, bool dynamic, std::size_t& resul
   if (success)
   {
     result = countLocalMax(matrix, rows, cols);
+    diagonal_sum = maxSumParallelMain(matrix, rows, cols);
   }
   delete[] matrix;
   return success;

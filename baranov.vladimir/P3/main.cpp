@@ -24,10 +24,11 @@ int main(int argc, char** argv)
     return argument_error;
   }
   std::size_t result = 0;
+  long long diagonal_sum = 0;
   bool empty = false;
   try
   {
-    if (!baranov::readAndCount(input, std::strcmp(argv[1], "2") == 0, result, empty))
+    if (!baranov::readAndProcess(input, std::strcmp(argv[1], "2") == 0, result, diagonal_sum, empty))
     {
       std::cerr << "Invalid matrix\n";
       return processing_error;
@@ -53,6 +54,7 @@ int main(int argc, char** argv)
   {
     output << result << '\n';
   }
+  output << diagonal_sum << '\n';
   output.close();
   if (!output)
   {
