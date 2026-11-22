@@ -61,6 +61,10 @@ namespace haidov {
       delete[] str;
       str = new_str;
     }
+    if (str_len == 0) {
+      std::cerr << "Memory allocation error";
+      return memory_error;
+    }
     str[str_len] = '\0';
     char* result = nullptr;
     try {
