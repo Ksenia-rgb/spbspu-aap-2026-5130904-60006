@@ -10,7 +10,7 @@ namespace haidov {
   const char to_replace = 'b';
   const char to_replace_with = 'c';
 
-  void cmn_sym(const char* str1, const char* str2, char* result)
+  void cmnSym(const char* str1, const char* str2, char* result)
   {
     size_t i = 0;
     size_t r = 0;
@@ -27,7 +27,7 @@ namespace haidov {
     }
   }
 
-  void rpl_sym(const char* str, char to_replace, char to_replace_with, char* result)
+  void rplSym(const char* str, char to_replace, char to_replace_with, char* result)
   {
     size_t i = 0;
     while (str[i] != '\0') {
