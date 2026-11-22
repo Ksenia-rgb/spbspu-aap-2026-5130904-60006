@@ -6,7 +6,7 @@ namespace haidov {
   const int correct_result = 0;
   const int memory_error = 1;
 
-  const char* second_string = "abc ef";
+  const char* const second_string = "abc ef";
   const char to_replace = 'b';
   const char to_replace_with = 'c';
 
