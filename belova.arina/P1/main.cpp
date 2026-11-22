@@ -10,12 +10,6 @@ namespace belova {
     return x * x + y * y == z * z;
   }
 }
-    unsigned long long x = a < 0 ? -static_cast< long long >(a) : a;
-    unsigned long long y = b < 0 ? -static_cast< long long >(b) : b;
-    unsigned long long z = c < 0 ? -static_cast< long long >(c) : c;
-    return x * x + y * y == z * z;
-  }
-}
 int main()
 {
   int previous = 0;
@@ -32,12 +26,11 @@ int main()
       return 0;
     }
     if (count > 0 && ((previous < 0 && current > 0) || (previous > 0 && current < 0))) {
-      ++sign_changes;
-      if (signChanges == std::numeric_limits< int >::max()) {
+      if (sign_changes == std::numeric_limits< int >::max()) {
         std::cerr << "Error: sign Changes counter overflow\n";
         return ERROR_CODE;
       }
-      ++signChanges;
+      ++sign_changes;
     }
     if (count == 0) {
       a = current;
