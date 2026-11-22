@@ -14,9 +14,9 @@ namespace haidov {
   {
     size_t i = 0;
     size_t r = 0;
-    while (str1[i] != 0) {
+    while (str1[i] != '\0') {
       size_t j = 0;
-      while (str2[j] != 0) {
+      while (str2[j] != '\0') {
         if (str1[i] == str2[j]) {
           result[r] = str1[i];
           r++;
@@ -25,8 +25,8 @@ namespace haidov {
       }
       i++;
     }
-    while (result[r] != 0) {
-      result[r] = 0;
+    while (result[r] != '\0') {
+      result[r] = '\0';
       r++;
     }
   }
@@ -34,7 +34,7 @@ namespace haidov {
   void rplSym(const char* str, char to_replace, char to_replace_with, char* result)
   {
     size_t i = 0;
-    while (str[i] != 0) {
+    while (str[i] != '\0') {
       if (str[i] == to_replace) {
         result[i] = to_replace_with;
       } else {
@@ -69,7 +69,7 @@ namespace haidov {
       std::cerr << "Memory allocation error";
       return memory_error;
     }
-    str[str_len] = 0;
+    str[str_len] = '\0';
     char* result = nullptr;
     try {
       result = new char[str_len + 1];
@@ -87,8 +87,8 @@ namespace haidov {
       return memory_error;
     }
     size_t i = 0;
-    while (result[i] != 0) {
-      result[i] = 0;
+    while (result[i] != '\0') {
+      result[i] = '\0';
       i++;
     }
     cmnSym(str, second_string, result);
