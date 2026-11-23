@@ -42,6 +42,7 @@ namespace haidov {
       }
       i++;
     }
+    result[i] = '\0';
   }
 
   int lab()
@@ -85,24 +86,25 @@ namespace haidov {
     str[str_len - 1] = '\0';
     char* result = nullptr;
     try {
-      result = new char[str_len + 1];
+      result = new char[str_len];
     } catch (...) {
       std::cerr << "Memory allocation error";
+      delete[] str;
       return memory_error;
     }
-    result[str_len] = '\0';
+    result[str_len - 1] = '\0';
     rplSym(str, to_replace, to_replace_with, result);
-    result[str_len] = '\0';
     std::cout << result << std::endl;
     delete[] result;
     char* result2 = nullptr;
     try {
-      result2 = new char[str_len + 1];
+      result2 = new char[str_len];
     } catch (...) {
       std::cerr << "Memory allocation error";
+      delete[] str;
       return memory_error;
     }
-    result2[str_len] = '\0';
+    result2[str_len - 1] = '\0';
     cmnSym(str, second_string, result2);
     std::cout << result2 << std::endl;
     delete[] result2;
