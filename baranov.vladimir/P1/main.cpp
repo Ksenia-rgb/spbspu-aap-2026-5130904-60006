@@ -19,14 +19,6 @@ namespace baranov {
     bool even_overflow = false;
 
     while (std::cin >> number) {
-      if (!std::cin.eof()) {
-        char separator = '\0';
-        if (std::cin.get(separator) && separator != ' ' && separator != '\n' && separator != '\t' && separator != '\r'
-            && separator != '\v' && separator != '\f') {
-          std::cerr << "Input error: expected whole integer tokens\n";
-          return input_error;
-        }
-      }
       if (number == 0) {
         break;
       }
