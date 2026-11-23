@@ -9,8 +9,10 @@ namespace batyushov
 {
   const int allocError = 1;
   const std::size_t startCapacity = 16;
-  const char *const allocErrorMessage = "Ошибка: не удалось разместить строку в динамической памяти\n";
-  const char *const inputErrorMessage = "Ошибка: не удалось прочитать строку\n";
+  const char *const allocErrorMessage =
+    "Ошибка: не удалось разместить строку в динамической памяти\n";
+  const char *const inputErrorMessage =
+    "Ошибка: не удалось прочитать строку\n";
 
   std::size_t str_len(const char *src) noexcept
   {
@@ -42,7 +44,14 @@ namespace batyushov
     for (; src[i] != '\0'; ++i)
     {
       const unsigned char symbol = static_cast< unsigned char >(src[i]);
-      dest[i] = std::isupper(symbol) ? static_cast< char >(std::tolower(symbol)) : src[i];
+      if (std::isupper(symbol))
+      {
+        dest[i] = static_cast< char >(std::tolower(symbol));
+      }
+      else
+      {
+        dest[i] = src[i];
+      }
     }
     dest[i] = '\0';
     return dest;
