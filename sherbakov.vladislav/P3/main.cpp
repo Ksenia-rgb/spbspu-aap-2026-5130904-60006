@@ -4,10 +4,14 @@
 
 namespace sherbakov {
 
-  const int ERR_ARGS = 1;
-  const int ERR_FILE = 2;
-  const int MAX_STATIC = 10000;
-  const long long MAX_TOTAL = 10000000LL;
+  const size_t ERR_ARGS = 1;
+  const size_t ERR_FILE = 2;
+  const size_t MAX_STATIC = 10000;
+  const size_t MAX_TOTAL = 10000000LL;
+
+  const size_t MODE_STATIC = 1;
+  const size_t MODE_DYNAMIC = 2;
+  const size_t EXPECTED_ARGS_COUNT = 4;
 
   bool getMode(const char* s, int& mode)
   {
@@ -15,22 +19,22 @@ namespace sherbakov {
       return false;
     }
     if (s[0] == '1' && s[1] == '\0') {
-      mode = 1;
+      mode = MODE_STATIC;
       return true;
     }
     if (s[0] == '2' && s[1] == '\0') {
-      mode = 2;
+      mode = MODE_DYNAMIC;
       return true;
     }
     return false;
   }
 
-  int countCols(const int* a, int rows, int cols)
+  size_t countCols(const int* a, size_t rows, size_t cols)
   {
-    int count = 0;
-    for (int j = 0; j < cols; ++j) {
+    size_t count = 0;
+    for (size_t j = 0; j < cols; ++j) {
       bool good = true;
-      for (int i = 1; i < rows; ++i) {
+      for (size_t i = 1; i < rows; ++i) {
         if (a[i * cols + j] == a[(i - 1) * cols + j]) {
           good = false;
           break;
@@ -43,35 +47,35 @@ namespace sherbakov {
     return count;
   }
 
-  long long maxSum(const int* a, int rows, int cols)
+  long long maxSum(const int* a, size_t rows, size_t cols)
   {
-    if (rows <= 0 || cols <= 0) {
+    if (rows == 0 || cols == 0) {
       return 0;
     }
 
     long long best = 0;
     bool found = false;
-    const int max_k = (rows - 1) + (cols - 1);
-    const int sec_k = cols - 1;
+    const size_t max_k = (rows - 1) + (cols - 1);
+    const size_t sec_k = cols - 1;
 
-    for (int k = 0; k <= max_k; ++k) {
+    for (size_t k = 0; k <= max_k; ++k) {
       if (k == sec_k) {
         continue;
       }
 
-      int i_min = k - (cols - 1);
-      if (i_min < 0) {
-        i_min = 0;
+      size_t i_min = 0;
+      if (k >= cols) {
+        i_min = k - (cols - 1);
       }
 
-      int i_max = k;
+      size_t i_max = k;
       if (i_max > rows - 1) {
         i_max = rows - 1;
       }
 
       long long sum = 0;
-      for (int i = i_min; i <= i_max; ++i) {
-        const int j = k - i;
+      for (size_t i = i_min; i <= i_max; ++i) {
+        const size_t j = k - i;
         sum += a[i * cols + j];
       }
 
@@ -91,7 +95,7 @@ int main(int argc, char** argv)
 {
   using namespace sherbakov;
 
-  if (argc != 4) {
+  if (argc != EXPECTED_ARGS_COUNT) {
     std::cerr << "Error: expected 3 arguments (mode input output)\n";
     return ERR_ARGS;
   }
@@ -118,26 +122,26 @@ int main(int argc, char** argv)
     std::cerr << "Error: negative dimensions\n";
     return ERR_FILE;
   }
-
+  
+  const size_t rows = static_cast< size_t >(rows_ll);
+  const size_t cols = static_cast< size_t >(cols_ll);
   const long long total_ll = rows_ll * cols_ll;
   if (total_ll > MAX_TOTAL) {
     std::cerr << "Error: matrix is too large\n";
     return ERR_FILE;
   }
 
-  const int rows = static_cast< int >(rows_ll);
-  const int cols = static_cast< int >(cols_ll);
-  const int total = static_cast< int >(total_ll);
+  const size_t total = static_cast< size_t >(total_ll);
 
-  int static_buf[MAX_STATIC];
   int* a = nullptr;
   bool dynamic = false;
 
-  if (mode == 1) {
+  if (mode == MODE_STATIC) {
     if (total > MAX_STATIC) {
       std::cerr << "Error: too many elements for static storage\n";
       return ERR_FILE;
     }
+    static int static_buf[MAX_STATIC];
     a = static_buf;
   } else {
     try {
@@ -150,7 +154,7 @@ int main(int argc, char** argv)
   }
 
   bool read_ok = true;
-  for (int k = 0; k < total; ++k) {
+  for (size_t k = 0; k < total; ++k) {
     if (!(in >> a[k])) {
       read_ok = false;
       break;
@@ -158,13 +162,18 @@ int main(int argc, char** argv)
   }
   if (!read_ok) {
     std::cerr << "Error: not enough matrix elements\n";
-    if (dynamic) {
-      delete[] a;
-    }
+    if (dynamic) delete[] a;
+    return ERR_FILE;
+  }
+  in >> std::ws;
+
+  if (!in.eof()) {
+    std::cerr << "Error: extra values after matrix\n";
+    if (dynamic) delete[] a;
     return ERR_FILE;
   }
 
-  const int task9_result = countCols(a, rows, cols);
+  const size_t task9_result = countCols(a, rows, cols);
   const long long task13_result = maxSum(a, rows, cols);
 
   if (dynamic) {
