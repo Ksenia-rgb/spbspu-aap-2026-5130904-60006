@@ -93,20 +93,16 @@ namespace haidov {
     rplSym(str, to_replace, to_replace_with, result);
     std::cout << result << std::endl;
     delete[] result;
+    char* result2 = nullptr;
     try {
-      result = new char[str_len + 1];
+      result2 = new char[str_len + 1];
     } catch (...) {
       std::cerr << "Memory allocation error";
       return memory_error;
     }
-    size_t i = 0;
-    while (result[i] != '\0') {
-      result[i] = '\0';
-      i++;
-    }
-    cmnSym(str, second_string, result);
-    std::cout << result << std::endl;
-    delete[] result;
+    cmnSym(str, second_string, result2);
+    std::cout << result2 << std::endl;
+    delete[] result2;
     delete[] str;
     return correct_result;
   }
