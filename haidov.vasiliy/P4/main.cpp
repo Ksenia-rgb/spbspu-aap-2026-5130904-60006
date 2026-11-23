@@ -82,7 +82,7 @@ namespace haidov {
     }
     delete[] str;
     str = new_str;
-    str[str_len] = '\0';
+    str[str_len - 1] = '\0';
     char* result = nullptr;
     try {
       result = new char[str_len + 1];
