@@ -90,6 +90,7 @@ namespace haidov {
       std::cerr << "Memory allocation error";
       return memory_error;
     }
+    result[str_len] = '\0';
     rplSym(str, to_replace, to_replace_with, result);
     std::cout << result << std::endl;
     delete[] result;
@@ -100,6 +101,7 @@ namespace haidov {
       std::cerr << "Memory allocation error";
       return memory_error;
     }
+    result2[str_len] = '\0';
     cmnSym(str, second_string, result2);
     std::cout << result2 << std::endl;
     delete[] result2;
