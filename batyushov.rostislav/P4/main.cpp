@@ -8,13 +8,12 @@
 namespace batyushov
 {
   const int allocError = 1;
+  const int inputError = 2;
   const std::size_t startCapacity = 16;
-  const char *const allocErrorMessage =
-    "Ошибка: не удалось разместить строку в динамической памяти\n";
-  const char *const inputErrorMessage =
-    "Ошибка: не удалось прочитать строку\n";
+  const char *const allocErrorMessage = "Error: memory allocation failed\n";
+  const char *const inputErrorMessage = "Error: failed to read input\n";
 
-  std::size_t str_len(const char *src) noexcept
+  std::size_t strLen(const char *src) noexcept
   {
     std::size_t len = 0;
     while (src[len] != '\0')
@@ -24,7 +23,7 @@ namespace batyushov
     return len;
   }
 
-  char *remove_dec(char *dest, const char *src) noexcept
+  char *removeDec(char *dest, const char *src) noexcept
   {
     std::size_t j = 0;
     for (std::size_t i = 0; src[i] != '\0'; ++i)
@@ -38,7 +37,7 @@ namespace batyushov
     return dest;
   }
 
-  char *upp_low(char *dest, const char *src) noexcept
+  char *uppLow(char *dest, const char *src) noexcept
   {
     std::size_t i = 0;
     for (; src[i] != '\0'; ++i)
@@ -57,7 +56,7 @@ namespace batyushov
     return dest;
   }
 
-  char *read_line()
+  char *readLine()
   {
     std::size_t capacity = startCapacity;
     std::size_t size = 0;
@@ -73,11 +72,11 @@ namespace batyushov
           delete[] buf;
           throw std::length_error("string is too long");
         }
-        const std::size_t new_capacity = capacity * 2;
-        char *new_buf = nullptr;
+        const std::size_t newCapacity = capacity * 2;
+        char *newBuf = nullptr;
         try
         {
-          new_buf = new char[new_capacity];
+          newBuf = new char[newCapacity];
         }
         catch (...)
         {
@@ -86,11 +85,11 @@ namespace batyushov
         }
         for (std::size_t i = 0; i < size; ++i)
         {
-          new_buf[i] = buf[i];
+          newBuf[i] = buf[i];
         }
         delete[] buf;
-        buf = new_buf;
-        capacity = new_capacity;
+        buf = newBuf;
+        capacity = newCapacity;
       }
       buf[size++] = symbol;
     }
@@ -105,27 +104,27 @@ namespace batyushov
 
     try
     {
-      line = read_line();
-      result = new char[str_len(line) + 1];
+      line = readLine();
+      result = new char[strLen(line) + 1];
     }
     catch (const std::exception &)
     {
       delete[] line;
       delete[] result;
       std::cerr << allocErrorMessage;
-      return batyushov::allocError;
+      return allocError;
     }
 
-    if (std::cin.bad())
+    if (std::cin.bad() || line[0] == '\0')
     {
       delete[] line;
       delete[] result;
       std::cerr << inputErrorMessage;
-      return batyushov::allocError;
+      return inputError;
     }
 
-    std::cout << remove_dec(result, line) << '\n';
-    std::cout << upp_low(result, line) << '\n';
+    std::cout << removeDec(result, line) << '\n';
+    std::cout << uppLow(result, line) << '\n';
 
     delete[] result;
     delete[] line;
