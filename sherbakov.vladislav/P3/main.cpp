@@ -122,7 +122,7 @@ int main(int argc, char** argv)
     std::cerr << "Error: negative dimensions\n";
     return ERR_FILE;
   }
-  
+
   const size_t rows = static_cast< size_t >(rows_ll);
   const size_t cols = static_cast< size_t >(cols_ll);
   const long long total_ll = rows_ll * cols_ll;
@@ -162,14 +162,18 @@ int main(int argc, char** argv)
   }
   if (!read_ok) {
     std::cerr << "Error: not enough matrix elements\n";
-    if (dynamic) delete[] a;
+    if (dynamic) {
+      delete[] a;
+    }
     return ERR_FILE;
   }
   in >> std::ws;
 
   if (!in.eof()) {
     std::cerr << "Error: extra values after matrix\n";
-    if (dynamic) delete[] a;
+    if (dynamic) {
+      delete[] a;
+    }
     return ERR_FILE;
   }
 
