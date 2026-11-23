@@ -100,7 +100,7 @@ namespace haidov {
         std::cerr << "Invalid matrix size, too big" << std::endl;
         return calculation_error;
       }
-      int fixed_sized[MAX_LEN]{};
+      static int fixed_sized[MAX_LEN]{};
       data = fixed_sized;
     } else if (type == TYPE_DYNAMIC) {
       if (n > std::numeric_limits< size_t >::max() / m) {
