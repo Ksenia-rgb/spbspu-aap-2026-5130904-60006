@@ -72,11 +72,11 @@ namespace batyushov
           delete[] buf;
           throw std::length_error("string is too long");
         }
-        const std::size_t newCapacity = capacity * 2;
-        char *newBuf = nullptr;
+        const std::size_t new_capacity = capacity * 2;
+        char *new_buf = nullptr;
         try
         {
-          newBuf = new char[newCapacity];
+          new_buf = new char[new_capacity];
         }
         catch (...)
         {
@@ -85,11 +85,11 @@ namespace batyushov
         }
         for (std::size_t i = 0; i < size; ++i)
         {
-          newBuf[i] = buf[i];
+          new_buf[i] = buf[i];
         }
         delete[] buf;
-        buf = newBuf;
-        capacity = newCapacity;
+        buf = new_buf;
+        capacity = new_capacity;
       }
       buf[size++] = symbol;
     }
