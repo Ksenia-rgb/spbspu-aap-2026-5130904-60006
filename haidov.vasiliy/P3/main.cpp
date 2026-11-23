@@ -52,7 +52,7 @@ namespace haidov {
 
   int lab(int argc, char** argv)
   {
-    if (argc != CORRECT_ARGUMENT_AMOUNT + 1) {
+    if (argc != CORRECT_ARGUMENT_AMOUNT) {
       std::cerr << "Invalid arguments" << std::endl;
       return invalid_input;
     }
