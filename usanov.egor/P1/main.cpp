@@ -1,99 +1,145 @@
+#include <cstddef>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
 
-const int exit_success = 0;
-const int exit_invalid_input = 1;
-const int exit_calc_error = 2;
-
-using Counter = unsigned long long;
-
-bool safeIncrement(Counter& counter)
+namespace usanov
 {
-  if (counter == std::numeric_limits< Counter >::max()) {
-    return false;
+  using Counter = unsigned long long;
+
+  Counter increment(Counter value)
+  {
+    if (value == std::numeric_limits< Counter >::max())
+    {
+      throw std::overflow_error("Counter overflow");
+    }
+    return value + 1;
   }
-  ++counter;
-  return true;
-}
 
-Counter absValue(int value)
-{
-  const Counter v = static_cast< Counter >(value);
-  return value < 0 ? 0ULL - v : v;
+  Counter absValue(int value)
+  {
+    const Counter v = static_cast< Counter >(value);
+    return value < 0 ? 0ULL - v : v;
+  }
+
+  class CounterGrtLss
+  {
+  public:
+    void next_n(int n)
+    {
+      if (elements_ >= 2 && previous1_ < previous2_ && previous1_ > n)
+      {
+        count_ = increment(count_);
+      }
+      previous2_ = previous1_;
+      previous1_ = n;
+      if (elements_ < 2)
+      {
+        ++elements_;
+      }
+    }
+
+    Counter result() const noexcept
+    {
+      return count_;
+    }
+
+  private:
+    int previous2_ = 0;
+    int previous1_ = 0;
+    std::size_t elements_ = 0;
+    Counter count_ = 0;
+  };
+
+  class CounterPthTrp
+  {
+  public:
+    void next_n(int n)
+    {
+      if (elements_ >= 2)
+      {
+        const Counter a = absValue(previous2_);
+        const Counter b = absValue(previous1_);
+        const Counter c = absValue(n);
+        if (a * a + b * b == c * c)
+        {
+          count_ = increment(count_);
+        }
+      }
+      previous2_ = previous1_;
+      previous1_ = n;
+      if (elements_ < 2)
+      {
+        ++elements_;
+      }
+    }
+
+    Counter result() const noexcept
+    {
+      return count_;
+    }
+
+  private:
+    int previous2_ = 0;
+    int previous1_ = 0;
+    std::size_t elements_ = 0;
+    Counter count_ = 0;
+  };
+
+  class SequenceStats
+  {
+  public:
+    void next_n(int n)
+    {
+      grt_.next_n(n);
+      pth_.next_n(n);
+    }
+
+    void print(std::ostream & out) const
+    {
+      out << grt_.result() << '\n' << pth_.result() << '\n';
+    }
+
+  private:
+    CounterGrtLss grt_;
+    CounterPthTrp pth_;
+  };
+
+  int process(std::istream & in, std::ostream & out, std::ostream & err)
+  {
+    SequenceStats stats;
+    int n = 0;
+    try
+    {
+      while (in >> n && n != 0)
+      {
+        stats.next_n(n);
+      }
+    }
+    catch (const std::overflow_error & e)
+    {
+      err << e.what() << "\n";
+      return 2;
+    }
+
+    if (!in)
+    {
+      err << "invalid input\n";
+      return 1;
+    }
+    in >> std::ws;
+    if (!in.eof())
+    {
+      err << "invalid input after zero\n";
+      return 1;
+    }
+
+    stats.print(out);
+    return 0;
+  }
 }
 
 int main()
 {
-  int previous2 = 0;
-  int previous1 = 0;
-  int current = 0;
-  int elements = 0;
-
-  Counter count_grt = 0;
-  Counter count_pth = 0;
-  bool grt_overflow = false;
-  bool pth_overflow = false;
-  bool after_zero = false;
-
-  while (std::cin >> current) {
-    if (after_zero) {
-      continue;
-    }
-
-    if (current == 0) {
-      after_zero = true;
-      continue;
-    }
-
-    if (elements >= 2) {
-      if (previous1 < previous2 && previous1 > current) {
-        if (!safeIncrement(count_grt)) {
-          grt_overflow = true;
-        }
-      }
-
-      const Counter a = absValue(previous2);
-      const Counter b = absValue(previous1);
-      const Counter c = absValue(current);
-      if (a * a + b * b == c * c) {
-        if (!safeIncrement(count_pth)) {
-          pth_overflow = true;
-        }
-      }
-    }
-
-    previous2 = previous1;
-    previous1 = current;
-    if (elements < 2) {
-      ++elements;
-    }
-  }
-
-  if (!after_zero) {
-    if (std::cin.eof()) {
-      std::cerr << "Error: missing terminating zero\n";
-    } else {
-      std::cerr << "Error: invalid input\n";
-    }
-    return exit_invalid_input;
-  }
-
-  if (!std::cin.eof()) {
-    std::cerr << "Error: invalid input after zero\n";
-    return exit_invalid_input;
-  }
-
-  if (!grt_overflow) {
-    std::cout << count_grt << '\n';
-  } else {
-    std::cerr << "Error: counter overflow (GRT-LSS)\n";
-  }
-
-  if (!pth_overflow) {
-    std::cout << count_pth << '\n';
-  } else {
-    std::cerr << "Error: counter overflow (PTH-TRP)\n";
-  }
-
-  return (grt_overflow || pth_overflow) ? exit_calc_error : exit_success;
+  return usanov::process(std::cin, std::cout, std::cerr);
 }
