@@ -92,6 +92,7 @@ namespace haidov {
     }
     result[str_len] = '\0';
     rplSym(str, to_replace, to_replace_with, result);
+    result[str_len] = '\0';
     std::cout << result << std::endl;
     delete[] result;
     char* result2 = nullptr;
