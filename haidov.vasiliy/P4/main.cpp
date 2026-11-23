@@ -25,7 +25,7 @@ namespace haidov {
       }
       i++;
     }
-    result[i] = '\0';
+    result[r] = '\0';
   }
 
   void rplSym(const char* str, char to_replace, char to_replace_with, char* result)
