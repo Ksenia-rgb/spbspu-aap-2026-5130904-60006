@@ -91,7 +91,7 @@ namespace haidov {
       return memory_error;
     }
     rplSym(str, to_replace, to_replace_with, result);
-    std::cout << result << '\n';
+    std::cout << result << std::endl;
     delete[] result;
     try {
       result = new char[str_len + 1];
@@ -105,7 +105,7 @@ namespace haidov {
       i++;
     }
     cmnSym(str, second_string, result);
-    std::cout << result;
+    std::cout << result << std::endl;
     delete[] result;
     delete[] str;
     return correct_result;
