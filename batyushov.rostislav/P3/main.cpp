@@ -1,5 +1,4 @@
 #include <cstddef>
-#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -10,6 +9,9 @@ namespace batyushov
   const size_t MAX_SIZE = 10000;
   const int arg_err = 1;
   const int data_err = 2;
+  const int arg_count = 4;
+  const int fixed_array = 1;
+  const int dynamic_array = 2;
 
   bool sub(int & value, long long step)
   {
@@ -111,6 +113,13 @@ namespace batyushov
       }
     }
 
+    char extra = 0;
+    if (in >> extra)
+    {
+      std::cerr << "Лишние значения после матрицы\n";
+      return data_err;
+    }
+
     const size_t row = longestRow(data, rows, cols);
     if (!spiral(data, rows, cols))
     {
@@ -136,15 +145,19 @@ namespace batyushov
 
 int main(int argc, char ** argv)
 {
-  if (argc != 4)
+  if (argc != batyushov::arg_count)
   {
     std::cerr << "Нужно 3 аргумента: номер, входной файл, выходной файл\n";
     return batyushov::arg_err;
   }
 
-  char * end = nullptr;
-  const long num = std::strtol(argv[1], &end, 10);
-  if (end == argv[1] || *end != '\0' || (num != 1 && num != 2))
+  if (argv[1][0] == '\0' || argv[1][1] != '\0')
+  {
+    std::cerr << "Первый аргумент должен быть 1 или 2\n";
+    return batyushov::arg_err;
+  }
+  const int num = argv[1][0] - '0';
+  if (num != batyushov::fixed_array && num != batyushov::dynamic_array)
   {
     std::cerr << "Первый аргумент должен быть 1 или 2\n";
     return batyushov::arg_err;
@@ -174,7 +187,7 @@ int main(int argc, char ** argv)
   }
   const size_t size = r * c;
 
-  if (num == 1)
+  if (num == batyushov::fixed_array)
   {
     if (size > batyushov::MAX_SIZE)
     {
