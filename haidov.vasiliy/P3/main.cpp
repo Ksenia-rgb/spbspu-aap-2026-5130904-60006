@@ -1,3 +1,8 @@
+#include <iostream>
+#include <cstddef>
+#include <limits>
+#include <fstream>
+
 namespace haidov {
   const int correct_result = 0;
   const int calculation_error = 2;
