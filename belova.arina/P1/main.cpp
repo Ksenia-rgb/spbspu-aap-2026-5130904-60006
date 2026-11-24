@@ -1,7 +1,8 @@
 #include <iostream>
 #include <limits>
-constexpr int ERROR_CODE = 1;
+#include <cstddef>
 namespace belova {
+  constexpr int ERROR_CODE = 1;
   bool isPythagorean(int a, int b, int c)
   {
     const unsigned long long x = a < 0 ? -static_cast< long long >(a) : a;
@@ -18,19 +19,21 @@ int main()
   int current = 0;
   int sign_changes = 0;
   int triples = 0;
-  int count = 0;
+  std::size_t count = 0;
+  bool sign_changes_overflow = false;
+  bool triples_overflow = false;
+  bool terminated = false;
   while (std::cin >> current) {
     if (current == 0) {
-      std::cout << sign_changes << "\n";
-      std::cout << triples << "\n";
-      return 0;
+      terminated = true;
+      break;
     }
     if (count > 0 && ((previous < 0 && current > 0) || (previous > 0 && current < 0))) {
       if (sign_changes == std::numeric_limits< int >::max()) {
-        std::cerr << "Error: sign Changes counter overflow\n";
-        return ERROR_CODE;
+        sign_changes_overflow = true;
+      } else {
+        ++sign_changes;
       }
-      ++sign_changes;
     }
     if (count == 0) {
       a = current;
@@ -39,10 +42,10 @@ int main()
     } else {
       if (belova::isPythagorean(a, b, current)) {
         if (triples == std::numeric_limits< int >::max()) {
-          std::cerr << "Error: triples counter overflow\n";
-          return ERROR_CODE;
+          triples_overflow = true;
+        } else {
+          ++triples;
         }
-        ++triples;
       }
       a = b;
       b = current;
@@ -50,9 +53,18 @@ int main()
     previous = current;
     ++count;
   }
-  if (!std::cin.eof()) {
+  if (!std::cin.eof() && !terminated) {
     std::cerr << "Error: invalid input sequence\n";
-    return ERROR_CODE;
+    return belova::ERROR_CODE;
+  }
+  if (sign_changes_overflow) {
+    std::cerr << "Error: sign changes counter overflow\n";
+  }
+  if (triples_overflow) {
+    std::cerr << "Error: triples counter overflow\n";
+  }
+  if (sign_changes_overflow || triples_overflow) {
+    return belova::ERROR_CODE;
   }
   std::cout << sign_changes << "\n";
   std::cout << triples << "\n";
