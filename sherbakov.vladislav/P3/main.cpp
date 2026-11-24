@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 
   const size_t rows = static_cast< size_t >(rows_ll);
   const size_t cols = static_cast< size_t >(cols_ll);
-  const long long total_ll = rows_ll * cols_ll;
+  const size_t total_ll = rows_ll * cols_ll;
   if (total_ll > MAX_TOTAL) {
     std::cerr << "Error: matrix is too large\n";
     return ERR_FILE;
