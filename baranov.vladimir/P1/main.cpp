@@ -47,7 +47,7 @@ int main()
   }
 
   if (!std::cin || (number != 0)) {
-    std::cerr << "Input error: expected integers ending with zero\n";
+    std::cerr << "Invalid input\n";
     return baranov::input_error;
   }
 
