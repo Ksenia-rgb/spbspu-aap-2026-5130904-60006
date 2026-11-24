@@ -1,11 +1,12 @@
 #include <cctype>
-#include <climits>
 #include <cstddef>
 #include <iostream>
 #include <limits>
 
 namespace zorin
 {
+  constexpr unsigned int charCount = std::numeric_limits< unsigned char >::max() + 1u;
+
   char * missingLetters(const char * src, char * out) noexcept
   {
     bool seen[26] = {};
@@ -31,8 +32,8 @@ namespace zorin
 
   char * uncommon(const char * a, const char * b, char * out) noexcept
   {
-    bool first[UCHAR_MAX + 1] = {};
-    bool second[UCHAR_MAX + 1] = {};
+    bool first[charCount] = {};
+    bool second[charCount] = {};
     for (; *a; ++a)
     {
       first[static_cast< unsigned char >(*a)] = true;
@@ -42,7 +43,7 @@ namespace zorin
       second[static_cast< unsigned char >(*b)] = true;
     }
     char * pos = out;
-    for (unsigned int i = 1; i <= UCHAR_MAX; ++i)
+    for (unsigned int i = 1; i < charCount; ++i)
     {
       if (first[i] != second[i])
       {
@@ -95,25 +96,27 @@ namespace zorin
 int main()
 {
   char * line = nullptr;
+  char * result = nullptr;
   try
   {
     line = zorin::readLine(std::cin);
+    if (!line || std::cin.bad())
+    {
+      delete[] line;
+      std::cerr << "Cannot read the input string\n";
+      return 1;
+    }
+    result = new char[zorin::charCount];
   }
   catch (...)
   {
-    std::cerr << "Cannot allocate the input string\n";
-    return 1;
-  }
-  if (!line || std::cin.bad())
-  {
     delete[] line;
-    std::cerr << "Cannot read the input string\n";
+    std::cerr << "Cannot allocate memory for the string\n";
     return 1;
   }
 
-  char missing[27];
-  char unique[UCHAR_MAX + 1];
-  std::cout << zorin::missingLetters(line, missing) << '\n';
-  std::cout << zorin::uncommon(line, "abc ef", unique) << '\n';
+  std::cout << zorin::missingLetters(line, result) << '\n';
+  std::cout << zorin::uncommon(line, "abc ef", result) << '\n';
+  delete[] result;
   delete[] line;
 }
