@@ -12,7 +12,7 @@ namespace dortman {
 
 char * dortman::readLine(std::istream & in, std::size_t & out_length)
 {
-  out_lenght = 0;
+  out_length = 0;
   const std::size_t initialCapacity = 32;
   const std::size_t growthFactor = 2;
   const std::size_t maxCapacity = std::numeric_limits< std::size_t >::max();
