@@ -5,16 +5,17 @@
 
 const int ERR_INPUT = 1;
 const std::size_t BUF_SIZE = 1024;
+const std::size_t ASCII_SIZE = 128;
 
-void task_shr_sym(const char* src, char* dst)
+void taskShrSym(const char* src, char* dst)
 {
-  bool present[128] = {false};
+  bool present[ASCII_SIZE] = {false};
   bool has_upper = false;
   bool has_lower = false;
 
   for (std::size_t i = 0; src[i] != '\0'; ++i)
   {
-    unsigned char c = static_cast<unsigned char>(src[i]);
+    const unsigned char c = static_cast< unsigned char >(src[i]);
     if (std::isalpha(c))
     {
       present[c] = true;
@@ -33,22 +34,22 @@ void task_shr_sym(const char* src, char* dst)
 
   if (has_upper)
   {
-    for (char c = 'A'; c <= 'Z'; ++c)
+    for (int c = 'A'; c <= 'Z'; ++c)
     {
-      if (!present[static_cast<unsigned char>(c)])
+      if (!present[c])
       {
-        dst[k++] = c;
+        dst[k++] = static_cast< char >(c);
       }
     }
   }
 
   if (has_lower)
   {
-    for (char c = 'a'; c <= 'z'; ++c)
+    for (int c = 'a'; c <= 'z'; ++c)
     {
-      if (!present[static_cast<unsigned char>(c)])
+      if (!present[c])
       {
-        dst[k++] = c;
+        dst[k++] = static_cast< char >(c);
       }
     }
   }
@@ -56,12 +57,12 @@ void task_shr_sym(const char* src, char* dst)
   dst[k] = '\0';
 }
 
-void task_lat_rmv(const char* src, char* dst)
+void taskLatRmv(const char* src, char* dst)
 {
   std::size_t k = 0;
   for (std::size_t i = 0; src[i] != '\0'; ++i)
   {
-    if (!std::isalpha(static_cast<unsigned char>(src[i])))
+    if (!std::isalpha(static_cast< unsigned char >(src[i])))
     {
       dst[k++] = src[i];
     }
@@ -71,9 +72,9 @@ void task_lat_rmv(const char* src, char* dst)
 
 int main()
 {
-  char* src = static_cast<char*>(std::malloc(BUF_SIZE));
-  char* res1 = static_cast<char*>(std::malloc(BUF_SIZE));
-  char* res2 = static_cast<char*>(std::malloc(BUF_SIZE));
+  char* const src = static_cast< char* >(std::malloc(BUF_SIZE));
+  char* const res1 = static_cast< char* >(std::malloc(BUF_SIZE));
+  char* const res2 = static_cast< char* >(std::malloc(BUF_SIZE));
 
   if (src == nullptr || res1 == nullptr || res2 == nullptr)
   {
@@ -93,7 +94,7 @@ int main()
 
   std::cin.getline(src, BUF_SIZE, '\n');
 
-  if (!std::cin && !std::cin.eof())
+  if (!std::cin || src[0] == '\0')
   {
     std::cerr << "Error: invalid input\n";
     std::free(src);
@@ -102,8 +103,8 @@ int main()
     return ERR_INPUT;
   }
 
-  task_shr_sym(src, res1);
-  task_lat_rmv(src, res2);
+  taskShrSym(src, res1);
+  taskLatRmv(src, res2);
 
   std::cout << res1 << '\n';
   std::cout << res2 << '\n';
