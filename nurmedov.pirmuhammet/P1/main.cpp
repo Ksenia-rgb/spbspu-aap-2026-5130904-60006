@@ -79,14 +79,14 @@ namespace nurmedov
 
 int main()
 {
-  nurmedov::MonDecCounter monDec;
-  nurmedov::EvenCounter evenCnt;
+  nurmedov::MonDecCounter mon_dec;
+  nurmedov::EvenCounter even_cnt;
 
   int value = 0;
   while (std::cin >> value && value != 0)
   {
-    monDec(value);
-    evenCnt(value);
+    mon_dec(value);
+    even_cnt(value);
   }
 
   if (!std::cin)
@@ -95,7 +95,7 @@ int main()
     return 1;
   }
 
-  std::cout << monDec() << '\n';
-  std::cout << evenCnt() << '\n';
+  std::cout << mon_dec() << '\n';
+  std::cout << even_cnt() << '\n';
   return 0;
 }
