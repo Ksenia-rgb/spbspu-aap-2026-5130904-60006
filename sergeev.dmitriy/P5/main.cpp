@@ -104,14 +104,53 @@ int main()
 {
   try
   {
-    sergeev::Rectangle rect1({5.0, -0.3}, 10.0, 30.0);
-    sergeev::Rectangle rect2({1.2, -2.14}, 5.0, 12.25);
-    sergeev::Ellipse ellipse({-3.0, 2.0}, 3.0, 2.0);
-    const sergeev::point_t vertices[] = {{0, 0}, {4, 0}, {4, 1}, {1, 1}, {1, 4}, {0, 4}};
+    const double rectangle1X = 5.0;
+    const double rectangle1Y = -0.3;
+    const double rectangle1Width = 10.0;
+    const double rectangle1Height = 30.0;
+
+    const double rectangle2X = 1.2;
+    const double rectangle2Y = -2.14;
+    const double rectangle2Width = 5.0;
+    const double rectangle2Height = 12.25;
+
+    const double ellipseX = -3.0;
+    const double ellipseY = 2.0;
+    const double ellipseRadiusX = 3.0;
+    const double ellipseRadiusY = 2.0;
+
+    const double polygonMoveX = -5.0;
+    const double polygonMoveY = -5.0;
+
+    sergeev::Rectangle rect1(
+        {rectangle1X, rectangle1Y},
+        rectangle1Width,
+        rectangle1Height
+    );
+
+    sergeev::Rectangle rect2(
+        {rectangle2X, rectangle2Y},
+        rectangle2Width,
+        rectangle2Height
+    );
+
+    sergeev::Ellipse ellipse(
+        {ellipseX, ellipseY},
+        ellipseRadiusX,
+        ellipseRadiusY
+    );
+
+    const sergeev::point_t vertices[] = {
+        {0, 0}, {4, 0}, {4, 1}, {1, 1}, {1, 4}, {0, 4}
+    };
     const size_t vertexCount = sizeof(vertices) / sizeof(vertices[0]);
+
     sergeev::Polygon polygon(vertices, vertexCount);
+
     sergeev::Polygon polygon_copy(polygon);
-    polygon_copy.move(-5.0, -5.0);
+
+    polygon_copy.move(polygonMoveX, polygonMoveY);
+
     sergeev::Shape* const shapes[] = {&rect1, &rect2, &ellipse, &polygon, &polygon_copy};
     const size_t count = sizeof(shapes) / sizeof(shapes[0]);
 
