@@ -55,19 +55,20 @@ namespace dortman
       return {0.0, 0.0, {0.0, 0.0}};
     }
 
+    const double half = 0.5;
     const rectangle_t first = shapes[0]->getFrameRect();
-    double min_x = first.pos.x - first.width / 2.0;
-    double max_x = first.pos.x + first.width / 2.0;
-    double min_y = first.pos.y - first.height / 2.0;
-    double max_y = first.pos.y + first.height / 2.0;
+    double min_x = first.pos.x - first.width * half;
+    double max_x = first.pos.x + first.width * half;
+    double min_y = first.pos.y - first.height * half;
+    double max_y = first.pos.y + first.height * half;
 
     for (size_t i = 1; i < count; ++i)
     {
       const rectangle_t rect = shapes[i]->getFrameRect();
-      const double left = rect.pos.x - rect.width / 2.0;
-      const double right = rect.pos.x + rect.width / 2.0;
-      const double bottom = rect.pos.y - rect.height / 2.0;
-      const double top = rect.pos.y + rect.height / 2.0;
+      const double left = rect.pos.x - rect.width * half;
+      const double right = rect.pos.x + rect.width * half;
+      const double bottom = rect.pos.y - rect.height * half;
+      const double top = rect.pos.y + rect.height * half;
 
       if (left < min_x)
       {
@@ -89,7 +90,7 @@ namespace dortman
 
     const double total_width = max_x - min_x;
     const double total_height = max_y - min_y;
-    const point_t center = {min_x + total_width / 2.0, min_y + total_height / 2.0};
+    const point_t center = {min_x + total_width * half, min_y + total_height * half};
     return {total_width, total_height, center};
   }
 
@@ -129,14 +130,32 @@ int main()
   dortman::Shape * shapes[shapes_count] = {};
   size_t created = 0;
 
+  const dortman::point_t rect_pos = {2.0, 3.0};
+  const double rect_w1 = 4.0;
+  const double rect_h1 = 6.0;
+  const double rect_w2 = 5.0;
+  const double rect_h2 = 2.0;
+
+  const dortman::point_t diamond_pos = {-1.0, 4.0};
+  const double diamond_d1_a = 6.0;
+  const double diamond_d2_a = 8.0;
+  const double diamond_d1_b = 4.0;
+  const double diamond_d2_b = 10.0;
+
+  const dortman::point_t ring_pos = {3.0, -2.0};
+  const double ring_outer1 = 5.0;
+  const double ring_inner1 = 2.0;
+  const double ring_outer2 = 4.0;
+  const double ring_inner2 = 1.0;
+
   try
   {
-    shapes[created++] = new dortman::Rectangle({2.0, 3.0}, 4.0, 6.0);
-    shapes[created++] = new dortman::Rectangle(5.0, 2.0);
-    shapes[created++] = new dortman::Diamond({-1.0, 4.0}, 6.0, 8.0);
-    shapes[created++] = new dortman::Diamond(4.0, 10.0);
-    shapes[created++] = new dortman::Ring({3.0, -2.0}, 5.0, 2.0);
-    shapes[created++] = new dortman::Ring(4.0, 1.0);
+    shapes[created++] = new dortman::Rectangle(rect_pos, rect_w1, rect_h1);
+    shapes[created++] = new dortman::Rectangle(rect_w2, rect_h2);
+    shapes[created++] = new dortman::Diamond(diamond_pos, diamond_d1_a, diamond_d2_a);
+    shapes[created++] = new dortman::Diamond(diamond_d1_b, diamond_d2_b);
+    shapes[created++] = new dortman::Ring(ring_pos, ring_outer1, ring_inner1);
+    shapes[created++] = new dortman::Ring(ring_outer2, ring_inner2);
   }
   catch (const std::exception & e)
   {

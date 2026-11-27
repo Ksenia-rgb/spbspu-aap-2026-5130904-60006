@@ -20,7 +20,8 @@ namespace dortman
 
   double Diamond::getArea() const
   {
-    return (horiz_diag_ * vert_diag_) / 2.0;
+    const double half_factor = 0.5;
+    return (horiz_diag_ * vert_diag_) * half_factor;
   }
 
   rectangle_t Diamond::getFrameRect() const
