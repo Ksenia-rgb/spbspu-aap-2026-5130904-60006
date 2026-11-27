@@ -1,4 +1,5 @@
 #include "./rectangle.hpp"
+#include "./checks/geometry.hpp"
 
 #include <limits>
 #include <stdexcept>
@@ -6,19 +7,6 @@
 
 namespace sergeev
 {
-  static bool isFinite(const point_t& point)
-  {
-    const double maxValue = std::numeric_limits< double >::max();
-    return (point.x >= -maxValue) && (point.x <= maxValue)
-        && (point.y >= -maxValue) && (point.y <= maxValue);
-  }
-
-  static bool isPositive(double value)
-  {
-    const double maxValue = std::numeric_limits< double >::max();
-    return (value > 0) && (value <= maxValue);
-  }
-
   Rectangle::Rectangle(const point_t& pos, double width, double height):
     frame_{pos, width, height}{
       if (!isFinite(pos) || !isPositive(width) || !isPositive(height)) {

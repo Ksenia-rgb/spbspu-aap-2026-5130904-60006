@@ -1,23 +1,10 @@
 #include "./ellipse.hpp"
+#include "./checks/geometry.hpp"
 
-#include <limits>
 #include <stdexcept>
 
 namespace sergeev
 {
-  static bool isFinite(const point_t& point)
-  {
-    const double maxValue = std::numeric_limits< double >::max();
-    return (point.x >= -maxValue) && (point.x <= maxValue)
-        && (point.y >= -maxValue) && (point.y <= maxValue);
-  }
-
-  static bool isPositive(double value)
-  {
-    const double maxValue = std::numeric_limits< double >::max();
-    return (value > 0) && (value <= maxValue);
-  }
-
   Ellipse::Ellipse(const point_t& pos, double radiusX, double radiusY):
   pos_(pos),
   radiusX_(radiusX),
