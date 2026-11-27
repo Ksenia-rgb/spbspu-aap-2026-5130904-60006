@@ -1,5 +1,5 @@
 #include "./ellipse.hpp"
-#include "./checks/geometry.hpp"
+#include "./geometry.hpp"
 
 #include <stdexcept>
 

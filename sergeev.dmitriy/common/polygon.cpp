@@ -1,5 +1,5 @@
 #include "./polygon.hpp"
-#include "./checks/geometry.hpp"
+#include "./geometry.hpp"
 
 #include <limits>
 #include <stdexcept>
@@ -11,23 +11,23 @@ namespace sergeev {
   vertices_(new point_t[count_]),
   pos_(other.pos_)
   {
-    for (std::size_t i = 0; i < count_; ++i) {
+    for (size_t i = 0; i < count_; ++i) {
       vertices_[i] = other.vertices_[i];
     }
   }
 
-  Polygon::Polygon(const point_t* vertices, std::size_t count):
+  Polygon::Polygon(const point_t* vertices, size_t count):
   count_(count),
   vertices_(nullptr),
   pos_{0, 0}
   {
-    const std::size_t minVertices = 3;
+    const size_t minVertices = 3;
     if (!vertices || (count_ < minVertices)) {
       throw std::invalid_argument("Polygon requires at least three vertices");
     }
     vertices_ = new point_t[count_];
     try {
-      for (std::size_t i = 0; i < count_; ++i) {
+      for (size_t i = 0; i < count_; ++i) {
         if (!isFinite(vertices[i])) {
           throw std::invalid_argument("Invalid polygon vertex");
         }
@@ -38,7 +38,7 @@ namespace sergeev {
       if (!isFinite(pos_)) {
         throw std::invalid_argument("Invalid polygon centroid");
       }
-      for (std::size_t i = 0; i < count_; ++i) {
+      for (size_t i = 0; i < count_; ++i) {
         vertices_[i].x -= center.x;
         vertices_[i].y -= center.y;
       }
@@ -57,7 +57,7 @@ namespace sergeev {
   {
     if (this != &other) {
       point_t* const vertices = new point_t[other.count_];
-      for (std::size_t i = 0; i < other.count_; ++i) {
+      for (size_t i = 0; i < other.count_; ++i) {
         vertices[i] = other.vertices_[i];
       }
       delete[] vertices_;
@@ -81,7 +81,7 @@ namespace sergeev {
     double maxX = minX;
     double minY = vertices_[0].y;
     double maxY = minY;
-    for (std::size_t i = 1; i < count_; ++i) {
+    for (size_t i = 1; i < count_; ++i) {
       if (vertices_[i].x < minX) {
         minX = vertices_[i].x;
       }
@@ -120,13 +120,13 @@ namespace sergeev {
     if (!isPositive(factor)) {
       throw std::invalid_argument("Invalid scale factor");
     }
-    for (std::size_t i = 0; i < count_; ++i) {
+    for (size_t i = 0; i < count_; ++i) {
       const point_t vertex{vertices_[i].x * factor, vertices_[i].y * factor};
       if (!isFinite(vertex)) {
         throw std::overflow_error("Invalid scaled polygon vertex");
       }
     }
-    for (std::size_t i = 0; i < count_; ++i) {
+    for (size_t i = 0; i < count_; ++i) {
       vertices_[i].x *= factor;
       vertices_[i].y *= factor;
     }
@@ -135,7 +135,7 @@ namespace sergeev {
   double Polygon::getSignedDoubleArea() const
   {
     double sum = 0;
-    for (std::size_t i = 0; i < count_; ++i) {
+    for (size_t i = 0; i < count_; ++i) {
       const point_t& current = vertices_[i];
       const point_t& next = vertices_[(i + 1) % count_];
       sum += current.x * next.y - next.x * current.y;
@@ -147,11 +147,11 @@ namespace sergeev {
   {
     const double doubleArea = getSignedDoubleArea();
     const double absoluteArea = doubleArea < 0 ? -doubleArea : doubleArea;
-    if (isPositive(absoluteArea)) {
+    if (!isPositive(absoluteArea)) {
       throw std::invalid_argument("Polygon must have a nonzero finite area");
     }
     point_t center{0, 0};
-    for (std::size_t i = 0; i < count_; ++i) {
+    for (size_t i = 0; i < count_; ++i) {
       const point_t& current = vertices_[i];
       const point_t& next = vertices_[(i + 1) % count_];
       const double cross = current.x * next.y - next.x * current.y;

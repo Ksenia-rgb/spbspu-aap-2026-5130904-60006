@@ -1,7 +1,6 @@
 #include "./rectangle.hpp"
-#include "./checks/geometry.hpp"
+#include "./geometry.hpp"
 
-#include <limits>
 #include <stdexcept>
 
 
@@ -31,14 +30,16 @@ namespace sergeev
     return frame_;
   }
 
-  void Rectangle::move(const point_t& pos) noexcept {
+  void Rectangle::move(const point_t& pos)
+  {
     if (!isFinite(pos)) {
       throw std::invalid_argument("Invalid position");
     }
     frame_.pos = pos;
   }
 
-  void Rectangle::move(double dx, double dy) noexcept {
+  void Rectangle::move(double dx, double dy)
+  {
     move({frame_.pos.x + dx, frame_.pos.y + dy});
   }
 
