@@ -43,12 +43,11 @@ namespace sergeev
     return frame_;
   }
 
-  void Rectangle::move(const point_t shift) noexcept {
-    if (!isFinite(shift)) {
+  void Rectangle::move(const point_t& pos) noexcept {
+    if (!isFinite(pos)) {
       throw std::invalid_argument("Invalid position");
     }
-    frame_.pos.x += shift.x;
-    frame_.pos.y += shift.y;
+    frame_.pos = pos;
   }
 
   void Rectangle::move(double dx, double dy) noexcept {

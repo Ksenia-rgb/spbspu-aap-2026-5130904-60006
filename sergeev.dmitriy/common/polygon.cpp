@@ -1,4 +1,4 @@
-#include "polygon.hpp"
+#include "./polygon.hpp"
 
 #include <limits>
 #include <stdexcept>
@@ -113,13 +113,12 @@ namespace sergeev {
     return {center, width, height};
   }
 
-  void Polygon::move(const point_t shift)
+  void Polygon::move(const point_t& pos)
   {
-    if (!isFinite(shift)) {
+    if (!isFinite(pos)) {
       throw std::invalid_argument("Invalid position");
     }
-    pos_.x += shift.x;
-    pos_.y += shift.y;
+    pos_ = pos;
   }
 
   void Polygon::move(double dx, double dy)

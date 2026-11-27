@@ -15,7 +15,7 @@ namespace sergeev {
     Polygon& operator=(const Polygon& other);
     double getArea() const override;
     rectangle_t getFrameRect() const override;
-    void move(const point_t shift) noexcept override;
+    void move(const point_t& pos) noexcept override;
     void move(double dx, double dy) noexcept override;
     void scale(double factor) override;
 
