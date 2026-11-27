@@ -6,7 +6,7 @@
 namespace sergeev {
 class Ellipse : public Shape {
 public:
-  Ellipse(const point_t &pos, double radiusX, double radiusY);
+  Ellipse(const point_t &pos, double radius_x, double radius_y);
 
   double getArea() const override;
   rectangle_t getFrameRect() const override;
@@ -16,7 +16,7 @@ public:
 
 private:
   point_t pos_;
-  double radiusX_, radiusY_;
+  double radius_x_, radius_y_;
 };
 }
 

@@ -89,33 +89,33 @@ namespace sergeev
 
   rectangle_t Polygon::getFrameRect() const
   {
-    double minX = vertices_[0].x;
-    double maxX = minX;
-    double minY = vertices_[0].y;
-    double maxY = minY;
+    double min_x = vertices_[0].x;
+    double max_x = min_x;
+    double min_y = vertices_[0].y;
+    double max_y = min_y;
     for (size_t i = 1; i < count_; ++i)
     {
-      if (vertices_[i].x < minX)
+      if (vertices_[i].x < min_x)
       {
-        minX = vertices_[i].x;
+        min_x = vertices_[i].x;
       }
-      if (vertices_[i].x > maxX)
+      if (vertices_[i].x > max_x)
       {
-        maxX = vertices_[i].x;
+        max_x = vertices_[i].x;
       }
-      if (vertices_[i].y < minY)
+      if (vertices_[i].y < min_y)
       {
-        minY = vertices_[i].y;
+        min_y = vertices_[i].y;
       }
-      if (vertices_[i].y > maxY)
+      if (vertices_[i].y > max_y)
       {
-        maxY = vertices_[i].y;
+        max_y = vertices_[i].y;
       }
     }
     const double half = 0.5;
-    const double width = maxX - minX;
-    const double height = maxY - minY;
-    const point_t center{pos_.x + minX + width * half, pos_.y + minY + height * half};
+    const double width = max_x - min_x;
+    const double height = max_y - min_y;
+    const point_t center{pos_.x + min_x + width * half, pos_.y + min_y + height * half};
     return {center, width, height};
   }
 

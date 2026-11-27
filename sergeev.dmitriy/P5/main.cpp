@@ -48,11 +48,11 @@ void sergeev::printShapes(std::ostream& out, const Shape* const* shapes, size_t 
   }
   const rectangle_t first = shapes[0]->getFrameRect();
   const double half = 0.5;
-  double minX = first.pos.x - first.width * half;
-  double maxX = first.pos.x + first.width * half;
-  double minY = first.pos.y - first.height * half;
-  double maxY = first.pos.y + first.height * half;
-  double totalArea = 0;
+  double min_x = first.pos.x - first.width * half;
+  double max_x = first.pos.x + first.width * half;
+  double min_y = first.pos.y - first.height * half;
+  double max_y = first.pos.y + first.height * half;
+  double total_area = 0;
   for (size_t i = 0; i < count; ++i)
   {
     const Shape& shape = *shapes[i];
@@ -62,40 +62,40 @@ void sergeev::printShapes(std::ostream& out, const Shape* const* shapes, size_t 
     {
       throw std::overflow_error("Invalid shape dimensions or area");
     }
-    totalArea += area;
+    total_area += area;
     const double left = frame.pos.x - frame.width * half;
-    if (left < minX)
+    if (left < min_x)
     {
-      minX = left;
+      min_x = left;
     }
     const double right = frame.pos.x + frame.width * half;
-    if (right > maxX)
+    if (right > max_x)
     {
-      maxX = right;
+      max_x = right;
     }
     const double bottom = frame.pos.y - frame.height * half;
-    if (bottom < minY)
+    if (bottom < min_y)
     {
-      minY = bottom;
+      min_y = bottom;
     }
     const double top = frame.pos.y + frame.height * half;
-    if (top > maxY)
+    if (top > max_y)
     {
-      maxY = top;
+      max_y = top;
     }
     out << "Shape " << i + 1 << " area: " << area << '\n';
     out << "Frame: ";
     printFrame(out, frame);
   }
-  const double width = maxX - minX;
-  const double height = maxY - minY;
-  const point_t center{minX + width * half, minY + height * half};
-  if (!isFinite(center) || !isPositive(width) || !isPositive(height) || !isPositive(totalArea))
+  const double width = max_x - min_x;
+  const double height = max_y - min_y;
+  const point_t center{min_x + width * half, min_y + height * half};
+  if (!isFinite(center) || !isPositive(width) || !isPositive(height) || !isPositive(total_area))
   {
     throw std::overflow_error("Invalid total frame or area");
   }
   const rectangle_t totalFrame{center, width, height};
-  out << "Total area: " << totalArea << '\n';
+  out << "Total area: " << total_area << '\n';
   out << "Total frame: ";
   printFrame(out, totalFrame);
 }
@@ -110,9 +110,9 @@ int main()
     const sergeev::point_t vertices[] = {{0, 0}, {4, 0}, {4, 1}, {1, 1}, {1, 4}, {0, 4}};
     const size_t vertexCount = sizeof(vertices) / sizeof(vertices[0]);
     sergeev::Polygon polygon(vertices, vertexCount);
-    sergeev::Polygon polygonCopy(polygon);
-    polygonCopy.move(-5.0, -5.0);
-    sergeev::Shape* const shapes[] = {&rect1, &rect2, &ellipse, &polygon, &polygonCopy};
+    sergeev::Polygon polygon_copy(polygon);
+    polygon_copy.move(-5.0, -5.0);
+    sergeev::Shape* const shapes[] = {&rect1, &rect2, &ellipse, &polygon, &polygon_copy};
     const size_t count = sizeof(shapes) / sizeof(shapes[0]);
 
     std::cout << "Before scaling:\n";
