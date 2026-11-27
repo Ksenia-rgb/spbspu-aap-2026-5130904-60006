@@ -3,7 +3,7 @@
 
 namespace nurmedov
 {
-  // [MON-DEC] Longest monotonically decreasing (non-increasing) fragment
+  /* [MON-DEC] Longest monotonically decreasing (non-increasing) fragment */
   class MonDecCounter
   {
   public:
@@ -41,7 +41,7 @@ namespace nurmedov
     int prev_;
   };
 
-  // [EVN-CNT] Maximum number of consecutive even elements
+  /* [EVN-CNT] Maximum number of consecutive even elements */
   class EvenCounter
   {
   public:
