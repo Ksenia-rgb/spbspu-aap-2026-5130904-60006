@@ -16,3 +16,4 @@ namespace sergeev
     return (value > 0) && (value <= maxValue);
   }
 }
+

@@ -6,7 +6,6 @@
 
 namespace sergeev
 {
-
   Polygon::Polygon(const Polygon &other):
     count_(other.count_),
     vertices_(new point_t[count_]),

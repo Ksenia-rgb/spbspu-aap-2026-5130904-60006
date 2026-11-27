@@ -57,5 +57,4 @@ namespace sergeev
     radius_x_ = radius_x;
     radius_y_ = radius_y;
   }
-
 }
