@@ -1,48 +1,65 @@
 #include "./rectangle.hpp"
 
+#include <limits>
 #include <stdexcept>
 
-sergeev::Rectangle::Rectangle(const point_t& pos, double width, double height):
-  frame_{pos, width, height}{
-    if (frame_.width <= 0.0 || frame_.height <= 0.0)
-    {
-      throw std::invalid_argument("Некорректные размеры прямоугольника");
-    }
-  }
-sergeev::Rectangle::Rectangle(double width, double height):
-    Rectangle({0.0, 0.0}, width, height)
-    {
-    if (frame_.width <= 0.0 || frame_.height <= 0.0)
-    {
-      throw std::invalid_argument("Некорректные размеры прямоугольника");
-    }
-  }
 
-double sergeev::Rectangle::getArea() const
+namespace sergeev
 {
-  return frame_.width * frame_.height;
-}
-
-
-sergeev::rectangle_t sergeev::Rectangle::getFrameRect() const
-{
-  return frame_;
-}
-
-void sergeev::Rectangle::move(const point_t shift) noexcept {
-  frame_.pos.x += shift.x;
-  frame_.pos.y += shift.y;
-}
-
-void sergeev::Rectangle::move(double dx, double dy) noexcept {
-  frame_.pos.x += dx;
-  frame_.pos.y += dy;
-}
-
-void sergeev::Rectangle::scale(double factor) {
-  if (factor <= 0.0) {
-    throw std::invalid_argument("Коэффициент масштабирования должен быть положительным");
+  static bool isFinite(const point_t& point)
+  {
+    const double maxValue = std::numeric_limits< double >::max();
+    return (point.x >= -maxValue) && (point.x <= maxValue)
+        && (point.y >= -maxValue) && (point.y <= maxValue);
   }
-  frame_.height *= factor;
-  frame_.width *= factor;
+
+  static bool isPositive(double value)
+  {
+    const double maxValue = std::numeric_limits< double >::max();
+    return (value > 0) && (value <= maxValue);
+  }
+
+  Rectangle::Rectangle(const point_t& pos, double width, double height):
+    frame_{pos, width, height}{
+      if (!isFinite(pos) || !isPositive(width) || !isPositive(height)) {
+        throw std::invalid_argument("Invalid rectangle");
+      }
+    }
+  Rectangle::Rectangle(double width, double height):
+      Rectangle({0.0, 0.0}, width, height)
+      {
+      if (!isPositive(width) || !isPositive(height)) {
+        throw std::invalid_argument("Invalid rectangle");
+      }
+    }
+
+  double Rectangle::getArea() const
+  {
+    return frame_.width * frame_.height;
+  }
+
+  rectangle_t Rectangle::getFrameRect() const
+  {
+    return frame_;
+  }
+
+  void Rectangle::move(const point_t shift) noexcept {
+    if (!isFinite(shift)) {
+      throw std::invalid_argument("Invalid position");
+    }
+    frame_.pos.x += shift.x;
+    frame_.pos.y += shift.y;
+  }
+
+  void Rectangle::move(double dx, double dy) noexcept {
+    move({frame_.pos.x + dx, frame_.pos.y + dy});
+  }
+
+  void Rectangle::scale(double factor) {
+    if (!isPositive(factor)) {
+      throw std::invalid_argument("Invalid scale factor");
+    }
+    frame_.height *= factor;
+    frame_.width *= factor;
+  }
 }
