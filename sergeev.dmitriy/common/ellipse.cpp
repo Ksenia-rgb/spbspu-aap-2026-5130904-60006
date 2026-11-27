@@ -5,12 +5,13 @@
 
 namespace sergeev
 {
-  Ellipse::Ellipse(const point_t& pos, double radiusX, double radiusY):
-  pos_(pos),
-  radiusX_(radiusX),
-  radiusY_(radiusY)
+  Ellipse::Ellipse(const point_t &pos, double radiusX, double radiusY):
+    pos_(pos),
+    radiusX_(radiusX),
+    radiusY_(radiusY)
   {
-    if (!isFinite(pos) || !isPositive(radiusX) || !isPositive(radiusY)) {
+    if (!isFinite(pos) || !isPositive(radiusX) || !isPositive(radiusY))
+    {
       throw std::invalid_argument("Invalid ellipse");
     }
   }
@@ -27,9 +28,10 @@ namespace sergeev
     return {pos_, diameterFactor * radiusX_, diameterFactor * radiusY_};
   }
 
-  void Ellipse::move(const point_t & pos)
+  void Ellipse::move(const point_t &pos)
   {
-    if (!isFinite(pos)) {
+    if (!isFinite(pos))
+    {
       throw std::invalid_argument("Invalid position");
     }
     pos_ = pos;
@@ -42,12 +44,14 @@ namespace sergeev
 
   void sergeev::Ellipse::scale(double factor)
   {
-    if (!isPositive(factor)) {
+    if (!isPositive(factor))
+    {
       throw std::invalid_argument("Invalid scale factor");
     }
     const double radiusX = radiusX_ * factor;
     const double radiusY = radiusY_ * factor;
-    if (!isPositive(radiusX) || !isPositive(radiusY)) {
+    if (!isPositive(radiusX) || !isPositive(radiusY))
+    {
       throw std::overflow_error("Invalid scaled ellipse radii");
     }
     radiusX_ = radiusX;

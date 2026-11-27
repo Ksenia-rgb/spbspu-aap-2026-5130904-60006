@@ -2,12 +2,12 @@
 
 #include <limits>
 
-namespace sergeev {
-  bool isFinite(const point_t& point)
+namespace sergeev
+{
+  bool isFinite(const point_t &point)
   {
     const double maxValue = std::numeric_limits< double >::max();
-    return (point.x >= -maxValue) && (point.x <= maxValue)
-        && (point.y >= -maxValue) && (point.y <= maxValue);
+    return (point.x >= -maxValue) && (point.x <= maxValue) && (point.y >= -maxValue) && (point.y <= maxValue);
   }
 
   bool isPositive(double value)
@@ -16,4 +16,3 @@ namespace sergeev {
     return (value > 0) && (value <= maxValue);
   }
 }
-

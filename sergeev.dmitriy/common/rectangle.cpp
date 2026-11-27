@@ -3,22 +3,24 @@
 
 #include <stdexcept>
 
-
 namespace sergeev
 {
-  Rectangle::Rectangle(const point_t& pos, double width, double height):
-    frame_{pos, width, height}{
-      if (!isFinite(pos) || !isPositive(width) || !isPositive(height)) {
-        throw std::invalid_argument("Invalid rectangle");
-      }
+  Rectangle::Rectangle(const point_t &pos, double width, double height):
+    frame_{pos, width, height}
+  {
+    if (!isFinite(pos) || !isPositive(width) || !isPositive(height))
+    {
+      throw std::invalid_argument("Invalid rectangle");
     }
+  }
   Rectangle::Rectangle(double width, double height):
-      Rectangle({0.0, 0.0}, width, height)
-      {
-      if (!isPositive(width) || !isPositive(height)) {
-        throw std::invalid_argument("Invalid rectangle");
-      }
+    Rectangle({0.0, 0.0}, width, height)
+  {
+    if (!isPositive(width) || !isPositive(height))
+    {
+      throw std::invalid_argument("Invalid rectangle");
     }
+  }
 
   double Rectangle::getArea() const
   {
@@ -30,9 +32,10 @@ namespace sergeev
     return frame_;
   }
 
-  void Rectangle::move(const point_t& pos)
+  void Rectangle::move(const point_t &pos)
   {
-    if (!isFinite(pos)) {
+    if (!isFinite(pos))
+    {
       throw std::invalid_argument("Invalid position");
     }
     frame_.pos = pos;
@@ -43,8 +46,10 @@ namespace sergeev
     move({frame_.pos.x + dx, frame_.pos.y + dy});
   }
 
-  void Rectangle::scale(double factor) {
-    if (!isPositive(factor)) {
+  void Rectangle::scale(double factor)
+  {
+    if (!isPositive(factor))
+    {
       throw std::invalid_argument("Invalid scale factor");
     }
     frame_.height *= factor;

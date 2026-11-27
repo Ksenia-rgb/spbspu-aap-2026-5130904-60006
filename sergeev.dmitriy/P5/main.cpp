@@ -8,7 +8,8 @@
 
 #include "../common/geometry.hpp"
 
-namespace sergeev {
+namespace sergeev
+{
   static void printFrame(std::ostream& out, const rectangle_t& frame);
   static void scaleShapes(Shape* const* shapes, size_t count, const point_t& pos, double factor);
   static void printShapes(std::ostream& out, const Shape* const* shapes, size_t count);
@@ -22,10 +23,12 @@ void sergeev::printFrame(std::ostream& out, const rectangle_t& frame)
 
 void sergeev::scaleShapes(Shape* const* shapes, size_t count, const point_t& pos, double factor)
 {
-  if (!isFinite(pos) || !isPositive(factor)) {
+  if (!isFinite(pos) || !isPositive(factor))
+  {
     throw std::invalid_argument("Invalid scaling parameters");
   }
-  for (size_t i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i)
+  {
     Shape& shape = *shapes[i];
     const point_t before = shape.getFrameRect().pos;
     shape.move(pos);
@@ -39,7 +42,8 @@ void sergeev::scaleShapes(Shape* const* shapes, size_t count, const point_t& pos
 
 void sergeev::printShapes(std::ostream& out, const Shape* const* shapes, size_t count)
 {
-  if (count == 0) {
+  if (count == 0)
+  {
     throw std::invalid_argument("No shapes to print");
   }
   const rectangle_t first = shapes[0]->getFrameRect();
@@ -49,29 +53,34 @@ void sergeev::printShapes(std::ostream& out, const Shape* const* shapes, size_t 
   double minY = first.pos.y - first.height * half;
   double maxY = first.pos.y + first.height * half;
   double totalArea = 0;
-  for (size_t i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i)
+  {
     const Shape& shape = *shapes[i];
     const double area = shape.getArea();
     const rectangle_t frame = shape.getFrameRect();
-    if (!isPositive(area) || !isFinite(frame.pos)
-        || !isPositive(frame.width) || !isPositive(frame.height)) {
+    if (!isPositive(area) || !isFinite(frame.pos) || !isPositive(frame.width) || !isPositive(frame.height))
+    {
       throw std::overflow_error("Invalid shape dimensions or area");
     }
     totalArea += area;
     const double left = frame.pos.x - frame.width * half;
-    if (left < minX) {
+    if (left < minX)
+    {
       minX = left;
     }
     const double right = frame.pos.x + frame.width * half;
-    if (right > maxX) {
+    if (right > maxX)
+    {
       maxX = right;
     }
     const double bottom = frame.pos.y - frame.height * half;
-    if (bottom < minY) {
+    if (bottom < minY)
+    {
       minY = bottom;
     }
     const double top = frame.pos.y + frame.height * half;
-    if (top > maxY) {
+    if (top > maxY)
+    {
       maxY = top;
     }
     out << "Shape " << i + 1 << " area: " << area << '\n';
@@ -81,8 +90,8 @@ void sergeev::printShapes(std::ostream& out, const Shape* const* shapes, size_t 
   const double width = maxX - minX;
   const double height = maxY - minY;
   const point_t center{minX + width * half, minY + height * half};
-  if (!isFinite(center) || !isPositive(width)
-      || !isPositive(height) || !isPositive(totalArea)) {
+  if (!isFinite(center) || !isPositive(width) || !isPositive(height) || !isPositive(totalArea))
+  {
     throw std::overflow_error("Invalid total frame or area");
   }
   const rectangle_t totalFrame{center, width, height};
@@ -91,8 +100,10 @@ void sergeev::printShapes(std::ostream& out, const Shape* const* shapes, size_t 
   printFrame(out, totalFrame);
 }
 
-int main() {
-try {
+int main()
+{
+  try
+  {
     sergeev::Rectangle rect1({5.0, -0.3}, 10.0, 30.0);
     sergeev::Rectangle rect2({1.2, -2.14}, 5.0, 12.25);
     sergeev::Ellipse ellipse({-3.0, 2.0}, 3.0, 2.0);
@@ -108,22 +119,24 @@ try {
     sergeev::printShapes(std::cout, shapes, count);
     sergeev::point_t pos{0, 0};
     double factor = 0;
-    if (!(std::cin >> pos.x >> pos.y >> factor) || !sergeev::isFinite(pos)
-        || !sergeev::isPositive(factor)) {
+    if (!(std::cin >> pos.x >> pos.y >> factor) || !sergeev::isFinite(pos) || !sergeev::isPositive(factor))
+    {
       std::cerr << "Invalid scaling parameters\n";
       return 1;
     }
     sergeev::scaleShapes(shapes, count, pos, factor);
     std::cout << "After scaling:\n";
     sergeev::printShapes(std::cout, shapes, count);
-    if (!std::cout) {
+    if (!std::cout)
+    {
       std::cerr << "Output error\n";
       return 2;
     }
-  } catch (const std::exception& error) {
+  }
+  catch (const std::exception& error)
+  {
     std::cerr << error.what() << '\n';
     return 2;
   }
   return 0;
-
 }
