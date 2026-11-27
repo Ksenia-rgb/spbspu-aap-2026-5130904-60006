@@ -122,27 +122,13 @@ int main()
     const double polygonMoveX = -5.0;
     const double polygonMoveY = -5.0;
 
-    sergeev::Rectangle rect1(
-        {rectangle1X, rectangle1Y},
-        rectangle1Width,
-        rectangle1Height
-    );
+    sergeev::Rectangle rect1({rectangle1X, rectangle1Y}, rectangle1Width, rectangle1Height);
 
-    sergeev::Rectangle rect2(
-        {rectangle2X, rectangle2Y},
-        rectangle2Width,
-        rectangle2Height
-    );
+    sergeev::Rectangle rect2({rectangle2X, rectangle2Y}, rectangle2Width, rectangle2Height);
 
-    sergeev::Ellipse ellipse(
-        {ellipseX, ellipseY},
-        ellipseRadiusX,
-        ellipseRadiusY
-    );
+    sergeev::Ellipse ellipse({ellipseX, ellipseY}, ellipseRadiusX, ellipseRadiusY);
 
-    const sergeev::point_t vertices[] = {
-        {0, 0}, {4, 0}, {4, 1}, {1, 1}, {1, 4}, {0, 4}
-    };
+    const sergeev::point_t vertices[] = {{0, 0}, {4, 0}, {4, 1}, {1, 1}, {1, 4}, {0, 4}};
     const size_t vertexCount = sizeof(vertices) / sizeof(vertices[0]);
 
     sergeev::Polygon polygon(vertices, vertexCount);
