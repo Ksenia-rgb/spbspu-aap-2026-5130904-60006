@@ -1,11 +1,11 @@
 #include <iostream>
 #include <cstddef>
 #include <stdexcept>
-#include "base-types.hpp"
-#include "shape.hpp"
-#include "rectangle.hpp"
-#include "diamond.hpp"
-#include "ring.hpp"
+#include "../common/base-types.hpp"
+#include "../common/shape.hpp"
+#include "../common/rectangle.hpp"
+#include "../common/diamond.hpp"
+#include "../common/ring.hpp"
 
 namespace dortman
 {
